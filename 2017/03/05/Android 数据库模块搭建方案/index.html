@@ -1,0 +1,701 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,SQLite," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="数据库作为App缓存设计的首选，存在一些开发的陷阱，同时需要考虑性能、开发效率和可维护性，笔者建议自行搭建数据库管理类，同时配合成熟的开源ORM框架快速搭建数据库模块。本方案采用ORM框架greenDAO，greenDAO是成熟的ORM框架，在性能和内存占用上很出色https://github.com/greenrobot/greenDAO
+
+Android数据库存在的问题：
+SQLite是数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android-数据库模块搭建方案">
+<meta property="og:url" content="http://yoursite.com/2017/03/05/Android 数据库模块搭建方案/index.html">
+<meta property="og:site_name" content="gcoder.io">
+<meta property="og:description" content="数据库作为App缓存设计的首选，存在一些开发的陷阱，同时需要考虑性能、开发效率和可维护性，笔者建议自行搭建数据库管理类，同时配合成熟的开源ORM框架快速搭建数据库模块。本方案采用ORM框架greenDAO，greenDAO是成熟的ORM框架，在性能和内存占用上很出色https://github.com/greenrobot/greenDAO
+
+Android数据库存在的问题：
+SQLite是数据">
+<meta property="og:updated_time" content="2017-03-04T16:08:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android-数据库模块搭建方案">
+<meta name="twitter:description" content="数据库作为App缓存设计的首选，存在一些开发的陷阱，同时需要考虑性能、开发效率和可维护性，笔者建议自行搭建数据库管理类，同时配合成熟的开源ORM框架快速搭建数据库模块。本方案采用ORM框架greenDAO，greenDAO是成熟的ORM框架，在性能和内存占用上很出色https://github.com/greenrobot/greenDAO
+
+Android数据库存在的问题：
+SQLite是数据">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/03/05/Android 数据库模块搭建方案/"/>
+
+
+
+
+
+  <title> Android-数据库模块搭建方案 | gcoder.io </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">gcoder.io</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">http://www.gcoder.io</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/05/Android 数据库模块搭建方案/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="gcoder">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="gcoder.io">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android-数据库模块搭建方案
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-05T14:00:00+08:00">
+                2017-03-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>数据库作为App缓存设计的首选，存在一些开发的陷阱，同时需要考虑性能、开发效率和可维护性，笔者建议自行搭建数据库管理类，同时配合成熟的开源ORM框架快速搭建数据库模块。<br>本方案采用ORM框架greenDAO，greenDAO是成熟的ORM框架，在性能和内存占用上很出色<br><a href="https://github.com/greenrobot/greenDAO" target="_blank" rel="external">https://github.com/greenrobot/greenDAO</a></p>
+</blockquote>
+<h2 id="Android数据库存在的问题："><a href="#Android数据库存在的问题：" class="headerlink" title="Android数据库存在的问题："></a>Android数据库存在的问题：</h2><ol>
+<li>SQLite是<strong>数据库级别</strong>锁，同一个数据库连接可以多线程操作，同时读、写、读写操作，SQLite底层做了同步处理；</li>
+<li>多个数据库连接，只可以多线程读操作，不可写或读写操作，否则会抛出锁表异常<br><code>android.database.sqlite.SQLiteDatabaseLockedException: database is locked</code><br>总结：多个数据库连接不能同时操作涉及到写的操作，多线程写操作必须保证一个数据库连接。</li>
+</ol>
+<h2 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h2><h3 id="1-同步锁方案："><a href="#1-同步锁方案：" class="headerlink" title="1. 同步锁方案："></a>1. 同步锁方案：</h3><p>考虑性能，建议使用<strong>ReadWriteLock</strong>，ReadWriteLock可以并发读，可以大幅减少读操作造成的锁开销；</p>
+<ul>
+<li><p>在Application onCreate方法中创建全局唯一的ReadWriteLock；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> ReadWriteLock lock = <span class="keyword">new</span> ReentrantReadWriteLock(<span class="keyword">false</span>);</div></pre></td></tr></table></figure>
+</li>
+<li><p>在DAO中调用Application的ReadWriteLock，</p>
+</li>
+<li>读操作前调用<code>lock.readLock().lock();</code>加锁，执行完毕调后调用<br><code>lock.readLock.unlock();</code>解锁；</li>
+<li>写操作调用<code>lock.writeLock().lock();</code> 加锁，执行完毕后调用<br><code>lock.writeLock().unlock();</code> 解锁；</li>
+<li>在每次读写操作前需要获取数据库连接，用完后关闭释放资源。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserInfoDAO</span> </span>&#123;</div><div class="line">  <span class="keyword">private</span> Context context;</div><div class="line">  <span class="keyword">private</span> ReadWriteLock lock;</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">TestDAO</span><span class="params">(Context context, ReadWriteLock lock)</span></span>&#123;</div><div class="line">    <span class="keyword">this</span>.context = context;</div><div class="line">    <span class="keyword">this</span>.lock = lock;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> SQLiteDatabase <span class="title">getConnection</span><span class="params">()</span> </span>&#123;</div><div class="line">    SQLiteDatabase sqliteDatabase = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      sqliteDatabase = <span class="keyword">new</span> DatabaseHelper(context).getWritableDatabase();</div><div class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> sqliteDatabase;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert</span><span class="params">(UserInfo userInfo)</span></span>&#123;</div><div class="line">    lock.writeLock().lock(); </div><div class="line">    SQLiteDatabase db = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      ContentValues values = <span class="keyword">new</span> ContentValues();</div><div class="line">      values.put(<span class="string">"name"</span>, userInfo.getName());</div><div class="line">      values.put(<span class="string">"age"</span>, userInfo.getAge);</div><div class="line">      db = getConnection();</div><div class="line">      <span class="keyword">if</span>(db != <span class="keyword">null</span> &amp;&amp; db.isOpen())&#123;</div><div class="line">        db.insert(<span class="string">"userInfo"</span>, <span class="keyword">null</span>, values);</div><div class="line">      &#125;</div><div class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">    &#125;<span class="keyword">finally</span>&#123;</div><div class="line">       <span class="keyword">if</span> (db != <span class="keyword">null</span> &amp;&amp; db.isOpen()) &#123;</div><div class="line">         db.close();</div><div class="line">       &#125;</div><div class="line">       myLock.writeLock().unlock();   </div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> List&lt;UserInfo&gt; <span class="title">query</span><span class="params">()</span></span>&#123;</div><div class="line">    List&lt;UserInfo&gt; list = <span class="keyword">new</span> ArrayList&lt;UserInfo&gt;();</div><div class="line">    lock.readLock().lock(); </div><div class="line">    SQLiteDatabase db = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      db = getConnection();</div><div class="line">      <span class="keyword">if</span>(db != <span class="keyword">null</span> &amp;&amp; db.isOpen())&#123;</div><div class="line">        Cursor c = db.rawQuery(<span class="string">"SELECT * FROM userInfo"</span>, <span class="keyword">null</span>);</div><div class="line">        UserInfo info;</div><div class="line">        <span class="keyword">while</span> (c.moveToNext()) &#123;</div><div class="line">          info = <span class="keyword">new</span> UserInfo();</div><div class="line">          info.setName(c.getString(c.getColumnIndex(<span class="string">"name"</span>)));</div><div class="line">          info.setAge(c.getInt(c.getColumnIndex(<span class="string">"age"</span>)));</div><div class="line">          list.add(info);</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">    &#125;<span class="keyword">finally</span>&#123;</div><div class="line">       <span class="keyword">if</span> (db != <span class="keyword">null</span> &amp;&amp; db.isOpen()) &#123;</div><div class="line">         db.close();</div><div class="line">       &#125;</div><div class="line">       lock.readLock().unlock();   </div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> list;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="2-多数据库方案："><a href="#2-多数据库方案：" class="headerlink" title="2. 多数据库方案："></a>2. 多数据库方案：</h3><p>每张table对应一个单独的db，由于SQLite在db层做了同步处理，故此方案支持读、写并发操作。</p>
+<h3 id="3-单数据库连接方案："><a href="#3-单数据库连接方案：" class="headerlink" title="3. 单数据库连接方案："></a>3. 单数据库连接方案：</h3><ul>
+<li>此方案采用整个Application保证只有一个数据库连接，利用SQLite单数据库连接支持同时读写的特性；</li>
+<li>对数据库操作抽象：数据库连接获取/关闭、数据库连接是否可用、获取数据库操作DAO管理类。DaoSession是greenDAO中DAO管理类，包含DAO的注册、获取、清理。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">DatabaseManager</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 获取数据库连接</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">startup</span><span class="params">(Context mContext)</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 关闭数据库</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">shutdown</span><span class="params">()</span></span>;</div><div class="line">    </div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 检查数据库状态是否可用</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">checkDBStatus</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 获取greenDAO DAO管理类</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="function">DaoSession <span class="title">getDaoSession</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>实现类DatabaseManagerImpl</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DatabaseManagerImpl</span> <span class="keyword">implements</span> <span class="title">DatabaseManager</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String DBNAME = <span class="string">"test_db"</span>;</div><div class="line">    <span class="keyword">private</span> OpenHelper helper;</div><div class="line">    <span class="keyword">private</span> SQLiteDatabase db;</div><div class="line">    <span class="keyword">private</span> DaoSession daoSession;</div><div class="line">    <span class="keyword">private</span> Context mContext;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startup</span><span class="params">(Context mContext)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.mContext = mContext;</div><div class="line">        <span class="keyword">if</span> (LogUtils.DEBUG) &#123;</div><div class="line">            QueryBuilder.LOG_SQL = <span class="keyword">true</span>;</div><div class="line">            QueryBuilder.LOG_VALUES = <span class="keyword">true</span>;</div><div class="line">        &#125;</div><div class="line">        getOpenHelper();</div><div class="line">        db = helper.getWritableDatabase();</div><div class="line">        DaoMaster daoMaster = <span class="keyword">new</span> DaoMaster(db);</div><div class="line">        daoSession = daoMaster.newSession();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">shutdown</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (daoSession != <span class="keyword">null</span>) &#123;</div><div class="line">            daoSession.clear();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (db != <span class="keyword">null</span> &amp;&amp; db.isOpen()) &#123;</div><div class="line">            db.close();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">getOpenHelper</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (helper != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// <span class="doctag">TODO:</span> release版本请使用ReleaseOpenHelper</span></div><div class="line">        <span class="keyword">if</span> (LogUtils.DEBUG) &#123;</div><div class="line">            helper = <span class="keyword">new</span> DaoMaster.DevOpenHelper(mContext, DBNAME, <span class="keyword">null</span>);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            helper = <span class="keyword">new</span> ReleaseOpenHelper(mContext, DBNAME, <span class="keyword">null</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">checkDBStatus</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (db == <span class="keyword">null</span> || !db.isOpen()) &#123;</div><div class="line">            getOpenHelper();</div><div class="line">            db = helper.getWritableDatabase();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (db.isOpen()) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="keyword">if</span> (LogUtils.DEBUG) &#123;</div><div class="line">                LogUtils.d(<span class="string">"database open fail."</span>);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> DaoSession <span class="title">getDaoSession</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (!checkDBStatus()) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (daoSession == <span class="keyword">null</span>) &#123;</div><div class="line">            DaoMaster daoMaster = <span class="keyword">new</span> DaoMaster(db);</div><div class="line">            daoSession = daoMaster.newSession();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> daoSession;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>在Application onCreate方法中创建DatabaseManager，并调用初始化方法<br>startup，在此方法中获取数据库连接并保持，不释放，并通过数据库连接创建greenDao中DAO管理类;</li>
+<li>在业务中需要数据库的地方，只需要调用getDaoSession获取DAO管理类调用相应的DAO即可。</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/SQLite/" rel="tag"># SQLite</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/15/Android HotPatch在线热补丁方案/" rel="next" title="Android-HotPatch在线热补丁方案">
+                <i class="fa fa-chevron-left"></i> Android-HotPatch在线热补丁方案
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="gcoder" />
+          <p class="site-author-name" itemprop="name">gcoder</p>
+           
+              <p class="site-description motion-element" itemprop="description">路途中的思考...</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Android数据库存在的问题："><span class="nav-number">1.</span> <span class="nav-text">Android数据库存在的问题：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方案："><span class="nav-number">2.</span> <span class="nav-text">解决方案：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-同步锁方案："><span class="nav-number">2.1.</span> <span class="nav-text">1. 同步锁方案：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-多数据库方案："><span class="nav-number">2.2.</span> <span class="nav-text">2. 多数据库方案：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-单数据库连接方案："><span class="nav-number">2.3.</span> <span class="nav-text">3. 单数据库连接方案：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">gcoder</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
