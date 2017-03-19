@@ -1,0 +1,797 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Activity,Activity生命周期,Activity启动模式," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="此文是根据官方文档、图书资料及demo测试得出的结论，包括Activity多个页面间跳转的生命周期，各个启动模式的不同，flag的常见用法及对activity任务栈的影响。
+
+Activity生命周期需要注意的地方
+当Activity长时间在后台运行时，可能会被杀死，再次启动时Activity会被重建，此情况和横竖屏切换场景类似，开发者应该在开发环境下打开横竖屏切换测试，防止异常发生；
+如果新的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Activity生命周期和启动模式你不知道的那些事">
+<meta property="og:url" content="http://yoursite.com/2016/10/05/android-activity-lifecycle-launchmode/index.html">
+<meta property="og:site_name" content="gcoder.io">
+<meta property="og:description" content="此文是根据官方文档、图书资料及demo测试得出的结论，包括Activity多个页面间跳转的生命周期，各个启动模式的不同，flag的常见用法及对activity任务栈的影响。
+
+Activity生命周期需要注意的地方
+当Activity长时间在后台运行时，可能会被杀死，再次启动时Activity会被重建，此情况和横竖屏切换场景类似，开发者应该在开发环境下打开横竖屏切换测试，防止异常发生；
+如果新的">
+<meta property="og:updated_time" content="2017-03-19T15:41:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android Activity生命周期和启动模式你不知道的那些事">
+<meta name="twitter:description" content="此文是根据官方文档、图书资料及demo测试得出的结论，包括Activity多个页面间跳转的生命周期，各个启动模式的不同，flag的常见用法及对activity任务栈的影响。
+
+Activity生命周期需要注意的地方
+当Activity长时间在后台运行时，可能会被杀死，再次启动时Activity会被重建，此情况和横竖屏切换场景类似，开发者应该在开发环境下打开横竖屏切换测试，防止异常发生；
+如果新的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/10/05/android-activity-lifecycle-launchmode/"/>
+
+
+
+
+
+  <title> Android Activity生命周期和启动模式你不知道的那些事 | gcoder.io </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">gcoder.io</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">http://www.gcoder.io</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/05/android-activity-lifecycle-launchmode/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="gcoder">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="gcoder.io">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android Activity生命周期和启动模式你不知道的那些事
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-05T00:00:00+08:00">
+                2016-10-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>此文是根据官方文档、图书资料及demo测试得出的结论，包括Activity多个页面间跳转的生命周期，各个启动模式的不同，flag的常见用法及对activity任务栈的影响。</p>
+</blockquote>
+<h2 id="Activity生命周期需要注意的地方"><a href="#Activity生命周期需要注意的地方" class="headerlink" title="Activity生命周期需要注意的地方"></a>Activity生命周期需要注意的地方</h2><ul>
+<li>当Activity长时间在后台运行时，可能会被杀死，再次启动时Activity会被重建，此情况和横竖屏切换场景类似，开发者应该在开发环境下打开横竖屏切换测试，防止异常发生；</li>
+<li>如果新的Activity是透明主题，则当前Activity不会执行onStop；</li>
+<li>onSaveInstanceState在onStop之前执行，onRestoreInstanceState在onStart之后执行；</li>
+<li>为防止Activity横竖屏切换时Activity重启，可添加           android:configChanges=”orientation|screenSize”</li>
+<li>onStart和onStop，判断Activity是否可见，onResume和onPause，判断Activity是否在前台；</li>
+<li><p>A启动B，A、B生命周期执行顺序：A会先进入后台，B创建进入前台，A不可见；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">A(onPause) --&gt; B(onCreate) --&gt; B(onStart) --&gt; B(onResume) --&gt; A(onSaveInstanceState) -&gt;A(onStop)</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="Activity启动模式"><a href="#Activity启动模式" class="headerlink" title="Activity启动模式"></a>Activity启动模式</h2><h3 id="Standard：标准模式"><a href="#Standard：标准模式" class="headerlink" title="Standard：标准模式"></a>Standard：标准模式</h3><ul>
+<li>每次都会新创建Activity，并添加到对应的任务栈中；</li>
+</ul>
+<h3 id="SingleTop：栈顶复用"><a href="#SingleTop：栈顶复用" class="headerlink" title="SingleTop：栈顶复用"></a>SingleTop：栈顶复用</h3><ul>
+<li><p>如果要启动的Activity已经在栈顶，该Activity不会被创建；</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">* A --&gt; B(SingleTop)</div><div class="line">* 再次启动B后生命周期：</div><div class="line">onPause --&gt; onNewIntent --&gt; onResume</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>如果要启动的Activity不在栈顶，跟标准模式完全一致；</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">* A --&gt; B(SingleTop) --&gt; C</div><div class="line">* 再次启动B后栈：</div><div class="line">A --&gt; B(SingleTop) --&gt; C --&gt; B(SingleTop)</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="SingleTask：栈内复用模式"><a href="#SingleTask：栈内复用模式" class="headerlink" title="SingleTask：栈内复用模式"></a>SingleTask：栈内复用模式</h3><ul>
+<li><p>特别注意，配置此模式的Activity并不会位于一个新的任务栈中，只是如果要启动的Activity已经在栈中，会clearTop，让自己置为栈顶；</p>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">* A --&gt; B(SingleTask) --&gt; C</div><div class="line">TaskRecord&#123;ed93b47 #259 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=4&#125;</div><div class="line">	Run #3: ActivityRecord&#123;c1f4817 u0 test.gcoder.io.testactivity/.CActivity, isShadow:false t259&#125;</div><div class="line">	Run #2: ActivityRecord&#123;59e1a72 u0 test.gcoder.io.testactivity/.BActivity, isShadow:false t259&#125;</div><div class="line">	Run #1: ActivityRecord&#123;d7ae33c u0 test.gcoder.io.testactivity/.AActivity, isShadow:false t259&#125;</div><div class="line"> 	</div><div class="line">* 再次启动B后任务栈：</div><div class="line">A --&gt; B(SingleTask)</div><div class="line">此时C会被销毁</div><div class="line">此时B的生命周期：onPause --&gt; onNewIntent --&gt; onResume</div><div class="line">	</div><div class="line">TaskRecord&#123;ed93b47 #259 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=3&#125;</div><div class="line">	Run #2: ActivityRecord&#123;59e1a72 u0 test.gcoder.io.testactivity/.BActivity, isShadow:false t259&#125;</div><div class="line">	Run #1: ActivityRecord&#123;d7ae33c u0 test.gcoder.io.testactivity/.AActivity, isShadow:false t259&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="SingleInstance：单实例模式"><a href="#SingleInstance：单实例模式" class="headerlink" title="SingleInstance：单实例模式"></a>SingleInstance：单实例模式</h3><ul>
+<li><p>此模式的Activity只能位于一个独立任务栈中；</p>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">* A --&gt; B(SingleInstance) --&gt; C</div><div class="line">此时，A、C位于同一个任务栈，B位于独立的任务栈；</div><div class="line">	</div><div class="line">TaskRecord&#123;c37f244 #253 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=3&#125;</div><div class="line">	Run #3: ActivityRecord&#123;8d06468 u0 test.gcoder.io.testactivity/.CActivity, isShadow:false t253&#125;</div><div class="line">TaskRecord&#123;10b2e56 #257 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=1&#125;</div><div class="line">	Run #2: ActivityRecord&#123;eeb0317 u0 test.gcoder.io.testactivity/.BActivity, isShadow:false t257&#125;</div><div class="line">TaskRecord&#123;c37f244 #253 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=3&#125;</div><div class="line">	Run #1: ActivityRecord&#123;e25c532 u0 test.gcoder.io.testactivity/.AActivity, isShadow:false t253&#125;</div><div class="line">	</div><div class="line">* 再次启动B后栈：</div><div class="line">A --&gt; C --&gt; B(SingleInstance)</div><div class="line">此时，B调整为前台任务栈，A、C的任务栈调整为后台任务栈；</div><div class="line">此时，B的生命周期：onPause --&gt; onNewIntent --&gt; onResume</div><div class="line"></div><div class="line">TaskRecord&#123;10b2e56 #257 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=1&#125;</div><div class="line">	Run #3: ActivityRecord&#123;eeb0317 u0 test.gcoder.io.testactivity/.BActivity, isShadow:false t257&#125;</div><div class="line">TaskRecord&#123;c37f244 #253 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=3&#125;</div><div class="line">	Run #2: ActivityRecord&#123;8d06468 u0 test.gcoder.io.testactivity/.CActivity, isShadow:false t253&#125;</div><div class="line"> 	Run #1: ActivityRecord&#123;e25c532 u0 test.gcoder.io.testactivity/.AActivity, isShadow:false t253&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="怎么确定Activity位于哪个任务栈"><a href="#怎么确定Activity位于哪个任务栈" class="headerlink" title="怎么确定Activity位于哪个任务栈"></a>怎么确定Activity位于哪个任务栈</h2><ul>
+<li>除SingleInstance模式的activity外，其它所有模式的activity都会被添加到默认的任务栈中，默认任务栈taskAffinity为包名；</li>
+<li>可以通过指定taskAffinity让activity运行在特定的任务栈中，必须配合FLAG_ACTIVITY_NEW_TASK才会生效；</li>
+<li><p>除SingleInstance模式的activity外，启动普通的activity都被添加到启动此activity所用的activity相同的任务栈中，除非同时指定taskAffinity和FLAG_ACTIVITY_NEW_TASK，会运行在与taskAffinity同名的任务栈中；</p>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">* A --&gt; B(taskAffinity=test.gcoder.io.newtask flag=FLAG_ACTIVITY_NEW_TASK)</div><div class="line">TaskRecord&#123;99b9ba5 #269 A=test.gcoder.io.newtask, isShadow:false U=0 sz=1&#125;</div><div class="line">	Run #2: ActivityRecord&#123;5ba0ca2 u0 test.gcoder.io.testactivity/.BActivity, isShadow:false t269&#125;</div><div class="line">TaskRecord&#123;ab040b2 #267 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=2&#125;</div><div class="line">	Run #1: ActivityRecord&#123;1ddfc0 u0 test.gcoder.io.testactivity/.AActivity, isShadow:false t267&#125;</div><div class="line">	</div><div class="line">* A --&gt; B(taskAffinity=test.gcoder.io.newtask flag=FLAG_ACTIVITY_NEW_TASK)--&gt; C</div><div class="line">TaskRecord&#123;99b9ba5 #269 A=test.gcoder.io.newtask, isShadow:false U=0 sz=2&#125;</div><div class="line">	Run #3: ActivityRecord&#123;199ec49 u0 test.gcoder.io.testactivity/.CActivity, isShadow:false t269&#125;</div><div class="line">	Run #2: ActivityRecord&#123;5ba0ca2 u0 test.gcoder.io.testactivity/.BActivity, isShadow:false t269&#125;</div><div class="line">TaskRecord&#123;ab040b2 #267 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=2&#125;</div><div class="line">	Run #1: ActivityRecord&#123;1ddfc0 u0 test.gcoder.io.testactivity/.AActivity, isShadow:false t267&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="Context对Activity任务栈的影响"><a href="#Context对Activity任务栈的影响" class="headerlink" title="Context对Activity任务栈的影响"></a>Context对Activity任务栈的影响</h2><ul>
+<li>经过对比，使用Activity Context启动与使用Application Context启动Activity无任何区别，都是在一个任务栈中;</li>
+<li><p>使用Activity Context启动</p>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">* A --&gt; B(FLAG_ACTIVITY_NEW_TASK)</div><div class="line">TaskRecord&#123;6a79d7e #261 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=3&#125;</div><div class="line">	Run #2: ActivityRecord&#123;8754172 u0 test.gcoder.io.testactivity/.BActivity, isShadow:false t261&#125;</div><div class="line">	Run #1: ActivityRecord&#123;43b510 u0 test.gcoder.io.testactivity/.AActivity, isShadow:false t261&#125;</div><div class="line">	    </div><div class="line">* A --&gt; B(FLAG_ACTIVITY_NEW_TASK)--&gt;C</div><div class="line">TaskRecord&#123;6a79d7e #261 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=4&#125;</div><div class="line">	Run #3: ActivityRecord&#123;4095453 u0 test.gcoder.io.testactivity/.CActivity, isShadow:false t261&#125;</div><div class="line">	Run #2: ActivityRecord&#123;8754172 u0 test.gcoder.io.testactivity/.BActivity, isShadow:false t261&#125;</div><div class="line">	Run #1: ActivityRecord&#123;43b510 u0 test.gcoder.io.testactivity/.AActivity, isShadow:false t261&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用Application Context启动</p>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">* A --&gt; B(FLAG_ACTIVITY_NEW_TASK)</div><div class="line">TaskRecord&#123;eb6f24d #262 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=3&#125;</div><div class="line">	Run #2: ActivityRecord&#123;215a79a u0 test.gcoder.io.testactivity/.BActivity, isShadow:false t262&#125;</div><div class="line">	Run #1: ActivityRecord&#123;7e22051 u0 test.gcoder.io.testactivity/.AActivity, isShadow:false t262&#125;</div><div class="line">	  </div><div class="line">* A --&gt; B(FLAG_ACTIVITY_NEW_TASK)--&gt; C      </div><div class="line">TaskRecord&#123;eb6f24d #262 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=4&#125;</div><div class="line">	Run #3: ActivityRecord&#123;dac68e6 u0 test.gcoder.io.testactivity/.CActivity, isShadow:false t262&#125;</div><div class="line">	Run #2: ActivityRecord&#123;215a79a u0 test.gcoder.io.testactivity/.BActivity, isShadow:false t262&#125;</div><div class="line">	Run #1: ActivityRecord&#123;7e22051 u0 test.gcoder.io.testactivity/.AActivity, isShadow:false t262&#125;</div><div class="line">	</div><div class="line">* 再次启动B后：A --&gt; B(FLAG_ACTIVITY_NEW_TASK) --&gt; C --&gt; B(FLAG_ACTIVITY_NEW_TASK)      </div><div class="line">TaskRecord&#123;eb6f24d #262 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=5&#125;</div><div class="line">	Run #4: ActivityRecord&#123;2ec8ea1 u0 test.gcoder.io.testactivity/.BActivity, isShadow:false t262&#125;</div><div class="line">	Run #3: ActivityRecord&#123;c30b233 u0 test.gcoder.io.testactivity/.CActivity, isShadow:false t262&#125;</div><div class="line">	Run #2: ActivityRecord&#123;e88653e u0 test.gcoder.io.testactivity/.BActivity, isShadow:false t262&#125;</div><div class="line">	Run #1: ActivityRecord&#123;177c4a8 u0 test.gcoder.io.testactivity/.AActivity, isShadow:false t262&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="Flag对Activity任务栈的影响"><a href="#Flag对Activity任务栈的影响" class="headerlink" title="Flag对Activity任务栈的影响"></a>Flag对Activity任务栈的影响</h2><h3 id="FLAG-ACTIVITY-NEW-TASK"><a href="#FLAG-ACTIVITY-NEW-TASK" class="headerlink" title="FLAG_ACTIVITY_NEW_TASK"></a>FLAG_ACTIVITY_NEW_TASK</h3><ul>
+<li>只添加此Flag的Activity不会被添加新的任务栈中，此时跟SingleTask无任何关系，也不具备SingleTask同一个任务栈中唯一的特性及clearTop的特性；</li>
+<li>此Flag可被用于非Activity类型的Context启动新Activity；</li>
+<li>此Flag与其它Flag混合使用会有不同的效果；</li>
+</ul>
+<h3 id="FLAG-ACTIVITY-MULTIPLE-TASK"><a href="#FLAG-ACTIVITY-MULTIPLE-TASK" class="headerlink" title="FLAG_ACTIVITY_MULTIPLE_TASK"></a>FLAG_ACTIVITY_MULTIPLE_TASK</h3><ul>
+<li>此Flag一般不单独使用，需要配合FLAG_ACTIVITY_NEW_TASK使用；</li>
+</ul>
+<h3 id="FLAG-ACTIVITY-MULTIPLE-TASK-FLAG-ACTIVITY-NEW-TASK"><a href="#FLAG-ACTIVITY-MULTIPLE-TASK-FLAG-ACTIVITY-NEW-TASK" class="headerlink" title="FLAG_ACTIVITY_MULTIPLE_TASK | FLAG_ACTIVITY_NEW_TASK"></a>FLAG_ACTIVITY_MULTIPLE_TASK | FLAG_ACTIVITY_NEW_TASK</h3><ul>
+<li>单独使用时，会检索已经存在的任务栈，如果启动的activity对应的任务栈存在就不会创建，不存在才会创建新的任务栈；</li>
+<li><p>同时使用时，会强制创建新的任务栈，并将启动的activity放在新的任务栈中， 后续使用此activity启动的标准模式的activity会运行在此栈中，而不是默认栈中；</p>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">* A --&gt; B(FLAG_ACTIVITY_MULTIPLE_TASK|FLAG_ACTIVITY_NEW_TASK)</div><div class="line">TaskRecord&#123;4144b1a0 #6 A test.gcoder.io.testactivity U 0&#125;</div><div class="line">	Run #3: ActivityRecord&#123;413fd7a8 test.gcoder.io.testactivity/.BActivity&#125;</div><div class="line">TaskRecord&#123;41548560 #5 A test.gcoder.io.testactivity U 0&#125;</div><div class="line">	Run #2: ActivityRecord&#123;41562330 test.gcoder.io.testactivity/.AActivity&#125;</div><div class="line">	    </div><div class="line">* A --&gt; B(FLAG_ACTIVITY_MULTIPLE_TASK|FLAG_ACTIVITY_NEW_TASK) --&gt; C</div><div class="line">TaskRecord&#123;4144b1a0 #6 A test.gcoder.io.testactivity U 0&#125;</div><div class="line">	Run #4: ActivityRecord&#123;41604278 test.gcoder.io.testactivity/.CActivity&#125;</div><div class="line">	Run #3: ActivityRecord&#123;413fd7a8 test.gcoder.io.testactivity/.BActivity&#125;</div><div class="line">TaskRecord&#123;41548560 #5 A test.gcoder.io.testactivity U 0&#125;</div><div class="line">	Run #2: ActivityRecord&#123;41562330 test.gcoder.io.testactivity/.AActivity&#125;</div><div class="line">   </div><div class="line">* A --&gt; B(FLAG_ACTIVITY_MULTIPLE_TASK|FLAG_ACTIVITY_NEW_TASK) --&gt; C --&gt; B(FLAG_ACTIVITY_MULTIPLE_TASK|FLAG_ACTIVITY_NEW_TASK)</div><div class="line">TaskRecord&#123;41434a90 #7 A test.gcoder.io.testactivity U 0&#125;</div><div class="line">	Run #5: ActivityRecord&#123;413a6710 test.gcoder.io.testactivity/.BActivity&#125;</div><div class="line">TaskRecord&#123;4144b1a0 #6 A test.gcoder.io.testactivity U 0&#125;</div><div class="line">	Run #4: ActivityRecord&#123;41604278 test.gcoder.io.testactivity/.CActivity&#125;</div><div class="line">	Run #3: ActivityRecord&#123;413fd7a8 test.gcoder.io.testactivity/.BActivity&#125;</div><div class="line">TaskRecord&#123;41548560 #5 A test.gcoder.io.testactivity U 0&#125;</div><div class="line">	Run #2: ActivityRecord&#123;41562330 test.gcoder.io.testactivity/.AActivity&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="FLAG-ACTIVITY-SINGLE-TOP"><a href="#FLAG-ACTIVITY-SINGLE-TOP" class="headerlink" title="FLAG_ACTIVITY_SINGLE_TOP"></a>FLAG_ACTIVITY_SINGLE_TOP</h3><ul>
+<li>同SingleTop</li>
+</ul>
+<h3 id="FLAG-ACTIVITY-CLEAR-TOP"><a href="#FLAG-ACTIVITY-CLEAR-TOP" class="headerlink" title="FLAG_ACTIVITY_CLEAR_TOP"></a>FLAG_ACTIVITY_CLEAR_TOP</h3><ul>
+<li>此Flag单独使用时，如果启动的Activity存在对应的任务栈中，只是会清除任务栈中要启动的Activity之上所有的Activity，要启动的Activity会先销毁后重新创建；</li>
+<li><p>此Flag单独使用时，如果启动的Activity不存在对应的任务栈中，则创建并添加到对应的任务栈中；</p>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">* A --&gt; B(FLAG_ACTIVITY_CLEAR_TOP) --&gt; C</div><div class="line">TaskRecord&#123;166703a #289 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=4&#125;</div><div class="line">	Run #3: ActivityRecord&#123;374b0ff u0 test.gcoder.io.testactivity/.CActivity, isShadow:false t289&#125;</div><div class="line">	Run #2: ActivityRecord&#123;15086 u0 test.gcoder.io.testactivity/.BActivity, isShadow:false t289&#125;</div><div class="line">	Run #1: ActivityRecord&#123;da843b0 u0 test.gcoder.io.testactivity/.AActivity, isShadow:false t289&#125;</div><div class="line">        </div><div class="line">* 再次启动B(FLAG_ACTIVITY_CLEAR_TOP)</div><div class="line">* 生命周期：C会销毁，B会先销毁后创建</div><div class="line">C(onPause)</div><div class="line">B(onDestroy)--&gt;B(onCreate)--&gt;B(onStart)--&gt;B(onResume)</div><div class="line">C(onStop)--&gt;C(onDestroy)</div><div class="line">	</div><div class="line">TaskRecord&#123;166703a #289 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=3&#125;</div><div class="line">	Run #2: ActivityRecord&#123;6420128 u0 test.gcoder.io.testactivity/.BActivity, isShadow:false t289&#125;</div><div class="line">	Run #1: ActivityRecord&#123;da843b0 u0 test.gcoder.io.testactivity/.AActivity, isShadow:false t289&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="FLAG-ACTIVITY-CLEAR-TOP-FLAG-ACTIVITY-NEW-TASK"><a href="#FLAG-ACTIVITY-CLEAR-TOP-FLAG-ACTIVITY-NEW-TASK" class="headerlink" title="FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_NEW_TASK"></a>FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_NEW_TASK</h3><ul>
+<li>如果要启动的Activity在对应的任务栈中，则会销毁任务栈顶部的所有 Activity，并通过 onNewIntent() 将此 Intent 传递给 Activity 已恢复的实例（现在位于顶部），而不是启动该 Activity 的新实例；</li>
+<li><p>如果启动的Activity没有在对应的任务栈中，则创建新的任务栈，创建Activity并添加到新的任务栈中；</p>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">* A --&gt; B（FLAG_ACTIVITY_MULTIPLE_TASK | FLAG_ACTIVITY_CLEAR_TOP）</div><div class="line">TaskRecord&#123;413377c #286 A=test.gcoder.io.newtask, isShadow:false U=0 sz=1&#125;</div><div class="line">	Run #2: ActivityRecord&#123;a58be9a u0 test.gcoder.io.testactivity/.BActivity, isShadow:false t286&#125;</div><div class="line">TaskRecord&#123;cfe9805 #285 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=2&#125;</div><div class="line">	Run #1: ActivityRecord&#123;b5a1c24 u0 test.gcoder.io.testactivity/.AActivity, isShadow:false t285&#125;</div><div class="line">	</div><div class="line">* A --&gt; B（FLAG_ACTIVITY_MULTIPLE_TASK | FLAG_ACTIVITY_CLEAR_TOP）--&gt; C</div><div class="line">TaskRecord&#123;413377c #286 A=test.gcoder.io.newtask, isShadow:false U=0 sz=2&#125;</div><div class="line">	Run #3: ActivityRecord&#123;9f7c8df u0 test.gcoder.io.testactivity/.CActivity, isShadow:false t286&#125;</div><div class="line">	Run #2: ActivityRecord&#123;a58be9a u0 test.gcoder.io.testactivity/.BActivity, isShadow:false t286&#125;</div><div class="line">TaskRecord&#123;cfe9805 #285 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=2&#125;</div><div class="line">	Run #1: ActivityRecord&#123;b5a1c24 u0 test.gcoder.io.testactivity/.AActivity, isShadow:false t285&#125;</div><div class="line">	</div><div class="line">* 再次启动B（FLAG_ACTIVITY_MULTIPLE_TASK | FLAG_ACTIVITY_CLEAR_TOP）</div><div class="line">* 生命周期：C会销毁，B会先销毁后创建</div><div class="line">C(onPause)</div><div class="line">B(onDestroy)--&gt;B(onCreate)--&gt;B(onStart)--&gt;B(onResume)</div><div class="line">C(onStop)--&gt;C(onDestroy)</div><div class="line">	</div><div class="line">TaskRecord&#123;413377c #286 A=test.gcoder.io.newtask, isShadow:false U=0 sz=1&#125;</div><div class="line">	Run #2: ActivityRecord&#123;ff16c57 u0 test.gcoder.io.testactivity/.BActivity, isShadow:false t286&#125;</div><div class="line">TaskRecord&#123;cfe9805 #285 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=2&#125;</div><div class="line">	Run #1: ActivityRecord&#123;b5a1c24 u0 test.gcoder.io.testactivity/.AActivity, isShadow:false t285&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>注：如果指定 Activity 的启动模式为 “standard”，则该 Activity 也会从堆栈中移除，并在其位置启动一个新实例，以便处理传入的 Intent。 这是因为当启动模式为 “standard” 时，将始终为新 Intent 创建新实例。</p>
+</blockquote>
+<h6 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h6><ul>
+<li>Android开发艺术探索第一章；</li>
+<li><a href="https://developer.android.com/reference/android/content/Intent.html" target="_blank" rel="external">Android官方文档</a></li>
+</ul>
+<blockquote>
+<p>本文作者：gcoder.io<br>本文链接：<a href="http://gcoder-io.github.io/2016/10/05/android-activity-lifecycle-launchmode/" target="_blank" rel="external">http://gcoder-io.github.io/2016/10/05/android-activity-lifecycle-launchmode/</a><br>版权声明： 本博客所有文章均为原创，转载请注明作者及出处</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/Activity/" rel="tag"># Activity</a>
+          
+            <a href="/tags/Activity生命周期/" rel="tag"># Activity生命周期</a>
+          
+            <a href="/tags/Activity启动模式/" rel="tag"># Activity启动模式</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/08/12/android-hotpatch-dexposed/" rel="next" title="Android HotPatch在线热补丁方案">
+                <i class="fa fa-chevron-left"></i> Android HotPatch在线热补丁方案
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="gcoder" />
+          <p class="site-author-name" itemprop="name">gcoder</p>
+           
+              <p class="site-description motion-element" itemprop="description">路途中的思考...</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Activity生命周期需要注意的地方"><span class="nav-number">1.</span> <span class="nav-text">Activity生命周期需要注意的地方</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Activity启动模式"><span class="nav-number">2.</span> <span class="nav-text">Activity启动模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Standard：标准模式"><span class="nav-number">2.1.</span> <span class="nav-text">Standard：标准模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SingleTop：栈顶复用"><span class="nav-number">2.2.</span> <span class="nav-text">SingleTop：栈顶复用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SingleTask：栈内复用模式"><span class="nav-number">2.3.</span> <span class="nav-text">SingleTask：栈内复用模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SingleInstance：单实例模式"><span class="nav-number">2.4.</span> <span class="nav-text">SingleInstance：单实例模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#怎么确定Activity位于哪个任务栈"><span class="nav-number">3.</span> <span class="nav-text">怎么确定Activity位于哪个任务栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Context对Activity任务栈的影响"><span class="nav-number">4.</span> <span class="nav-text">Context对Activity任务栈的影响</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flag对Activity任务栈的影响"><span class="nav-number">5.</span> <span class="nav-text">Flag对Activity任务栈的影响</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FLAG-ACTIVITY-NEW-TASK"><span class="nav-number">5.1.</span> <span class="nav-text">FLAG_ACTIVITY_NEW_TASK</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FLAG-ACTIVITY-MULTIPLE-TASK"><span class="nav-number">5.2.</span> <span class="nav-text">FLAG_ACTIVITY_MULTIPLE_TASK</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FLAG-ACTIVITY-MULTIPLE-TASK-FLAG-ACTIVITY-NEW-TASK"><span class="nav-number">5.3.</span> <span class="nav-text">FLAG_ACTIVITY_MULTIPLE_TASK | FLAG_ACTIVITY_NEW_TASK</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FLAG-ACTIVITY-SINGLE-TOP"><span class="nav-number">5.4.</span> <span class="nav-text">FLAG_ACTIVITY_SINGLE_TOP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FLAG-ACTIVITY-CLEAR-TOP"><span class="nav-number">5.5.</span> <span class="nav-text">FLAG_ACTIVITY_CLEAR_TOP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FLAG-ACTIVITY-CLEAR-TOP-FLAG-ACTIVITY-NEW-TASK"><span class="nav-number">5.6.</span> <span class="nav-text">FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_NEW_TASK</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#参考资料："><span class="nav-number">5.6.0.0.1.</span> <span class="nav-text">参考资料：</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">gcoder</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

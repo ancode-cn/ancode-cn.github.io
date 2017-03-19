@@ -1,0 +1,716 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS,Swift," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="普通block和lazy底层是闭包，必须注意self指针泄露，解决方案同block：
+  123private lazy var oneButtonView : OneButtonView? = &amp;#123;[weak self] in    return self?.instanceOneButtonView()&amp;#125;()
+
+判断字符串相等时必须先校验是否为nil，否则崩溃
+  12if">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS Swift开发中需要注意的问题">
+<meta property="og:url" content="http://yoursite.com/2015/07/08/ios-swift-dev-remind/index.html">
+<meta property="og:site_name" content="gcoder.io">
+<meta property="og:description" content="普通block和lazy底层是闭包，必须注意self指针泄露，解决方案同block：
+  123private lazy var oneButtonView : OneButtonView? = &amp;#123;[weak self] in    return self?.instanceOneButtonView()&amp;#125;()
+
+判断字符串相等时必须先校验是否为nil，否则崩溃
+  12if">
+<meta property="og:updated_time" content="2017-03-19T16:13:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS Swift开发中需要注意的问题">
+<meta name="twitter:description" content="普通block和lazy底层是闭包，必须注意self指针泄露，解决方案同block：
+  123private lazy var oneButtonView : OneButtonView? = &amp;#123;[weak self] in    return self?.instanceOneButtonView()&amp;#125;()
+
+判断字符串相等时必须先校验是否为nil，否则崩溃
+  12if">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2015/07/08/ios-swift-dev-remind/"/>
+
+
+
+
+
+  <title> iOS Swift开发中需要注意的问题 | gcoder.io </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">gcoder.io</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">http://www.gcoder.io</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/07/08/ios-swift-dev-remind/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="gcoder">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="gcoder.io">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                iOS Swift开发中需要注意的问题
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-07-08T00:00:00+08:00">
+                2015-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ul>
+<li><p>普通block和lazy底层是闭包，必须注意self指针泄露，解决方案同block：</p>
+  <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="built_in">lazy</span> <span class="keyword">var</span> oneButtonView : <span class="type">OneButtonView</span>? = &#123;[<span class="keyword">weak</span> <span class="keyword">self</span>] <span class="keyword">in</span></div><div class="line">    <span class="keyword">return</span> <span class="keyword">self</span>?.instanceOneButtonView()</div><div class="line">&#125;()</div></pre></td></tr></table></figure>
+</li>
+<li><p>判断字符串相等时必须先校验是否为nil，否则崩溃</p>
+  <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> name != <span class="literal">nil</span> &amp;&amp; name == <span class="string">"UserName"</span>&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>超级坑，View的名字不可于VC相似<br>  例如：BuyPresellView BuyPresellViewController，会造成BuyPresellViewController自动从BuyPresellView.xib加载；</p>
+</li>
+<li>UITextLabel text设置为nil或””时该控件的高度为0，如果想正常显示可设为” “</li>
+<li>可选值不可与非可选值进行比较，例如String?和String，必须转换为相同类型才可比较mobile != nil &amp;&amp; mobile! == text，注意判断非空；</li>
+<li>点击事件触发网络操作，需要用到index时，可使用id替换，防止非阻塞对话框导致用户继续操作，造成index改变；</li>
+<li>所有涉及到数组、集合index取值、删除等操作必须校验Index范围保证不会越界；</li>
+<li>switch中case必须加break，避免养成习惯在其它编程语言中造成问题；</li>
+<li>禁止在layoutSubviews编写任何AutoLayout代码，会造成在iOS7.X崩溃；</li>
+<li>字符串拼接的时候，如果是可选型必须强制转换，否则string会带Optional字符串；</li>
+<li>系统api重写时必须调用super；</li>
+<li>添加NSNotification监听的类必须是NSObject的子类，并且响应函数不能使用private修饰，否则崩溃；</li>
+<li><p>Objective-C属性或者方法如果不加Nullability属性的话，则默认为隐式可<br>  选类型。应该声明为可选类型防止空值时造成崩溃；<br>  如下图所示，AFN成功失败的block中参数应该声明为可选型</p>
+  <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="type">NetworkUtils</span>.getManager().<span class="type">POST</span>(<span class="string">""</span>, parameters: <span class="literal">nil</span></div><div class="line">           , success: &#123; (operation: <span class="type">AFHTTPRequestOperation</span>?, response:<span class="type">AnyObject</span>?) <span class="keyword">in</span></div><div class="line">               <span class="keyword">if</span> response != <span class="literal">nil</span>&#123;</div><div class="line">                   </div><div class="line">               &#125;</div><div class="line">       &#125;) &#123; (operation: <span class="type">AFHTTPRequestOperation</span>?, error:<span class="type">NSError</span>?) <span class="keyword">in</span></div><div class="line">           <span class="keyword">if</span> error != <span class="literal">nil</span>&#123;</div><div class="line">               </div><div class="line">           &#125;</div><div class="line">       &#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>为了和 Objective-C 协同工作，很多 Swift 标准库类型和对应的 Cocoa<br> 类型是可以隐式的类型转换的，比如 Swift.Array 与 NSArray，<br> Swift.String 和 NSString 等，类型转换有较大的性能开销，应该避免或减<br> 少类型转换，尽量使用Swift提供的数据类型；</p>
+</li>
+<li><p>使用通知，如果是一对一的情况，必须使用EventMsg中标识的唯一时间戳<br>  校验，防止出现多个页面时，多个页面都收到通知；</p>
+  <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 发送一对一广播</span></div><div class="line"><span class="keyword">let</span> scrollType = <span class="type">UICollectionViewDelegateForNavBar</span>.<span class="type">SCROLL_TYPE_DOWN</span></div><div class="line"><span class="keyword">let</span> eventMsg = <span class="type">EventMsg</span>(targetEventTime: targetEventTime, object: scrollType)</div><div class="line"><span class="type">NSNotificationCenter</span>.defaultCenter().postNotificationName(<span class="type">UICollectionViewDelegateForNavBar</span>.<span class="type">NOTI_NAME_NAVBAR_SCROLL</span>, object: eventMsg)</div><div class="line"><span class="comment">// 处理接收到的广播</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">onNavBarViewScrollNotification</span><span class="params">(noti:NSNotification)</span></span>&#123;</div><div class="line">    <span class="keyword">if</span> supportNavbarScroll&#123;</div><div class="line">        <span class="keyword">if</span> <span class="keyword">let</span> eventMsg = noti.object <span class="keyword">as</span>? <span class="type">EventMsg</span>&#123;</div><div class="line">            <span class="keyword">if</span> eventMsg.targetEventTime == <span class="literal">nil</span> || eventMsg.targetEventTime != eventTime&#123;</div><div class="line">                <span class="keyword">return</span></div><div class="line">            &#125;</div><div class="line">            <span class="keyword">if</span> <span class="keyword">let</span> scrollType = eventMsg.object <span class="keyword">as</span>? <span class="type">Int</span>&#123;</div><div class="line">                navBarViewScrollToTop(scrollType)</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>对于一次性的vc addsubview，用完之后调用以下函数，不要调用<br>  self.view.hide = true，应该将该完全销毁，可以使用vc扩张中添加的函数</p>
+  <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 添加ViewController</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">zzAddChildViewController</span><span class="params">(childVC: UIViewController, anim: Bool = <span class="literal">true</span>)</span></span>&#123;</div><div class="line">    <span class="keyword">self</span>.view.addSubview(childVC.view)</div><div class="line">    <span class="keyword">self</span>.addChildViewController(childVC)</div><div class="line">    childVC.didMoveToParentViewController(<span class="keyword">self</span>)</div><div class="line">    </div><div class="line">    <span class="comment">// anim</span></div><div class="line">    <span class="keyword">if</span> anim&#123;</div><div class="line">        childVC.view.alpha = <span class="number">0.0</span></div><div class="line">        <span class="type">UIView</span>.animateWithDuration(<span class="number">0.3</span>, animations: &#123;() -&gt; <span class="type">Void</span> <span class="keyword">in</span></div><div class="line">            childVC.view.alpha = <span class="number">1.0</span></div><div class="line">            &#125;) &#123; (finished) -&gt; <span class="type">Void</span> <span class="keyword">in</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">	</div><div class="line"><span class="comment">// 删除ViewController</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">zzRemoveFromParentViewController</span><span class="params">(anim: Bool = <span class="literal">true</span>)</span></span>&#123;</div><div class="line">    <span class="keyword">if</span> anim&#123;</div><div class="line">        <span class="type">UIView</span>.animateWithDuration(<span class="number">0.3</span>, animations: &#123;[<span class="keyword">weak</span> <span class="keyword">self</span>] () -&gt; <span class="type">Void</span> <span class="keyword">in</span></div><div class="line">            <span class="keyword">self</span>?.view.alpha = <span class="number">0.0</span></div><div class="line">            &#125;) &#123;[<span class="keyword">weak</span> <span class="keyword">self</span>] (finished) -&gt; <span class="type">Void</span> <span class="keyword">in</span></div><div class="line">                <span class="keyword">self</span>?.view.hidden = <span class="literal">true</span></div><div class="line">                <span class="keyword">self</span>?.willMoveToParentViewController(<span class="literal">nil</span>)</div><div class="line">                <span class="keyword">self</span>?.view.removeFromSuperview()</div><div class="line">                <span class="keyword">self</span>?.removeFromParentViewController()</div><div class="line">        &#125;</div><div class="line">    &#125;<span class="keyword">else</span>&#123;</div><div class="line">        <span class="keyword">self</span>.view.hidden = <span class="literal">true</span></div><div class="line">        <span class="keyword">self</span>.willMoveToParentViewController(<span class="literal">nil</span>)</div><div class="line">        <span class="keyword">self</span>.view.removeFromSuperview()</div><div class="line">        <span class="keyword">self</span>.removeFromParentViewController()</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>本文作者：gcoder.io<br>本文链接：<a href="http://gcoder-io.github.io/2015/07/08/ios-swift-dev-remind/" target="_blank" rel="external">http://gcoder-io.github.io/2015/07/08/ios-swift-dev-remind/</a><br>版权声明： 本博客所有文章均为原创，转载请注明作者及出处     </p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/Swift/" rel="tag"># Swift</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/06/24/ios-db-plan/" rel="next" title="iOS 数据库模块搭建方案">
+                <i class="fa fa-chevron-left"></i> iOS 数据库模块搭建方案
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/08/12/android-hotpatch-dexposed/" rel="prev" title="Android HotPatch在线热补丁方案">
+                Android HotPatch在线热补丁方案 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="gcoder" />
+          <p class="site-author-name" itemprop="name">gcoder</p>
+           
+              <p class="site-description motion-element" itemprop="description">路途中的思考...</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">gcoder</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
