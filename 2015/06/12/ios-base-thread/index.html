@@ -1,0 +1,739 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS,多线程," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="NSThread
+使用NSThread对象建立一个线程非常方便，但要使用NSThread管理多个线程较困难,不推荐使用;
+[NSThread currentThread]跟踪任务所在线程,适用于这三种技术。
+
+1234567891011121314- (void) testNSThread&amp;#123;    // 创建方法1    [NSThread detachNewThreadSelector">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 多线程">
+<meta property="og:url" content="http://yoursite.com/2015/06/12/ios-base-thread/index.html">
+<meta property="og:site_name" content="gcoder.io">
+<meta property="og:description" content="NSThread
+使用NSThread对象建立一个线程非常方便，但要使用NSThread管理多个线程较困难,不推荐使用;
+[NSThread currentThread]跟踪任务所在线程,适用于这三种技术。
+
+1234567891011121314- (void) testNSThread&amp;#123;    // 创建方法1    [NSThread detachNewThreadSelector">
+<meta property="og:updated_time" content="2017-03-19T16:35:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS 多线程">
+<meta name="twitter:description" content="NSThread
+使用NSThread对象建立一个线程非常方便，但要使用NSThread管理多个线程较困难,不推荐使用;
+[NSThread currentThread]跟踪任务所在线程,适用于这三种技术。
+
+1234567891011121314- (void) testNSThread&amp;#123;    // 创建方法1    [NSThread detachNewThreadSelector">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2015/06/12/ios-base-thread/"/>
+
+
+
+
+
+  <title> iOS 多线程 | gcoder.io </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">gcoder.io</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">http://www.gcoder.io</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/06/12/ios-base-thread/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="gcoder">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="gcoder.io">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                iOS 多线程
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-06-12T00:00:00+08:00">
+                2015-06-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="NSThread"><a href="#NSThread" class="headerlink" title="NSThread"></a>NSThread</h2><ul>
+<li>使用NSThread对象建立一个线程非常方便，但要使用NSThread管理多个线程较困难,不推荐使用;</li>
+<li>[NSThread currentThread]跟踪任务所在线程,适用于这三种技术。</li>
+</ul>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>) testNSThread&#123;</div><div class="line">    <span class="comment">// 创建方法1</span></div><div class="line">    [<span class="built_in">NSThread</span> detachNewThreadSelector:<span class="keyword">@selector</span>(actionForNSThread:) toTarget:<span class="keyword">self</span> withObject:<span class="string">@"1"</span>];</div><div class="line"></div><div class="line">    <span class="comment">// 创建方法2</span></div><div class="line">    <span class="built_in">NSThread</span> *thread = [[<span class="built_in">NSThread</span> alloc]initWithTarget:<span class="keyword">self</span> selector:<span class="keyword">@selector</span>(actionForNSThread:) object:<span class="string">@"1"</span>];</div><div class="line">    [thread start];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>) actionForNSThread:(<span class="built_in">NSString</span> *)extraData&#123;</div><div class="line">    <span class="keyword">@autoreleasepool</span>&#123;</div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"actionForNSThread===%@"</span>, extraData);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="NSObject"><a href="#NSObject" class="headerlink" title="NSObject"></a>NSObject</h2><h5 id="NSObject的多线程方法："><a href="#NSObject的多线程方法：" class="headerlink" title="NSObject的多线程方法："></a>NSObject的多线程方法：</h5><ul>
+<li>开启后台执行任务的方法:</li>
+</ul>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)performSelectorInBackground:(SEL)@Selector withObject:(<span class="keyword">id</span>)arg</div></pre></td></tr></table></figure>
+<ul>
+<li>在后台线程中通知主线程执行任务的方法:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- (void)performSelectorOnMainThread:(SEL)@Selector withObject:(id)arg waitUntilDone:(BOOL)wait</div></pre></td></tr></table></figure>
+<h5 id="NSObject的多线程方法注意事项"><a href="#NSObject的多线程方法注意事项" class="headerlink" title="NSObject的多线程方法注意事项:"></a>NSObject的多线程方法注意事项:</h5><ul>
+<li>NSObject的多线程方法使用的是NSThread的多线程技术.</li>
+<li>NSThread的多线程技术不会自动使用@autoreleasepool.<br> 在使用NSObject或NSThread的多线程技术时,如果涉及到对象分配,需要手动添加@autoreleasepool.</li>
+</ul>
+<h2 id="NSOperationQueue"><a href="#NSOperationQueue" class="headerlink" title="NSOperationQueue"></a>NSOperationQueue</h2><ul>
+<li>支持线程池，可配置并发线程最大数量；</li>
+<li>可设置线程间依赖关系，即在特定线程执行完毕后执行该线程；</li>
+</ul>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>) testNSOperationQueue&#123;</div><div class="line">    <span class="comment">// queue</span></div><div class="line">    <span class="built_in">NSOperationQueue</span> *myQueue = [[<span class="built_in">NSOperationQueue</span> alloc] init];</div><div class="line">    [myQueue setMaxConcurrentOperationCount:<span class="number">1</span>];<span class="comment">//设置并发线程数量.</span></div><div class="line">    </div><div class="line">    <span class="comment">// function operation</span></div><div class="line">    <span class="built_in">NSInvocationOperation</span> *op = [[<span class="built_in">NSInvocationOperation</span> alloc]</div><div class="line">                                 initWithTarget:<span class="keyword">self</span> selector:<span class="keyword">@selector</span>(operationAction:) object:@(<span class="number">1</span>)];</div><div class="line">    <span class="comment">// block operation</span></div><div class="line">    <span class="built_in">NSBlockOperation</span> *opBlock = [<span class="built_in">NSBlockOperation</span> blockOperationWithBlock:^&#123;</div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"NSBlockOperation----%@----obj"</span>,[<span class="built_in">NSThread</span> currentThread]);</div><div class="line">    &#125;];</div><div class="line">    </div><div class="line">    [op addDependency:opBlock];<span class="comment">//设置依赖关系（先后执行顺序）.</span></div><div class="line">    </div><div class="line">    [myQueue addOperation:op];</div><div class="line">    [myQueue addOperation:opBlock];</div><div class="line">&#125;</div><div class="line"></div><div class="line">-(<span class="keyword">void</span>)operationAction:(<span class="keyword">id</span>)obj&#123;</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"NSInvocationOperation----%@----obj : %@ "</span>,[<span class="built_in">NSThread</span> currentThread], obj);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h2 id="线程同步"><a href="#线程同步" class="headerlink" title="线程同步"></a>线程同步</h2><h4 id="NSLock"><a href="#NSLock" class="headerlink" title="NSLock"></a>NSLock</h4><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">NSLock</span> *lock = [[<span class="built_in">NSLock</span> alloc]init];</div><div class="line">[lock lock];<span class="comment">// 加锁</span></div><div class="line">[lock unlock];<span class="comment">// 解锁</span></div></pre></td></tr></table></figure>
+<h4 id="synchronized"><a href="#synchronized" class="headerlink" title="@synchronized"></a>@synchronized</h4><p>同步代码块，将原子操作的代码放在synchronized中间。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">@synchronized</span>(<span class="keyword">self</span>)&#123;     </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="NSCondition"><a href="#NSCondition" class="headerlink" title="NSCondition"></a>NSCondition</h4><p>条件锁，除支持lock和unlock外，还支持暂停或恢复线程。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">NSCondition</span> *con = [[<span class="built_in">NSCondition</span> alloc]init];</div><div class="line">[con lock];<span class="comment">// 加锁</span></div><div class="line">[con unlock];<span class="comment">// 解锁</span></div><div class="line">[con wait]; <span class="comment">// 暂停当前线程</span></div><div class="line">[con signal]; <span class="comment">// 恢复当前线程</span></div></pre></td></tr></table></figure>
+<h4 id="NSRecursiveLock："><a href="#NSRecursiveLock：" class="headerlink" title="NSRecursiveLock："></a>NSRecursiveLock：</h4><p>递归锁，针对递归</p>
+<h4 id="NSDistributedLock："><a href="#NSDistributedLock：" class="headerlink" title="NSDistributedLock："></a>NSDistributedLock：</h4><p>分布锁，它本身是一个互斥锁，基于文件方式实现锁机制，可以跨进程访问。</p>
+<h4 id="pthread-mutex-t："><a href="#pthread-mutex-t：" class="headerlink" title="pthread_mutex_t："></a>pthread_mutex_t：</h4><p>同步锁，基于C语言的同步锁机制，使用方法与其他同步锁机制类似。</p>
+<blockquote>
+<p>本文作者：gcoder.io<br>本文链接：<a href="http://gcoder-io.github.io/2015/06/12/ios-base-thread/" target="_blank" rel="external">http://gcoder-io.github.io/2015/06/12/ios-base-thread/</a><br>版权声明： 本博客所有文章均为原创，转载请注明作者及出处</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/多线程/" rel="tag"># 多线程</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/06/09/ios-base-io/" rel="next" title="iOS 数据存储方式">
+                <i class="fa fa-chevron-left"></i> iOS 数据存储方式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/07/19/ios-db-plan/" rel="prev" title="iOS 数据库模块搭建方案">
+                iOS 数据库模块搭建方案 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="gcoder" />
+          <p class="site-author-name" itemprop="name">gcoder</p>
+           
+              <p class="site-description motion-element" itemprop="description">路途中的思考...</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#NSThread"><span class="nav-number">1.</span> <span class="nav-text">NSThread</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NSObject"><span class="nav-number">2.</span> <span class="nav-text">NSObject</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#NSObject的多线程方法："><span class="nav-number">2.0.0.1.</span> <span class="nav-text">NSObject的多线程方法：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#NSObject的多线程方法注意事项"><span class="nav-number">2.0.0.2.</span> <span class="nav-text">NSObject的多线程方法注意事项:</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NSOperationQueue"><span class="nav-number">3.</span> <span class="nav-text">NSOperationQueue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程同步"><span class="nav-number">4.</span> <span class="nav-text">线程同步</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NSLock"><span class="nav-number">4.0.1.</span> <span class="nav-text">NSLock</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#synchronized"><span class="nav-number">4.0.2.</span> <span class="nav-text">@synchronized</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NSCondition"><span class="nav-number">4.0.3.</span> <span class="nav-text">NSCondition</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NSRecursiveLock："><span class="nav-number">4.0.4.</span> <span class="nav-text">NSRecursiveLock：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NSDistributedLock："><span class="nav-number">4.0.5.</span> <span class="nav-text">NSDistributedLock：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pthread-mutex-t："><span class="nav-number">4.0.6.</span> <span class="nav-text">pthread_mutex_t：</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">gcoder</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="iOS,SQLite," />
+  <meta name="keywords" content="SQLite,iOS," />
 
 
 
@@ -92,12 +92,12 @@
 SQLite多线程访问问题分析：12345678910111213141516171819202122232425262728293031323">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS 数据库模块搭建方案">
-<meta property="og:url" content="http://yoursite.com/2015/06/24/ios-db-plan/index.html">
+<meta property="og:url" content="http://yoursite.com/2015/07/19/ios-db-plan/index.html">
 <meta property="og:site_name" content="gcoder.io">
 <meta property="og:description" content="数据库作为App缓存设计的首选，存在一些开发的陷阱，同时需要考虑性能、开发效率和可维护性，笔者建议自行搭建数据库管理类，同时配合成熟的开源ORM框架快速搭建数据库模块。本示例采用fmdb框架 https://github.com/ccgus/fmdb
 
 SQLite多线程访问问题分析：12345678910111213141516171819202122232425262728293031323">
-<meta property="og:updated_time" content="2017-03-19T16:09:22.000Z">
+<meta property="og:updated_time" content="2017-03-19T16:44:27.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS 数据库模块搭建方案">
 <meta name="twitter:description" content="数据库作为App缓存设计的首选，存在一些开发的陷阱，同时需要考虑性能、开发效率和可维护性，笔者建议自行搭建数据库管理类，同时配合成熟的开源ORM框架快速搭建数据库模块。本示例采用fmdb框架 https://github.com/ccgus/fmdb
@@ -130,7 +130,7 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2015/06/24/ios-db-plan/"/>
+  <link rel="canonical" href="http://yoursite.com/2015/07/19/ios-db-plan/"/>
 
 
 
@@ -255,7 +255,7 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/06/24/ios-db-plan/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/07/19/ios-db-plan/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="gcoder">
@@ -291,8 +291,8 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-06-24T00:00:00+08:00">
-                2015-06-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-07-19T00:00:00+08:00">
+                2015-07-19
               </time>
             
 
@@ -383,7 +383,7 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
 </ul>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// create db and open db</span></div><div class="line">_queue = [FMDatabaseQueue databaseQueueWithPath:dbPath];</div><div class="line"></div><div class="line">[_queue inDatabase:^(FMDatabase *db) &#123;</div><div class="line">    <span class="comment">// 判断数据库字段是否存在,需要#import"FMDatabaseAdditions.h"</span></div><div class="line">    <span class="built_in">BOOL</span> exist = [db columnExists:<span class="string">@"name"</span> inTableWithName:<span class="string">@"user"</span>];</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"exist===%@"</span>, exist?<span class="string">@"YES"</span>:<span class="string">@"NO"</span>);</div><div class="line">    </div><div class="line">&#125;];</div></pre></td></tr></table></figure>
 <blockquote>
-<p>本文作者：gcoder.io<br>本文链接：<a href="http://gcoder-io.github.io/2015/06/24/ios-db-plan/" target="_blank" rel="external">http://gcoder-io.github.io/2015/06/24/ios-db-plan/</a><br>版权声明： 本博客所有文章均为原创，转载请注明作者及出处</p>
+<p>本文作者：gcoder.io<br>本文链接：<a href="http://gcoder-io.github.io/2015/07/19/ios-db-plan/" target="_blank" rel="external">http://gcoder-io.github.io/2015/07/19/ios-db-plan/</a><br>版权声明： 本博客所有文章均为原创，转载请注明作者及出处</p>
 </blockquote>
 
       
@@ -408,9 +408,9 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
       
         <div class="post-tags">
           
-            <a href="/tags/iOS/" rel="tag"># iOS</a>
-          
             <a href="/tags/SQLite/" rel="tag"># SQLite</a>
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
           
         </div>
       
@@ -423,8 +423,8 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/05/02/android-db-plan/" rel="next" title="Android 数据库模块搭建方案">
-                <i class="fa fa-chevron-left"></i> Android 数据库模块搭建方案
+              <a href="/2015/06/12/ios-base-thread/" rel="next" title="iOS 多线程">
+                <i class="fa fa-chevron-left"></i> iOS 多线程
               </a>
             
           </div>
@@ -433,7 +433,7 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/07/08/ios-swift-dev-remind/" rel="prev" title="iOS Swift开发中需要注意的问题">
+              <a href="/2015/07/25/ios-swift-dev-remind/" rel="prev" title="iOS Swift开发中需要注意的问题">
                 iOS Swift开发中需要注意的问题 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -507,7 +507,7 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -529,7 +529,7 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
