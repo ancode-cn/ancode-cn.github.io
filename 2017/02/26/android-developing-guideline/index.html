@@ -1,0 +1,801 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,ZAOZUO,Android代码规范,代码规范," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="规范是提高团队开发协作效率的前提，请大家务必重视；  规范主要解决两个问题：1.提高协作效率；2.绕过已知的问题；
+
+命名规范：Bundle命名规范：
+工程名：
+业务Bundle：biz_xxx
+Library Bundle：lib_xxx
+jar或aar Bundle：zzbin_xxx
+
+
+包名：
+业务Bundle：com.zaozuo.biz.xxx
+Library Bundle：com.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ZAOZUO Android代码规范">
+<meta property="og:url" content="http://yoursite.com/2017/02/26/android-developing-guideline/index.html">
+<meta property="og:site_name" content="gcoder.io">
+<meta property="og:description" content="规范是提高团队开发协作效率的前提，请大家务必重视；  规范主要解决两个问题：1.提高协作效率；2.绕过已知的问题；
+
+命名规范：Bundle命名规范：
+工程名：
+业务Bundle：biz_xxx
+Library Bundle：lib_xxx
+jar或aar Bundle：zzbin_xxx
+
+
+包名：
+业务Bundle：com.zaozuo.biz.xxx
+Library Bundle：com.">
+<meta property="og:updated_time" content="2017-03-25T14:02:53.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ZAOZUO Android代码规范">
+<meta name="twitter:description" content="规范是提高团队开发协作效率的前提，请大家务必重视；  规范主要解决两个问题：1.提高协作效率；2.绕过已知的问题；
+
+命名规范：Bundle命名规范：
+工程名：
+业务Bundle：biz_xxx
+Library Bundle：lib_xxx
+jar或aar Bundle：zzbin_xxx
+
+
+包名：
+业务Bundle：com.zaozuo.biz.xxx
+Library Bundle：com.">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/02/26/android-developing-guideline/"/>
+
+
+
+
+
+  <title> ZAOZUO Android代码规范 | gcoder.io </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">gcoder.io</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">http://www.gcoder.io</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/02/26/android-developing-guideline/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="gcoder">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="gcoder.io">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                ZAOZUO Android代码规范
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-26T00:00:00+08:00">
+                2017-02-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>规范是提高团队开发协作效率的前提，请大家务必重视；<br>  规范主要解决两个问题：1.提高协作效率；2.绕过已知的问题；</p>
+</blockquote>
+<h2 id="命名规范："><a href="#命名规范：" class="headerlink" title="命名规范："></a>命名规范：</h2><h3 id="Bundle命名规范："><a href="#Bundle命名规范：" class="headerlink" title="Bundle命名规范："></a>Bundle命名规范：</h3><ul>
+<li>工程名：<ul>
+<li>业务Bundle：biz_xxx</li>
+<li>Library Bundle：lib_xxx</li>
+<li>jar或aar Bundle：zzbin_xxx</li>
+</ul>
+</li>
+<li>包名：<ul>
+<li>业务Bundle：com.zaozuo.biz.xxx</li>
+<li>Library Bundle：com.zaozuo.lib.xxx</li>
+</ul>
+</li>
+</ul>
+<h3 id="包名命名规范："><a href="#包名命名规范：" class="headerlink" title="包名命名规范："></a>包名命名规范：</h3><ul>
+<li><p><strong>com.zaozuo.[biz/lib].[模块名].[业务名]</strong></p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">com.zaozuo.biz.show.home</div><div class="line">	entity ：实体类</div><div class="line">	presenter</div><div class="line">	view：Activity/Fragment</div><div class="line">	widget：自定义控件</div><div class="line">	viewholder：item/itemGroup</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="资源文件命名："><a href="#资源文件命名：" class="headerlink" title="资源文件命名："></a>资源文件命名：</h3><ul>
+<li><p>所有在R文件中生成资源文件必须添加模块前缀和业务前缀，规则：<strong>[业务模块名] _ [业务名] _ [具体名字]</strong>；</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">layout命名：</div><div class="line">	activity/fragment对应的xml：biz_order_orderlist.xml</div><div class="line">	item对应的xml：biz_order_orderlist_item_topview.xml</div><div class="line">drawable命名：</div><div class="line">	biz_order_orderlist_btn_camera.xml</div></pre></td></tr></table></figure>
+</li>
+<li><p>xml中id对应的控件名字采用缩写：<strong>[业务模块名字] _ [业务名] _ [按钮名字] _ [控件简称]</strong>；</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">biz_order_orderlist_avatar_iv</div><div class="line">biz_order_orderlist_confirm_btn</div></pre></td></tr></table></figure>
+</li>
+<li><p>style也需要添加前缀：例如Biz_Show_SplashTheme    </p>
+</li>
+</ul>
+<h3 id="UI总线命名："><a href="#UI总线命名：" class="headerlink" title="UI总线命名："></a>UI总线命名：</h3><ul>
+<li><p>UI总线url命名规则：<strong>[业务模块名] _ [业务名] _ [细分的业务名]</strong>；</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String Biz_Order_OrderListActivity = <span class="string">"activity://biz_order/orderlist"</span>;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="消息总线命名："><a href="#消息总线命名：" class="headerlink" title="消息总线命名："></a>消息总线命名：</h3><ul>
+<li>消息总线，监听收到消息函数命名规则：<strong>onXXXEvent</strong>，例如：onLoginCompletedEvent</li>
+</ul>
+<h2 id="分类规范"><a href="#分类规范" class="headerlink" title="分类规范"></a>分类规范</h2><ul>
+<li>同一个模块下资源文件一定要归类，例如string.xml按照业务放在一起；</li>
+</ul>
+<h2 id="书写规范："><a href="#书写规范：" class="headerlink" title="书写规范："></a>书写规范：</h2><ul>
+<li>每个函数，关键位置代码、成员变量添加Java标准注释；</li>
+<li>每个类中同一业务逻辑，可使用分割线区分不同的代码块；</li>
+<li>每次修改代码加修改说明、复杂逻辑添加实现思路；</li>
+<li>Bundle引入版本管理，每个Bundle中应该包含版本变化说明；</li>
+<li>使用Android Support Annotations优化代码；<ul>
+<li>@Nullable 修饰方法参数、返回值、成员变量，表示可能为空；</li>
+<li>@NonNull 修饰方法参数、返回值、成员变量，表示不会为空；</li>
+<li>@StringRes @ColorInt @IntDef @DrawableRes @LayoutRes 修饰资源id；</li>
+<li>@IntRange @FloatRange 限定参数范围；</li>
+<li>@CheckResult，必须处理返回值；</li>
+<li>@UiThread、@MainThread、@WorkerThread、@BinderThread，标识函数运行的线程；</li>
+<li>@CallSuper，必须调用super；</li>
+</ul>
+</li>
+<li>正确使用Java private protocted default public限定符；</li>
+<li>所有内部类或接口必须使用static，防止内存泄露；</li>
+<li>所有模块的BuildConfig都不要用，使用BuildInfo；</li>
+</ul>
+<h2 id="逻辑规范"><a href="#逻辑规范" class="headerlink" title="逻辑规范"></a>逻辑规范</h2><h3 id="数据解析："><a href="#数据解析：" class="headerlink" title="数据解析："></a>数据解析：</h3><ul>
+<li>JSON解析的代码必须try catch；</li>
+<li>没有解析JSON的字段加上注解，@JSONField(deserialize = false)，并与参与JSON解析的字段分隔开；</li>
+<li>使用fastjson解析基本数据类型，使用getXxxxValue()，不要使用getXx()，它是返回对象类型，如果返回为空，自动拆箱会崩溃；</li>
+</ul>
+<h3 id="Entity："><a href="#Entity：" class="headerlink" title="Entity："></a>Entity：</h3><ul>
+<li>entity应该尽量精简，用不到的数据不要解析，结构层级不要纵向延伸；</li>
+<li>entity只处理简单的逻辑，注意过渡膨胀；</li>
+<li>业务entity为减少方法数量，所有成员变量使用public修饰;</li>
+</ul>
+<blockquote>
+<p>本文作者：gcoder.io<br>本文链接：<a href="http://gcoder-io.github.io/2017/02/26/android-developing-guideline/" target="_blank" rel="external">http://gcoder-io.github.io/2017/02/26/android-developing-guideline/</a><br>版权声明： 本博客所有文章均为原创，转载请注明作者及出处</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/ZAOZUO/" rel="tag"># ZAOZUO</a>
+          
+            <a href="/tags/Android代码规范/" rel="tag"># Android代码规范</a>
+          
+            <a href="/tags/代码规范/" rel="tag"># 代码规范</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/05/android-activity-lifecycle-launchmode/" rel="next" title="Android Activity生命周期和启动模式你不知道的那些事">
+                <i class="fa fa-chevron-left"></i> Android Activity生命周期和启动模式你不知道的那些事
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="gcoder" />
+          <p class="site-author-name" itemprop="name">gcoder</p>
+           
+              <p class="site-description motion-element" itemprop="description">路途中的思考...</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#命名规范："><span class="nav-number">1.</span> <span class="nav-text">命名规范：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Bundle命名规范："><span class="nav-number">1.1.</span> <span class="nav-text">Bundle命名规范：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#包名命名规范："><span class="nav-number">1.2.</span> <span class="nav-text">包名命名规范：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#资源文件命名："><span class="nav-number">1.3.</span> <span class="nav-text">资源文件命名：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UI总线命名："><span class="nav-number">1.4.</span> <span class="nav-text">UI总线命名：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消息总线命名："><span class="nav-number">1.5.</span> <span class="nav-text">消息总线命名：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分类规范"><span class="nav-number">2.</span> <span class="nav-text">分类规范</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#书写规范："><span class="nav-number">3.</span> <span class="nav-text">书写规范：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#逻辑规范"><span class="nav-number">4.</span> <span class="nav-text">逻辑规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据解析："><span class="nav-number">4.1.</span> <span class="nav-text">数据解析：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Entity："><span class="nav-number">4.2.</span> <span class="nav-text">Entity：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">gcoder</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
