@@ -1,0 +1,758 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Network,网络层Library," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="网络层Library是App最常用的库，需要考虑稳定性，后期的扩展性，更换核心网络库后对项目的影响，ZZNet采用okhttp作为核心网络库。
+
+需求描述：
+支持HTTP/HTTPS；
+请求支持取消；
+支持校验器，可用于统一的JSON校验；
+支持拦截器，可用于缓存的处理；
+支持重试次数和自定义重试规则；
+支持文件上传，上传进度，多文件上传，取消上传；
+支持文件下载，下载进度，断点续传，取消下载；">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 网络层Library设计">
+<meta property="og:url" content="http://yoursite.com/2017/03/26/android-network-framework/index.html">
+<meta property="og:site_name" content="gcoder.io">
+<meta property="og:description" content="网络层Library是App最常用的库，需要考虑稳定性，后期的扩展性，更换核心网络库后对项目的影响，ZZNet采用okhttp作为核心网络库。
+
+需求描述：
+支持HTTP/HTTPS；
+请求支持取消；
+支持校验器，可用于统一的JSON校验；
+支持拦截器，可用于缓存的处理；
+支持重试次数和自定义重试规则；
+支持文件上传，上传进度，多文件上传，取消上传；
+支持文件下载，下载进度，断点续传，取消下载；">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe0ks15ytgj20lg0rr40j.jpg">
+<meta property="og:updated_time" content="2017-03-26T14:33:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 网络层Library设计">
+<meta name="twitter:description" content="网络层Library是App最常用的库，需要考虑稳定性，后期的扩展性，更换核心网络库后对项目的影响，ZZNet采用okhttp作为核心网络库。
+
+需求描述：
+支持HTTP/HTTPS；
+请求支持取消；
+支持校验器，可用于统一的JSON校验；
+支持拦截器，可用于缓存的处理；
+支持重试次数和自定义重试规则；
+支持文件上传，上传进度，多文件上传，取消上传；
+支持文件下载，下载进度，断点续传，取消下载；">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe0ks15ytgj20lg0rr40j.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/03/26/android-network-framework/"/>
+
+
+
+
+
+  <title> Android 网络层Library设计 | gcoder.io </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">gcoder.io</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">http://www.gcoder.io</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/26/android-network-framework/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="gcoder">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="gcoder.io">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android 网络层Library设计
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-26T00:00:00+08:00">
+                2017-03-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>网络层Library是App最常用的库，需要考虑稳定性，后期的扩展性，更换核心网络库后对项目的影响，ZZNet采用okhttp作为核心网络库。</p>
+</blockquote>
+<h2 id="需求描述："><a href="#需求描述：" class="headerlink" title="需求描述："></a>需求描述：</h2><ul>
+<li>支持HTTP/HTTPS；</li>
+<li>请求支持取消；</li>
+<li>支持校验器，可用于统一的JSON校验；</li>
+<li>支持拦截器，可用于缓存的处理；</li>
+<li>支持重试次数和自定义重试规则；</li>
+<li>支持文件上传，上传进度，多文件上传，取消上传；</li>
+<li>支持文件下载，下载进度，断点续传，取消下载；</li>
+<li>自动处理错误描述和详细的错误类型；</li>
+</ul>
+<h2 id="架构设计："><a href="#架构设计：" class="headerlink" title="架构设计："></a>架构设计：</h2><p><img src="http://ww1.sinaimg.cn/large/4fed004bly1fe0ks15ytgj20lg0rr40j.jpg" alt=""></p>
+<h2 id="架构实现："><a href="#架构实现：" class="headerlink" title="架构实现："></a>架构实现：</h2><h3 id="ZZNetValidator，请求及响应校验器"><a href="#ZZNetValidator，请求及响应校验器" class="headerlink" title="ZZNetValidator，请求及响应校验器"></a>ZZNetValidator，请求及响应校验器</h3><blockquote>
+<p>可以针对单个请求配置校验器或所有请求配置统一的校验器，校验请求参数或响应数据的合法性等。例如：可以在请求前校验登录状态，在响应后校验服务端返回的token是否合法，是否需要重新登录等，可以在此处做统一的处理。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 请求及响应校验器</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ZZNetValidator</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 校验参数合法性，运行在主线程</div><div class="line">     * <span class="doctag">@param</span> zzNet</div><div class="line">     * <span class="doctag">@param</span> paramsSource</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="function">ZZNetResponse <span class="title">isCorrectWithParamsDataRunOnMainThread</span><span class="params">(@NonNull ZZNet zzNet</span></span></div><div class="line">            , @NonNull Map&lt;String, String&gt; paramsSource);</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 校验API响应合法性，运行在工作线程</div><div class="line">     * <span class="doctag">@param</span> zzNet</div><div class="line">     * <span class="doctag">@param</span> response</div><div class="line">     */</div><div class="line">    <span class="function">ZZNetResponse <span class="title">isCorrectWithCallBackDataRunOnWorkThread</span><span class="params">(@NonNull ZZNet zzNet</span></span></div><div class="line">            , @NonNull ZZNetResponse response);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="ZZNetInterceptor，请求及响应拦截器"><a href="#ZZNetInterceptor，请求及响应拦截器" class="headerlink" title="ZZNetInterceptor，请求及响应拦截器"></a>ZZNetInterceptor，请求及响应拦截器</h3><blockquote>
+<p>针对请求生命周期的各个阶段进行拦截，增强网络库的扩展性。例如：随着业务的发展，API如果需要引入缓存机制，可以在拦截器中处理，隔离或降低对业务层的侵入性。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 请求及响应拦截器</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ZZNetInterceptor</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 通过所有校验，发起网络请求前执行，运行在工作线程。</div><div class="line">     * <span class="doctag">@param</span> zzNet</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="meta">@WorkerThread</span></div><div class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">beforeSendNetRequestRunOnWorkThread</span><span class="params">(@NonNull ZZNet zzNet)</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 发送网络请求后执行，运行在工作线程。</div><div class="line">     * <span class="doctag">@param</span> zzNet</div><div class="line">     */</div><div class="line">    <span class="meta">@WorkerThread</span></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">afterSendNetRequestRunOnWorkThread</span><span class="params">(@NonNull ZZNet zzNet)</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 在callback的onDidCompleted方法前执行，运行在主线程</div><div class="line">     * <span class="doctag">@param</span> zzNet</div><div class="line">     * <span class="doctag">@param</span> response</div><div class="line">     */</div><div class="line">    <span class="meta">@MainThread</span></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">beforeDidCompletedRunOnMainThread</span><span class="params">(@NonNull ZZNet zzNet, @NonNull ZZNetResponse response)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="ZZNetProcessor，网络请求及响应核心处理器"><a href="#ZZNetProcessor，网络请求及响应核心处理器" class="headerlink" title="ZZNetProcessor，网络请求及响应核心处理器"></a>ZZNetProcessor，网络请求及响应核心处理器</h3><blockquote>
+<p>网络请求处理的抽象接口，把网络请求过程拆分为处理请求和处理响应，可以根据业务需要添加实现；目前有3个实现类，ZZNetStringProcessor（处理字符串类型的响应数据）、 ZZNetUploadProcessor（处理文件上传）、 ZZNetDownloadProcessor（处理文件下载）。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@WorkerThread</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ZZNetProcessor</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 处理请求参数</div><div class="line">     * <span class="doctag">@param</span> requestBuilder</div><div class="line">     */</div><div class="line">    <span class="meta">@WorkerThread</span></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">handleRequestParams</span><span class="params">(@NonNull Request.Builder requestBuilder)</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 处理请求响应</div><div class="line">     * <span class="doctag">@param</span> response</div><div class="line">     * <span class="doctag">@param</span> responseEntity</div><div class="line">     */</div><div class="line">    <span class="meta">@WorkerThread</span></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">handleResponse</span><span class="params">(@Nullable Response response, @NonNull ZZNetResponse responseEntity)</span></span>;</div></pre></td></tr></table></figure>
+<h4 id="ZZNetStringProcessor，字符串处理器"><a href="#ZZNetStringProcessor，字符串处理器" class="headerlink" title="ZZNetStringProcessor，字符串处理器"></a>ZZNetStringProcessor，字符串处理器</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 字符串处理器</div><div class="line"> */</div><div class="line"><span class="meta">@WorkerThread</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">ZZNetStringProcessor</span> <span class="keyword">extends</span> <span class="title">ZZNetDefaultProcessor</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ZZNetStringProcessor</span><span class="params">(ZZNet zzNet)</span></span>&#123;</div><div class="line">        <span class="keyword">super</span>(zzNet);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 处理String类型的响应</div><div class="line">     * <span class="doctag">@param</span> response</div><div class="line">     * <span class="doctag">@param</span> netResponse</div><div class="line">     */</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="meta">@WorkerThread</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleResponse</span><span class="params">(Response response, ZZNetResponse netResponse)</span> </span>&#123;</div><div class="line">        <span class="keyword">try</span>&#123;</div><div class="line">            <span class="keyword">if</span> (response != <span class="keyword">null</span>) &#123;</div><div class="line">                <span class="keyword">if</span> (response.isSuccessful()) &#123;</div><div class="line">                    netResponse.rawString = response.body().string();</div><div class="line">                    <span class="keyword">if</span> (checkJsonValid(netResponse))&#123;</div><div class="line">                        netResponse.errorType = ZZNetErrorType.Success;</div><div class="line"></div><div class="line">                        <span class="comment">// validator校验响应结果</span></div><div class="line">                        ZZNetValidator appValidator = zzNet.getBuilder().getAppValidator();</div><div class="line">                        <span class="keyword">if</span> (appValidator != <span class="keyword">null</span>)&#123;</div><div class="line">                            appValidator.isCorrectWithCallBackDataRunOnWorkThread(zzNet, netResponse);</div><div class="line">                        &#125;</div><div class="line">                        <span class="keyword">if</span> (zzNet.getValidator() != <span class="keyword">null</span>)&#123;</div><div class="line">                            zzNet.getValidator().isCorrectWithCallBackDataRunOnWorkThread(zzNet, netResponse);</div><div class="line">                        &#125;</div><div class="line">                    &#125;</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    netResponse.errorType = ZZNetErrorType.ServerError;</div><div class="line">                    netResponse.errorMsg = zzNet.getAppContext().getString(R.string.lib_network_net_msg4);</div><div class="line">                &#125;</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                netResponse.errorType = ZZNetErrorType.NoResponse;</div><div class="line">                netResponse.errorMsg = zzNet.getAppContext().getString(R.string.lib_network_net_msg6);</div><div class="line">            &#125;</div><div class="line">        &#125;<span class="keyword">catch</span> (Exception e)&#123;</div><div class="line">            e.printStackTrace();</div><div class="line">            netResponse.errorType = ZZNetErrorType.Timeout;</div><div class="line">            netResponse.errorMsg = zzNet.getAppContext().getString(R.string.lib_network_net_msg10);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 检查json合法性，并解析json中错误码及错误描述，决定json是否可解析</div><div class="line">     *</div><div class="line">     * <span class="doctag">@param</span> responseEntity 响应实体数据，需先设置responseEntity.rawJson</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">checkJsonValid</span><span class="params">(@NonNull ZZNetResponse responseEntity)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (TextUtils.isEmpty(responseEntity.rawString)) &#123;</div><div class="line">            responseEntity.errorType = ZZNetErrorType.JSONInValid;</div><div class="line">            responseEntity.errorMsg = zzNet.getAppContext().getString(R.string.lib_network_net_msg7);</div><div class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (responseEntity.rawString.startsWith(<span class="string">"\ufeff"</span>)) &#123;</div><div class="line">            responseEntity.rawString = responseEntity.rawString.substring(<span class="number">1</span>);</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// parse error code</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="ZZNetUploadProcessor，文件上传处理器"><a href="#ZZNetUploadProcessor，文件上传处理器" class="headerlink" title="ZZNetUploadProcessor，文件上传处理器"></a>ZZNetUploadProcessor，文件上传处理器</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 文件上传处理器</div><div class="line"> */</div><div class="line"><span class="meta">@WorkerThread</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ZZNetUploadProcessor</span> <span class="keyword">extends</span> <span class="title">ZZNetDefaultProcessor</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ZZNetUploadProcessor</span><span class="params">(@NonNull ZZNet zzNet)</span></span>&#123;</div><div class="line">        <span class="keyword">super</span>(zzNet);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleRequestParams</span><span class="params">(Request.Builder requestBuilder)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.handleRequestParams(requestBuilder);</div><div class="line">        handleUploadRequestParams(requestBuilder);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">handleUploadRequestParams</span><span class="params">(Request.Builder requestBuilder)</span></span>&#123;</div><div class="line">        <span class="keyword">if</span> (zzNet.getUploadFile() != <span class="keyword">null</span> &amp;&amp; zzNet.getUploadFile().exists())&#123;</div><div class="line">            <span class="keyword">if</span> (zzNet.getMediaType() == <span class="keyword">null</span>)&#123;</div><div class="line">                <span class="keyword">throw</span>  <span class="keyword">new</span> NullPointerException(<span class="string">"上传文件类型不能为空"</span>);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            RequestBody rawRequestBody = RequestBody.create(MediaType.parse(zzNet.getMediaType())</div><div class="line">                    , zzNet.getUploadFile());</div><div class="line">            <span class="keyword">if</span> (zzNet.getMultipartFileKeyName() != <span class="keyword">null</span>)&#123;</div><div class="line">                MultipartBody multipartBody = <span class="keyword">new</span> MultipartBody.Builder()</div><div class="line">                        .addFormDataPart(zzNet.getMultipartFileKeyName()</div><div class="line">                        ,zzNet.getUploadFile().getName(), rawRequestBody).build();</div><div class="line">                RequestBody requestBody = <span class="keyword">new</span> ZZProgressRequest(multipartBody, zzNet.getFileCallback());</div><div class="line">                requestBuilder.post(requestBody);</div><div class="line">            &#125;<span class="keyword">else</span>&#123;</div><div class="line">                RequestBody requestBody = <span class="keyword">new</span> ZZProgressRequest(rawRequestBody, zzNet.getFileCallback());</div><div class="line">                requestBuilder.post(requestBody);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="meta">@WorkerThread</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleResponse</span><span class="params">(@NonNull Response response, @NonNull ZZNetResponse netResponse)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (response == <span class="keyword">null</span>)&#123;</div><div class="line">            netResponse.errorType = ZZNetErrorType.NoResponse;</div><div class="line">            netResponse.errorMsg = zzNet.getAppContext().getString(R.string.lib_network_net_msg6);</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (!response.isSuccessful())&#123;</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 解析响应数据</span></div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            netResponse.rawString = response.body().string();</div><div class="line">            netResponse.errorType = ZZNetErrorType.Success;</div><div class="line">        &#125;<span class="keyword">catch</span> (Exception e)&#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// validator校验响应</span></div><div class="line">        ZZNetValidator appValidator = zzNet.getBuilder().getAppValidator();</div><div class="line">        <span class="keyword">if</span> (appValidator != <span class="keyword">null</span>)&#123;</div><div class="line">            appValidator.isCorrectWithCallBackDataRunOnWorkThread(zzNet, netResponse);</div><div class="line">            <span class="keyword">if</span> (netResponse.errorType != ZZNetErrorType.Success)&#123;</div><div class="line">                LogUtils.d(zzNet.getUrl(), <span class="string">"appValidator校验响应不通过，终止"</span>);</div><div class="line">                <span class="keyword">return</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (zzNet.getValidator() != <span class="keyword">null</span>)&#123;</div><div class="line">            zzNet.getValidator().isCorrectWithCallBackDataRunOnWorkThread(zzNet, netResponse);</div><div class="line">            <span class="keyword">if</span> (netResponse.errorType != ZZNetErrorType.Success)&#123;</div><div class="line">                LogUtils.d(zzNet.getUrl(), <span class="string">"apiValidator校验响应不通过，终止"</span>);</div><div class="line">                <span class="keyword">return</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="ZZNetDownloadProcessor，文件下载处理器"><a href="#ZZNetDownloadProcessor，文件下载处理器" class="headerlink" title="ZZNetDownloadProcessor，文件下载处理器"></a>ZZNetDownloadProcessor，文件下载处理器</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 文件下载处理器</div><div class="line"> */</div><div class="line"><span class="meta">@WorkerThread</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">ZZNetDownloadProcessor</span> <span class="keyword">extends</span> <span class="title">ZZNetDefaultProcessor</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_BUFFER_SIZE = <span class="number">32</span> * <span class="number">1024</span>; <span class="comment">// 32 KB</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ZZNetDownloadProcessor</span><span class="params">(ZZNet zzNet)</span></span>&#123;</div><div class="line">        <span class="keyword">super</span>(zzNet);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="meta">@WorkerThread</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleRequestParams</span><span class="params">(Request.Builder requestBuilder)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.handleRequestParams(requestBuilder);</div><div class="line">        handleDownloadRequestParams(requestBuilder);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 处理下载请求参数</div><div class="line">     * <span class="doctag">@param</span> requestBuilder</div><div class="line">     */</div><div class="line">    <span class="meta">@WorkerThread</span></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">handleDownloadRequestParams</span><span class="params">(Request.Builder requestBuilder)</span></span>&#123;</div><div class="line">        <span class="keyword">if</span> (canAddRangeHeader())&#123;</div><div class="line">            <span class="comment">// 断点续传下载</span></div><div class="line">            requestBuilder.header(<span class="string">"RANGE"</span>, <span class="string">"bytes="</span> + zzNet.getSaveFile().length() + <span class="string">"-"</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 能否拼接断点续传文件Range</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="meta">@WorkerThread</span></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">canAddRangeHeader</span><span class="params">()</span></span>&#123;</div><div class="line">        File saveOrUploadFile = zzNet.getSaveFile();</div><div class="line">        <span class="keyword">if</span> (zzNet.isSupportResumeDownload()</div><div class="line">                &amp;&amp; zzNet.getRequestModel() == ZZNetRequestModel.DownloadFile</div><div class="line">                &amp;&amp; saveOrUploadFile != <span class="keyword">null</span> &amp;&amp; saveOrUploadFile.exists()</div><div class="line">                &amp;&amp; saveOrUploadFile.length() &gt; <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 处理文件下载响应</div><div class="line">     * <span class="doctag">@param</span> response</div><div class="line">     * <span class="doctag">@throws</span> IOException</div><div class="line">     */</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="meta">@WorkerThread</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleResponse</span><span class="params">(@Nullable Response response, @NonNull ZZNetResponse netResponse)</span></span>&#123;</div><div class="line">        <span class="keyword">if</span> (response == <span class="keyword">null</span>)&#123;</div><div class="line">            netResponse.errorType = ZZNetErrorType.NoResponse;</div><div class="line">            netResponse.errorMsg = zzNet.getAppContext().getString(R.string.lib_network_net_msg6);</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (response.code() == <span class="number">416</span>)&#123;</div><div class="line">            LogUtils.w(zzNet.getUrl(), <span class="string">"文件已经下载完毕，不需要再次下载，终止本次请求"</span>);</div><div class="line">            netResponse.errorType = ZZNetErrorType.Success;</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (!response.isSuccessful())&#123;</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// validator校验响应</span></div><div class="line">        ZZNetValidator appValidator = zzNet.getBuilder().getAppValidator();</div><div class="line">        <span class="keyword">if</span> (appValidator != <span class="keyword">null</span>)&#123;</div><div class="line">            appValidator.isCorrectWithCallBackDataRunOnWorkThread(zzNet, netResponse);</div><div class="line">            <span class="keyword">if</span> (netResponse.errorType != ZZNetErrorType.Success)&#123;</div><div class="line">                LogUtils.d(zzNet.getUrl(), <span class="string">"appValidator校验响应不通过，终止"</span>);</div><div class="line">                <span class="keyword">return</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (zzNet.getValidator() != <span class="keyword">null</span>)&#123;</div><div class="line">            zzNet.getValidator().isCorrectWithCallBackDataRunOnWorkThread(zzNet, netResponse);</div><div class="line">            <span class="keyword">if</span> (netResponse.errorType != ZZNetErrorType.Success)&#123;</div><div class="line">                LogUtils.d(zzNet.getUrl(), <span class="string">"apiValidator校验响应不通过，终止"</span>);</div><div class="line">                <span class="keyword">return</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">boolean</span> isSupportRange =  isSupportRange(response);</div><div class="line">        File saveOrUploadFile = zzNet.getSaveFile();</div><div class="line">        <span class="keyword">final</span> <span class="keyword">boolean</span> append = saveOrUploadFile.length() &gt; <span class="number">0</span> &amp;&amp; isSupportRange;</div><div class="line">        <span class="keyword">if</span> (LogUtils.DEBUG)&#123;</div><div class="line">            LogUtils.d(zzNet.getUrl(), <span class="string">"文件总大小"</span>, String.valueOf(response.body().contentLength())</div><div class="line">                    , String.format(<span class="string">"当前是否断点续传%s"</span>, Boolean.valueOf(append)));</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        OutputStream os = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            os = <span class="keyword">new</span> FileOutputStream(saveOrUploadFile, append);</div><div class="line">        &#125;<span class="keyword">catch</span> (FileNotFoundException e)&#123;</div><div class="line">            e.printStackTrace();</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                os.close();</div><div class="line">            &#125;<span class="keyword">catch</span> (IOException ex)&#123;</div><div class="line">                ex.printStackTrace();</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        InputStream is = response.body().byteStream();</div><div class="line">        <span class="keyword">boolean</span> downloadSuccess = <span class="keyword">true</span>;</div><div class="line">        <span class="keyword">boolean</span> isCanceled = <span class="keyword">false</span>;</div><div class="line">        <span class="keyword">try</span>&#123;</div><div class="line">            isCanceled = !copyStream(response.body().contentLength(), is, os, isSupportRange);</div><div class="line">        &#125;<span class="keyword">catch</span> (Exception e)&#123;</div><div class="line">            e.printStackTrace();</div><div class="line">            downloadSuccess = <span class="keyword">false</span>;</div><div class="line">        &#125;<span class="keyword">finally</span> &#123;</div><div class="line">            <span class="keyword">try</span>&#123;</div><div class="line">                <span class="keyword">if</span> (os != <span class="keyword">null</span>)&#123;</div><div class="line">                    os.close();</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">if</span> (is != <span class="keyword">null</span>) &#123;</div><div class="line">                    is.close();</div><div class="line">                &#125;</div><div class="line">            &#125;<span class="keyword">catch</span> (IOException e)&#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (isCanceled)&#123;</div><div class="line">            <span class="comment">// 被用户取消</span></div><div class="line">            netResponse.errorType = ZZNetErrorType.Canceled;</div><div class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span> (downloadSuccess)&#123;</div><div class="line">            netResponse.errorType = ZZNetErrorType.Success;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 是否支持断点上传</div><div class="line">     * <span class="doctag">@param</span> response</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="meta">@WorkerThread</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isSupportRange</span><span class="params">(Response response)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (response == <span class="keyword">null</span> || !zzNet.isSupportResumeDownload()) <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">        <span class="keyword">if</span> (<span class="string">"bytes"</span>.equals(response.header(<span class="string">"Accept-Ranges"</span>))) <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        String contentRanges = response.header(<span class="string">"Content-Range"</span>);</div><div class="line">        <span class="keyword">if</span> (contentRanges != <span class="keyword">null</span> &amp;&amp; contentRanges.startsWith(<span class="string">"bytes"</span>)) <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 写数据到文件</div><div class="line">     * <span class="doctag">@param</span> total</div><div class="line">     * <span class="doctag">@param</span> is</div><div class="line">     * <span class="doctag">@param</span> os</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     * <span class="doctag">@throws</span> IOException</div><div class="line">     */</div><div class="line">    <span class="meta">@WorkerThread</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">copyStream</span><span class="params">(<span class="keyword">long</span> total, InputStream is, OutputStream os, <span class="keyword">boolean</span> isSupportRange)</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        <span class="keyword">long</span> current = <span class="number">0</span>;</div><div class="line">        <span class="keyword">if</span> (total &lt;= <span class="number">0</span>) &#123;</div><div class="line">            total = is.available();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">long</span> oldFileCount = <span class="number">0</span>;</div><div class="line">        File saveOrUploadFile = zzNet.getSaveFile();</div><div class="line">        <span class="keyword">if</span> (isSupportRange &amp;&amp; saveOrUploadFile != <span class="keyword">null</span> &amp;&amp; saveOrUploadFile.exists() &amp;&amp; saveOrUploadFile.length() &gt; <span class="number">0</span>) &#123;</div><div class="line">            oldFileCount = saveOrUploadFile.length();</div><div class="line">            total += oldFileCount;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">final</span> <span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[DEFAULT_BUFFER_SIZE];</div><div class="line">        <span class="keyword">int</span> count;</div><div class="line">        <span class="keyword">while</span> ((count = is.read(bytes, <span class="number">0</span>, DEFAULT_BUFFER_SIZE)) != -<span class="number">1</span>) &#123;</div><div class="line">            <span class="keyword">if</span> (zzNet.isCanceled())&#123;</div><div class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            os.write(bytes, <span class="number">0</span>, count);</div><div class="line">            current += count;</div><div class="line">            <span class="keyword">if</span> (zzNet.getFileCallback() != <span class="keyword">null</span>)&#123;</div><div class="line">                ZZNetFileCallback callback = zzNet.getFileCallback().get();</div><div class="line">                <span class="keyword">if</span> (callback != <span class="keyword">null</span>)&#123;</div><div class="line">                    callback.onProgess(current + oldFileCount, total);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="自定义重试规则"><a href="#自定义重试规则" class="headerlink" title="自定义重试规则"></a>自定义重试规则</h3><blockquote>
+<p>允许请求失败后的重试操作，可以自定义重试规则，重试次数等。例如：客户端支付成功后需要查询支付状态，服务端的支付状态依赖第三方支付平台的通知，为降低通知延迟对客户端的影响，可以自定义重试规则，当支付失败时多重试几次。</p>
+</blockquote>
+<h4 id="重试机制规则抽象接口"><a href="#重试机制规则抽象接口" class="headerlink" title="重试机制规则抽象接口"></a>重试机制规则抽象接口</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 重试机制规则</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ZZNetRetryRule</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 是否需要重试，可在此定义重试规则，注意此函数是运行在工作线程中</div><div class="line">     * <span class="doctag">@param</span> zzNetResponse</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="meta">@WorkerThread</span></div><div class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">needRetry</span><span class="params">(ZZNetResponse zzNetResponse)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="重试机制具体使用方法"><a href="#重试机制具体使用方法" class="headerlink" title="重试机制具体使用方法"></a>重试机制具体使用方法</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 自定义重试规则，App端支付成功后查询支付状态</div><div class="line"> * ，如果查询结果为支付失败，等待500ms后继续查询(最多3次)。</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">QueryPayStatusRetryRule</span> <span class="keyword">implements</span> <span class="title">ZZNetRetryRule</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">// 该函数运行在工作线程中</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">needRetry</span><span class="params">(ZZNetResponse response)</span> </span>&#123;</div><div class="line">        <span class="comment">// 可根据zzNetResponse定义重试规则</span></div><div class="line">        <span class="keyword">boolean</span> needRetry = <span class="keyword">true</span>;</div><div class="line">        <span class="keyword">if</span> (!TextUtils.isEmpty(response.rawString))&#123;</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                <span class="keyword">final</span> JSONObject jsonObject = JSON.parseObject(response.rawString);</div><div class="line">                <span class="keyword">if</span> (jsonObject != <span class="keyword">null</span>)&#123;</div><div class="line">                    <span class="keyword">final</span> <span class="keyword">boolean</span> paySuccess = jsonObject.getBooleanValue(<span class="string">"xxx"</span>);</div><div class="line">                    <span class="keyword">if</span> (!paySuccess)&#123;</div><div class="line">                        <span class="keyword">if</span> (LogUtils.DEBUG)&#123;</div><div class="line">                            LogUtils.w(<span class="string">"支付失败，延迟500ms重新查询"</span>);</div><div class="line">                        &#125;</div><div class="line">                        SystemClock.sleep(<span class="number">500</span>);</div><div class="line">                    &#125;<span class="keyword">else</span>&#123;</div><div class="line">                        <span class="comment">// 支付成功, 不需要重试</span></div><div class="line">                        needRetry = <span class="keyword">false</span>;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;<span class="keyword">catch</span> (Exception e)&#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> needRetry;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>本文作者：gcoder.io<br>本文链接：<a href="http://gcoder-io.github.io/2017/03/26/android-network-framework/" target="_blank" rel="external">http://gcoder-io.github.io/2017/03/26/android-network-framework/</a><br>版权声明： 本博客所有文章均为原创，转载请注明作者及出处</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/Network/" rel="tag"># Network</a>
+          
+            <a href="/tags/网络层Library/" rel="tag"># 网络层Library</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/26/android-developing-guideline/" rel="next" title="ZAOZUO Android代码规范">
+                <i class="fa fa-chevron-left"></i> ZAOZUO Android代码规范
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="gcoder" />
+          <p class="site-author-name" itemprop="name">gcoder</p>
+           
+              <p class="site-description motion-element" itemprop="description">路途中的思考...</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#需求描述："><span class="nav-number">1.</span> <span class="nav-text">需求描述：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#架构设计："><span class="nav-number">2.</span> <span class="nav-text">架构设计：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#架构实现："><span class="nav-number">3.</span> <span class="nav-text">架构实现：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ZZNetValidator，请求及响应校验器"><span class="nav-number">3.1.</span> <span class="nav-text">ZZNetValidator，请求及响应校验器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ZZNetInterceptor，请求及响应拦截器"><span class="nav-number">3.2.</span> <span class="nav-text">ZZNetInterceptor，请求及响应拦截器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ZZNetProcessor，网络请求及响应核心处理器"><span class="nav-number">3.3.</span> <span class="nav-text">ZZNetProcessor，网络请求及响应核心处理器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ZZNetStringProcessor，字符串处理器"><span class="nav-number">3.3.1.</span> <span class="nav-text">ZZNetStringProcessor，字符串处理器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ZZNetUploadProcessor，文件上传处理器"><span class="nav-number">3.3.2.</span> <span class="nav-text">ZZNetUploadProcessor，文件上传处理器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ZZNetDownloadProcessor，文件下载处理器"><span class="nav-number">3.3.3.</span> <span class="nav-text">ZZNetDownloadProcessor，文件下载处理器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义重试规则"><span class="nav-number">3.4.</span> <span class="nav-text">自定义重试规则</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#重试机制规则抽象接口"><span class="nav-number">3.4.1.</span> <span class="nav-text">重试机制规则抽象接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重试机制具体使用方法"><span class="nav-number">3.4.2.</span> <span class="nav-text">重试机制具体使用方法</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">gcoder</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
