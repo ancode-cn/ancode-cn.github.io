@@ -87,15 +87,15 @@
 
 
 
-<meta name="description" content="路途中的思考...">
+<meta name="description" content="记录此时此刻的自己">
 <meta property="og:type" content="website">
 <meta property="og:title" content="gcoder.io">
 <meta property="og:url" content="http://yoursite.com/index.html">
 <meta property="og:site_name" content="gcoder.io">
-<meta property="og:description" content="路途中的思考...">
+<meta property="og:description" content="记录此时此刻的自己">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="gcoder.io">
-<meta name="twitter:description" content="路途中的思考...">
+<meta name="twitter:description" content="记录此时此刻的自己">
 
 
 
@@ -138,6 +138,15 @@
 
 
 
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-96629651-1', 'auto');
+  ga('send', 'pageview');
+</script>
 
 
 
@@ -221,6 +230,16 @@
           </a>
         </li>
       
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
 
       
     </ul>
@@ -253,9 +272,9 @@
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/26/android-network-framework/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="gcoder">
+      <meta itemprop="name" content="gcoder.io">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe8hjcvyn4j20hs0hs3zz.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -360,6 +379,11 @@
 支持重试次数和自定义重试规则；
 支持文件上传，上传进度，多文件上传，取消上传；
 支持文件下载，下载进度，断点续传，取消下载；
+自动处理错误描述和详细的错误类型；
+
+架构设计：
+架构实现：ZZNetValidator，请求及响应校验器
+可以针对单个请求配置校验器或所有请求配置统一的校验器，校验请求参数或响应数据的合法性等。例
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -409,9 +433,9 @@
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/02/26/android-developing-guideline/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="gcoder">
+      <meta itemprop="name" content="gcoder.io">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe8hjcvyn4j20hs0hs3zz.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -517,7 +541,13 @@ jar或aar Bundle：zzbin_xxx
 
 包名：
 业务Bundle：com.zaozuo.biz.xxx
-Library Bundle：com.
+Library Bundle：com.zaozuo.lib.xxx
+
+
+
+包名命名规范：
+com.zaozuo.[biz/lib].[模块名].[业务名]
+  123456com.zaozuo.biz.show.home	entity ：
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -567,9 +597,9 @@ Library Bundle：com.
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/05/android-activity-lifecycle-launchmode/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="gcoder">
+      <meta itemprop="name" content="gcoder.io">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe8hjcvyn4j20hs0hs3zz.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -668,7 +698,8 @@ Library Bundle：com.
 
 Activity生命周期需要注意的地方
 当Activity长时间在后台运行时，可能会被杀死，再次启动时Activity会被重建，此情况和横竖屏切换场景类似，开发者应该在开发环境下打开横竖屏切换测试，防止异常发生；
-如果新的
+如果新的Activity是透明主题，则当前Activity不会执行onStop；
+onSaveInstanceState在onStop之前执行，onRestoreInstanceState在onStart之后
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -718,9 +749,9 @@ Activity生命周期需要注意的地方
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/08/12/android-hotpatch-dexposed/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="gcoder">
+      <meta itemprop="name" content="gcoder.io">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe8hjcvyn4j20hs0hs3zz.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -819,7 +850,9 @@ Activity生命周期需要注意的地方
 
 主APP实现：主程序Application onCreate方法中初始化dexposedDexposedBridge.canDexposed(context);
 Patch apk下载及修复：
-为保证修复patch的及时性，使用push推送patch，客户端收到消息后立即完成pat
+为保证修复patch的及时性，使用push推送patch，客户端收到消息后立即完成patch的下载及修复；
+客户端版本管理模块在程序入口Activity中检测是否有需要修复的patch；
+下载完patch apk到程序私有目录，即/data/data/packageName/files目
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -869,9 +902,9 @@ Patch apk下载及修复：
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/07/25/ios-swift-dev-remind/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="gcoder">
+      <meta itemprop="name" content="gcoder.io">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe8hjcvyn4j20hs0hs3zz.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -970,7 +1003,9 @@ Patch apk下载及修复：
   123private lazy var oneButtonView : OneButtonView? = &#123;[weak self] in    return self?.instanceOneButtonView()&#125;()
 
 判断字符串相等时必须先校验是否为nil，否则崩溃
-  12if
+  12if name != nil &amp;&amp; name == "UserName"&#123;&#125;
+
+超级坑，View的名字不可于VC相似  例如：BuyPresellView BuyPre
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1020,9 +1055,9 @@ Patch apk下载及修复：
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/07/19/ios-db-plan/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="gcoder">
+      <meta itemprop="name" content="gcoder.io">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe8hjcvyn4j20hs0hs3zz.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1119,7 +1154,7 @@ Patch apk下载及修复：
           
 数据库作为App缓存设计的首选，存在一些开发的陷阱，同时需要考虑性能、开发效率和可维护性，笔者建议自行搭建数据库管理类，同时配合成熟的开源ORM框架快速搭建数据库模块。本示例采用fmdb框架 https://github.com/ccgus/fmdb
 
-SQLite多线程访问问题分析：12345678910111213141516171819202122232425262728293031323
+SQLite多线程访问问题分析：1234567891011121314151617181920212223242526272829303132333435363738394041424344454647- (void) testfmdb&#123;    // db path    NSString * cachePath = NSSearc
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1169,9 +1204,9 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/06/12/ios-base-thread/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="gcoder">
+      <meta itemprop="name" content="gcoder.io">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe8hjcvyn4j20hs0hs3zz.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1269,7 +1304,7 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
 使用NSThread对象建立一个线程非常方便，但要使用NSThread管理多个线程较困难,不推荐使用;
 [NSThread currentThread]跟踪任务所在线程,适用于这三种技术。
 
-1234567891011121314- (void) testNSThread&#123;    // 创建方法1    [NSThread detachNewThreadSelector
+1234567891011121314- (void) testNSThread&#123;    // 创建方法1    [NSThread detachNewThreadSelector:@selector(actionForNSThread:) toTarget:self withObject:@"1"];    // 创建方法2    NSThread *thread = [[N
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1319,9 +1354,9 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/06/09/ios-base-io/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="gcoder">
+      <meta itemprop="name" content="gcoder.io">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe8hjcvyn4j20hs0hs3zz.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1419,7 +1454,10 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
 
 支持的数据类型有NSString、 NSNumber、NSDate、 NSArray、NSDictionary、BOOL、NSInteger、NSFloat等系统定义的数据类型，底层是基于key-value的NSDictionary。
 项目中预置的plist文件只能读取不支持修改、删除；
-运行期创建的plist文件支持读取、新写入、修改、
+运行期创建的plist文件支持读取、新写入、修改、删除等操作，写入时必须是完整的dic，不支持增量写入方式。
+
+
+读取项目中预置plist文件：12345- (void) testPlist&#123;    NSString *plistPath 
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1469,9 +1507,9 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/05/02/android-db-plan/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="gcoder">
+      <meta itemprop="name" content="gcoder.io">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe8hjcvyn4j20hs0hs3zz.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1569,7 +1607,8 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
 数据库作为App缓存设计的首选，存在一些开发的陷阱，同时需要考虑性能、开发效率和可维护性，笔者建议自行搭建数据库管理类，同时配合成熟的开源ORM框架快速搭建数据库模块。本方案采用ORM框架greenDAO，greenDAO是成熟的ORM框架，在性能和内存占用上很出色https://github.com/greenrobot/greenDAO
 
 Android数据库存在的问题：
-SQLite是数据
+SQLite是数据库级别锁，同一个数据库连接可以多线程操作，同时读、写、读写操作，SQLite底层做了同步处理；
+多个数据库连接，只可以多线程读操作，不可写或读写操作，否则会抛出锁表异常android.database
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1640,11 +1679,11 @@ SQLite是数据
       <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
-               src="/images/avatar.gif"
-               alt="gcoder" />
-          <p class="site-author-name" itemprop="name">gcoder</p>
+               src="http://ww1.sinaimg.cn/large/4fed004bly1fe8hjcvyn4j20hs0hs3zz.jpg"
+               alt="gcoder.io" />
+          <p class="site-author-name" itemprop="name">gcoder.io</p>
            
-              <p class="site-description motion-element" itemprop="description">路途中的思考...</p>
+              <p class="site-description motion-element" itemprop="description">记录此时此刻的自己</p>
           
         </div>
         <nav class="site-state motion-element">
@@ -1720,7 +1759,7 @@ SQLite是数据
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">gcoder</span>
+  <span class="author" itemprop="copyrightHolder">gcoder.io</span>
 </div>
 
 
@@ -1839,6 +1878,17 @@ SQLite是数据
 
 
 
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
   
 
 

@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content=",,," />
 
 
 
@@ -87,16 +87,29 @@
 
 
 
-<meta name="description" content="记录此时此刻的自己">
+<meta name="description" content="数据统计实现方法
+GA数据统计不同于友盟、TalkingData等统计服务商，本打算使用AOP方式解耦业务层，分析后发现，会造成不必要的复杂度，而且不利于后期的维护；考虑后期代码复用维护，采用分层方案，GAHelper负责于具体业务无关的逻辑。
+
+区分开发/测试环境编译期区分生产/测试环境运行期区分生产/测试环境名词解释接入流程### 
+1234567891011121314151603-27 1">
+<meta name="keywords">
 <meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="http://yoursite.com/about/index.html">
+<meta property="og:title" content="Android&iOS GoogleAnalytics数据统计方案">
+<meta property="og:url" content="http://yoursite.com/pre_posts/android-ga-guideline.html">
 <meta property="og:site_name" content="gcoder.io">
-<meta property="og:description" content="记录此时此刻的自己">
-<meta property="og:updated_time" content="2016-05-26T06:04:31.000Z">
+<meta property="og:description" content="数据统计实现方法
+GA数据统计不同于友盟、TalkingData等统计服务商，本打算使用AOP方式解耦业务层，分析后发现，会造成不必要的复杂度，而且不利于后期的维护；考虑后期代码复用维护，采用分层方案，GAHelper负责于具体业务无关的逻辑。
+
+区分开发/测试环境编译期区分生产/测试环境运行期区分生产/测试环境名词解释接入流程### 
+1234567891011121314151603-27 1">
+<meta property="og:updated_time" content="2017-04-01T08:43:08.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="about">
-<meta name="twitter:description" content="记录此时此刻的自己">
+<meta name="twitter:title" content="Android&iOS GoogleAnalytics数据统计方案">
+<meta name="twitter:description" content="数据统计实现方法
+GA数据统计不同于友盟、TalkingData等统计服务商，本打算使用AOP方式解耦业务层，分析后发现，会造成不必要的复杂度，而且不利于后期的维护；考虑后期代码复用维护，采用分层方案，GAHelper负责于具体业务无关的逻辑。
+
+区分开发/测试环境编译期区分生产/测试环境运行期区分生产/测试环境名词解释接入流程### 
+1234567891011121314151603-27 1">
 
 
 
@@ -124,7 +137,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/about/"/>
+  <link rel="canonical" href="http://yoursite.com/pre_posts/android-ga-guideline.html"/>
 
 
 
@@ -134,7 +147,7 @@
   
 
   
-    about | gcoder.io
+    Android&iOS GoogleAnalytics数据统计方案 | gcoder.io
   
 </title>
 </head>
@@ -267,7 +280,7 @@
   <div id="posts" class="posts-expand">
   <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">about</h1>
+	<h1 class="post-title" itemprop="name headline">Android&iOS GoogleAnalytics数据统计方案</h1>
 
 
 
@@ -275,7 +288,15 @@
 
     
     
-      
+      <h2 id="数据统计实现方法"><a href="#数据统计实现方法" class="headerlink" title="数据统计实现方法"></a>数据统计实现方法</h2><blockquote>
+<p>GA数据统计不同于友盟、TalkingData等统计服务商，本打算使用AOP方式解耦业务层，分析后发现，会造成不必要的复杂度，而且不利于后期的维护；考虑后期代码复用维护，采用分层方案，GAHelper负责于具体业务无关的逻辑。</p>
+</blockquote>
+<h2 id="区分开发-测试环境"><a href="#区分开发-测试环境" class="headerlink" title="区分开发/测试环境"></a>区分开发/测试环境</h2><h4 id="编译期区分生产-测试环境"><a href="#编译期区分生产-测试环境" class="headerlink" title="编译期区分生产/测试环境"></a>编译期区分生产/测试环境</h4><h4 id="运行期区分生产-测试环境"><a href="#运行期区分生产-测试环境" class="headerlink" title="运行期区分生产/测试环境"></a>运行期区分生产/测试环境</h4><h2 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h2><h2 id="接入流程"><a href="#接入流程" class="headerlink" title="接入流程"></a>接入流程</h2><p>### </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="number">03</span>-<span class="number">27</span> <span class="number">15</span>:<span class="number">08</span>:<span class="number">27.217</span> <span class="number">25743</span>-<span class="number">25743</span>/? E/AndroidRuntime: FATAL EXCEPTION: main</div><div class="line">                                                   Process: com.zaozuo.android, PID: <span class="number">25743</span></div><div class="line">                                                   java.lang.NoSuchMethodError: <span class="function">No <span class="keyword">static</span> method <span class="title">zzb</span><span class="params">(Ljava/lang/Object;Ljava/lang/Object;)</span>Ljava/lang/Object</span>; in <span class="class"><span class="keyword">class</span> <span class="title">Lcom</span>/<span class="title">google</span>/<span class="title">android</span>/<span class="title">gms</span>/<span class="title">common</span>/<span class="title">internal</span>/<span class="title">zzaa</span></span>; <span class="function">or its <span class="keyword">super</span> <span class="title">classes</span> <span class="params">(declaration of <span class="string">'com.google.android.gms.common.internal.zzaa'</span> appears in /data/data/com.zaozuo.android/files/instant-run/dex/slice-com.google.android.gms-play-services-basement<span class="number">-9.2</span><span class="number">.0</span>_838f224be8ca39a2f48a2f75d5178b0e700ad7c6-classes.dex)</span></span></div><div class="line">                                                       at com.google.firebase.provider.FirebaseInitProvider.<span class="title">zza</span><span class="params">(Unknown Source)</span></div><div class="line">                                                       at com.google.firebase.provider.FirebaseInitProvider.<span class="title">attachInfo</span><span class="params">(Unknown Source)</span></div><div class="line">                                                       at android.app.ActivityThread.<span class="title">installProvider</span><span class="params">(ActivityThread.java:<span class="number">5595</span>)</span></div><div class="line">                                                       at android.app.ActivityThread.<span class="title">installContentProviders</span><span class="params">(ActivityThread.java:<span class="number">5168</span>)</span></div><div class="line">                                                       at android.app.ActivityThread.<span class="title">handleBindApplication</span><span class="params">(ActivityThread.java:<span class="number">5108</span>)</span></div><div class="line">                                                       at android.app.ActivityThread.-<span class="title">wrap2</span><span class="params">(ActivityThread.java)</span></div><div class="line">                                                       at android.app.ActivityThread$H.<span class="title">handleMessage</span><span class="params">(ActivityThread.java:<span class="number">1633</span>)</span></div><div class="line">                                                       at android.os.Handler.<span class="title">dispatchMessage</span><span class="params">(Handler.java:<span class="number">111</span>)</span></div><div class="line">                                                       at android.os.Looper.<span class="title">loop</span><span class="params">(Looper.java:<span class="number">207</span>)</span></div><div class="line">                                                       at android.app.ActivityThread.<span class="title">main</span><span class="params">(ActivityThread.java:<span class="number">5896</span>)</span></div><div class="line">                                                       at java.lang.reflect.Method.<span class="title">invoke</span><span class="params">(Native Method)</span></div><div class="line">                                                       at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.<span class="title">run</span><span class="params">(ZygoteInit.java:<span class="number">789</span>)</span></div><div class="line">                                                       at com.android.internal.os.ZygoteInit.<span class="title">main</span><span class="params">(ZygoteInit.java:<span class="number">679</span>)</span></div></pre></td></tr></table></figure>
+<h3 id="页面统计"><a href="#页面统计" class="headerlink" title="页面统计"></a>页面统计</h3><h3 id="购物流程统计"><a href="#购物流程统计" class="headerlink" title="购物流程统计"></a>购物流程统计</h3><h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><blockquote>
+<p>本文作者：gcoder.io<br>本文链接：<a href="http://gcoder-io.github.io/2017/03/27/android-ga-guideline/" target="_blank" rel="external">http://gcoder-io.github.io/2017/03/27/android-ga-guideline/</a><br>版权声明： 本博客所有文章均为原创，转载请注明作者及出处</p>
+</blockquote>
+
     
   </div>
 
