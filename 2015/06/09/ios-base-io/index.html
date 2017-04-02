@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
+<html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -94,14 +94,14 @@
 运行期创建的plist文件支持读取、新写入、修改、">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS 数据存储方式">
-<meta property="og:url" content="http://yoursite.com/2015/06/09/ios-base-io/index.html">
+<meta property="og:url" content="http://gcoder-io.github.io/2015/06/09/ios-base-io/index.html">
 <meta property="og:site_name" content="gcoder.io">
 <meta property="og:description" content="Plist(NSArray/NSDictionary)：
 
 支持的数据类型有NSString、 NSNumber、NSDate、 NSArray、NSDictionary、BOOL、NSInteger、NSFloat等系统定义的数据类型，底层是基于key-value的NSDictionary。
 项目中预置的plist文件只能读取不支持修改、删除；
 运行期创建的plist文件支持读取、新写入、修改、">
-<meta property="og:updated_time" content="2017-03-19T16:40:58.000Z">
+<meta property="og:updated_time" content="2017-04-02T17:13:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS 数据存储方式">
 <meta name="twitter:description" content="Plist(NSArray/NSDictionary)：
@@ -116,8 +116,8 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":true},
     fancybox: true,
     motion: true,
     duoshuo: {
@@ -136,7 +136,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2015/06/09/ios-base-io/"/>
+  <link rel="canonical" href="http://gcoder-io.github.io/2015/06/09/ios-base-io/"/>
 
 
 
@@ -192,7 +192,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">http://www.gcoder.io</p>
+        <h1 class="site-subtitle" itemprop="description">记录此时此刻</h1>
       
   </div>
 
@@ -314,7 +314,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/06/09/ios-base-io/">
+    <link itemprop="mainEntityOfPage" href="http://gcoder-io.github.io/2015/06/09/ios-base-io/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="gcoder.io">
@@ -331,14 +331,14 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
+          <h2 class="post-title" itemprop="name headline">
             
             
               
                 iOS 数据存储方式
               
             
-          </h1>
+          </h2>
         
 
         <div class="post-meta">
@@ -394,6 +394,24 @@
           
 
           
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  791
+                </span>
+              
+
+              
+
+              
+            </div>
+          
 
           
 
@@ -419,6 +437,7 @@
 <h5 id="运行期创建的plist文件读取数据："><a href="#运行期创建的plist文件读取数据：" class="headerlink" title="运行期创建的plist文件读取数据："></a>运行期创建的plist文件读取数据：</h5><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>) testReadPlist&#123;</div><div class="line">    <span class="comment">// 存储路径</span></div><div class="line">    <span class="built_in">NSArray</span> *paths=<span class="built_in">NSSearchPathForDirectoriesInDomains</span>(<span class="built_in">NSDocumentDirectory</span>,<span class="built_in">NSUserDomainMask</span>,<span class="literal">YES</span>);</div><div class="line">    <span class="built_in">NSString</span> *plistPath = [paths objectAtIndex:<span class="number">0</span>];</div><div class="line">    <span class="built_in">NSString</span> *filename=[plistPath stringByAppendingPathComponent:<span class="string">@"test_new.plist"</span>];</div><div class="line">    <span class="comment">// 查询</span></div><div class="line">    <span class="built_in">NSMutableDictionary</span> *data = [[<span class="built_in">NSMutableDictionary</span> alloc] initWithContentsOfFile:filename];</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, data);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h5 id="运行期创建新plist并写入数据："><a href="#运行期创建新plist并写入数据：" class="headerlink" title="运行期创建新plist并写入数据："></a>运行期创建新plist并写入数据：</h5><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>) testWriteNewPlist&#123;</div><div class="line">    <span class="comment">// 存储路径</span></div><div class="line">    <span class="built_in">NSArray</span> *paths=<span class="built_in">NSSearchPathForDirectoriesInDomains</span>(<span class="built_in">NSDocumentDirectory</span>,<span class="built_in">NSUserDomainMask</span>,<span class="literal">YES</span>);</div><div class="line">    <span class="built_in">NSString</span> *plistPath = [paths objectAtIndex:<span class="number">0</span>];</div><div class="line">    <span class="built_in">NSString</span> *filename=[plistPath stringByAppendingPathComponent:<span class="string">@"test_new.plist"</span>];</div><div class="line">    </div><div class="line">    <span class="comment">// 原始数据</span></div><div class="line">    <span class="built_in">NSMutableDictionary</span> *data = [<span class="built_in">NSMutableDictionary</span> dictionary];</div><div class="line">    <span class="comment">// key存在value被覆盖，key不存在新增</span></div><div class="line">    [data setObject:@(<span class="number">1</span>) forKey:<span class="string">@"age"</span>];</div><div class="line"></div><div class="line">    <span class="comment">// 写入数据</span></div><div class="line">    <span class="built_in">BOOL</span> success = [data writeToFile:filename atomically:<span class="literal">YES</span>];</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"success===%@"</span>, success?<span class="string">@"YES"</span>:<span class="string">@"NO"</span>);</div><div class="line">    </div><div class="line">    <span class="comment">// 查询验证结果</span></div><div class="line">    <span class="built_in">NSMutableDictionary</span> *data1 = [[<span class="built_in">NSMutableDictionary</span> alloc] initWithContentsOfFile:filename];</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, data1);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h5 id="运行期创建的plist修改、删除数据："><a href="#运行期创建的plist修改、删除数据：" class="headerlink" title="运行期创建的plist修改、删除数据："></a>运行期创建的plist修改、删除数据：</h5><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>) testModifyAndRemovePlist&#123;</div><div class="line">    <span class="comment">// 存储路径</span></div><div class="line">    <span class="built_in">NSArray</span> *paths=<span class="built_in">NSSearchPathForDirectoriesInDomains</span>(<span class="built_in">NSDocumentDirectory</span>,<span class="built_in">NSUserDomainMask</span>,<span class="literal">YES</span>);</div><div class="line">    <span class="built_in">NSString</span> *plistPath = [paths objectAtIndex:<span class="number">0</span>];</div><div class="line">    <span class="built_in">NSString</span> *filename=[plistPath stringByAppendingPathComponent:<span class="string">@"test_new.plist"</span>];</div><div class="line">    </div><div class="line">    <span class="built_in">NSMutableDictionary</span> *data = [[<span class="built_in">NSMutableDictionary</span> alloc] initWithContentsOfFile:filename];</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, data);</div><div class="line">    </div><div class="line">    <span class="comment">// 修改数据</span></div><div class="line">    [data setObject:@(<span class="number">2</span>) forKey:<span class="string">@"age"</span>];</div><div class="line">    <span class="comment">// 删除数据</span></div><div class="line">    [data removeObjectForKey:<span class="string">@"name"</span>];</div><div class="line">    </div><div class="line">    <span class="comment">// 写入数据</span></div><div class="line">    <span class="built_in">BOOL</span> success = [data writeToFile:filename atomically:<span class="literal">YES</span>];</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"success===%@"</span>, success?<span class="string">@"YES"</span>:<span class="string">@"NO"</span>);</div><div class="line">    </div><div class="line">    <span class="comment">// 查询验证结果</span></div><div class="line">    <span class="built_in">NSMutableDictionary</span> *data1 = [[<span class="built_in">NSMutableDictionary</span> alloc] initWithContentsOfFile:filename];</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, data1);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<a id="more"></a>
 <h3 id="NSUserDefault："><a href="#NSUserDefault：" class="headerlink" title="NSUserDefault："></a>NSUserDefault：</h3><blockquote>
 <p>支持的数据类型有NSString、 NSNumber、NSDate、 NSArray、NSDictionary、BOOL、NSInteger、NSFloat等系统定义的数据类型，如果要存放自定义的对象（如自定义的类对象），则必须将其转换成NSData存储。</p>
 </blockquote>
@@ -448,9 +467,6 @@
 <li>NSEntityDescription<br>表格实体结构</li>
 <li>.xcdatamodel文件编译后为.momd或者.mom文件<h3 id="Sqlite："><a href="#Sqlite：" class="headerlink" title="Sqlite："></a>Sqlite：</h3>基本操作同Android中Sqlite。</li>
 </ul>
-<blockquote>
-<p>本文作者：gcoder.io<br>本文链接：<a href="http://gcoder-io.github.io/2015/06/09/ios-base-io/" target="_blank" rel="external">http://gcoder-io.github.io/2015/06/09/ios-base-io/</a><br>版权声明： 本博客所有文章均为原创，转载请注明作者及出处</p>
-</blockquote>
 
       
     </div>
@@ -472,6 +488,21 @@
     <div>
       
         
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      gcoder.io
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://gcoder-io.github.io/2015/06/09/ios-base-io/" title="iOS 数据存储方式">http://gcoder-io.github.io/2015/06/09/ios-base-io/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
 
       
     </div>
@@ -596,8 +627,8 @@
                alt="gcoder.io" />
           <p class="site-author-name" itemprop="name">gcoder.io</p>
            
-              <p class="site-description motion-element" itemprop="description">记录此时此刻的自己</p>
-          
+              <p class="site-description motion-element" itemprop="description"></p>
+           
         </div>
         <nav class="site-state motion-element">
 
@@ -625,10 +656,10 @@
             
             
             <div class="site-state-item site-state-tags">
-              <a href="/tags/index.html">
+              
                 <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">标签</span>
-              </a>
+              
             </div>
           
 
@@ -637,6 +668,26 @@
         
 
         <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/gcoder-io" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/snowleft" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
           
         </div>
 
@@ -699,7 +750,7 @@
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+    NexT.Pisces
   </a>
 </div>
 
@@ -713,6 +764,8 @@
     
       <div class="back-to-top">
         <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
         
       </div>
     
@@ -772,6 +825,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>

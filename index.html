@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
+<html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -87,15 +87,15 @@
 
 
 
-<meta name="description" content="记录此时此刻的自己">
+<meta name="description" content="记录此时此刻">
 <meta property="og:type" content="website">
 <meta property="og:title" content="gcoder.io">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://gcoder-io.github.io/index.html">
 <meta property="og:site_name" content="gcoder.io">
-<meta property="og:description" content="记录此时此刻的自己">
+<meta property="og:description" content="记录此时此刻">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="gcoder.io">
-<meta name="twitter:description" content="记录此时此刻的自己">
+<meta name="twitter:description" content="记录此时此刻">
 
 
 
@@ -103,8 +103,8 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":true},
     fancybox: true,
     motion: true,
     duoshuo: {
@@ -123,7 +123,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://gcoder-io.github.io/"/>
 
 
 
@@ -181,7 +181,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">http://www.gcoder.io</p>
+        <h1 class="site-subtitle" itemprop="description">记录此时此刻</h1>
       
   </div>
 
@@ -303,7 +303,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/26/android-network-framework/">
+    <link itemprop="mainEntityOfPage" href="http://gcoder-io.github.io/2017/03/26/android-network-framework/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="gcoder.io">
@@ -320,7 +320,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
+          <h2 class="post-title" itemprop="name headline">
             
             
               
@@ -330,7 +330,7 @@
                 </a>
               
             
-          </h1>
+          </h2>
         
 
         <div class="post-meta">
@@ -386,6 +386,24 @@
           
 
           
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,950
+                </span>
+              
+
+              
+
+              
+            </div>
+          
 
           
 
@@ -401,24 +419,20 @@
 
       
         
-          
-          
-网络层Library是App最常用的库，需要考虑稳定性，后期的扩展性，更换核心网络库后对项目的影响，ZZNet采用okhttp作为核心网络库。
-
-需求描述：
-支持HTTP/HTTPS；
-请求支持取消；
-支持校验器，可用于统一的JSON校验；
-支持拦截器，可用于缓存的处理；
-支持重试次数和自定义重试规则；
-支持文件上传，上传进度，多文件上传，取消上传；
-支持文件下载，下载进度，断点续传，取消下载；
-自动处理错误描述和详细的错误类型；
-
-架构设计：
-架构实现：ZZNetValidator，请求及响应校验器
-可以针对单个请求配置校验器或所有请求配置统一的校验器，校验请求参数或响应数据的合法性等。例
-          ...
+          <blockquote>
+<p>网络层Library是App最常用的库，需要考虑稳定性，后期的扩展性，更换核心网络库后对项目的影响，ZZNet采用okhttp作为核心网络库。</p>
+</blockquote>
+<h2 id="需求描述："><a href="#需求描述：" class="headerlink" title="需求描述："></a>需求描述：</h2><ul>
+<li>支持HTTP/HTTPS；</li>
+<li>请求支持取消；</li>
+<li>支持校验器，可用于统一的JSON校验；</li>
+<li>支持拦截器，可用于缓存的处理；</li>
+<li>支持重试次数和自定义重试规则；</li>
+<li>支持文件上传，上传进度，多文件上传，取消上传；</li>
+<li>支持文件下载，下载进度，断点续传，取消下载；</li>
+<li>自动处理错误描述和详细的错误类型；</li>
+</ul>
+<h2 id="架构设计："><a href="#架构设计：" class="headerlink" title="架构设计："></a>架构设计：</h2><p><img src="http://ww1.sinaimg.cn/large/4fed004bly1fe0ks15ytgj20lg0rr40j.jpg" alt=""></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/03/26/android-network-framework/#more" rel="contents">
@@ -467,7 +481,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/02/26/android-developing-guideline/">
+    <link itemprop="mainEntityOfPage" href="http://gcoder-io.github.io/2017/02/26/android-developing-guideline/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="gcoder.io">
@@ -484,7 +498,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
+          <h2 class="post-title" itemprop="name headline">
             
             
               
@@ -494,7 +508,7 @@
                 </a>
               
             
-          </h1>
+          </h2>
         
 
         <div class="post-meta">
@@ -550,6 +564,24 @@
           
 
           
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  712
+                </span>
+              
+
+              
+
+              
+            </div>
+          
 
           
 
@@ -565,27 +597,35 @@
 
       
         
-          
-          
-规范是提高团队开发协作效率的前提，请大家务必重视；  规范主要解决两个问题：1.提高协作效率；2.绕过已知的问题；
-
-命名规范：Bundle命名规范：
-工程名：
-业务Bundle：biz_xxx
-Library Bundle：lib_xxx
-jar或aar Bundle：zzbin_xxx
-
-
-包名：
-业务Bundle：com.zaozuo.biz.xxx
-Library Bundle：com.zaozuo.lib.xxx
-
-
-
-包名命名规范：
-com.zaozuo.[biz/lib].[模块名].[业务名]
-  123456com.zaozuo.biz.show.home	entity ：
-          ...
+          <blockquote>
+<p>规范是提高团队开发协作效率的前提，请大家务必重视；<br>  规范主要解决两个问题：1.提高协作效率；2.绕过已知的问题；</p>
+</blockquote>
+<h2 id="命名规范："><a href="#命名规范：" class="headerlink" title="命名规范："></a>命名规范：</h2><h3 id="Bundle命名规范："><a href="#Bundle命名规范：" class="headerlink" title="Bundle命名规范："></a>Bundle命名规范：</h3><ul>
+<li>工程名：<ul>
+<li>业务Bundle：biz_xxx</li>
+<li>Library Bundle：lib_xxx</li>
+<li>jar或aar Bundle：zzbin_xxx</li>
+</ul>
+</li>
+<li>包名：<ul>
+<li>业务Bundle：com.zaozuo.biz.xxx</li>
+<li>Library Bundle：com.zaozuo.lib.xxx</li>
+</ul>
+</li>
+</ul>
+<h3 id="包名命名规范："><a href="#包名命名规范：" class="headerlink" title="包名命名规范："></a>包名命名规范：</h3><ul>
+<li><p><strong>com.zaozuo.[biz/lib].[模块名].[业务名]</strong></p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">com.zaozuo.biz.show.home</div><div class="line">	entity ：实体类</div><div class="line">	presenter</div><div class="line">	view：Activity/Fragment</div><div class="line">	widget：自定义控件</div><div class="line">	viewholder：item/itemGroup</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="资源文件命名："><a href="#资源文件命名：" class="headerlink" title="资源文件命名："></a>资源文件命名：</h3><ul>
+<li><p>所有在R文件中生成资源文件必须添加模块前缀和业务前缀，规则：<strong>[业务模块名] _ [业务名] _ [具体名字]</strong>；</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">layout命名：</div><div class="line">	activity/fragment对应的xml：biz_order_orderlist.xml</div><div class="line">	item对应的xml：biz_order_orderlist_item_topview.xml</div><div class="line">drawable命名：</div><div class="line">	biz_order_orderlist_btn_camera.xml</div></pre></td></tr></table></figure>
+</li>
+<li><p>xml中id对应的控件名字采用缩写：<strong>[业务模块名字] _ [业务名] _ [按钮名字] _ [控件简称]</strong>；</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">biz_order_orderlist_avatar_iv</div><div class="line">biz_order_orderlist_confirm_btn</div></pre></td></tr></table></figure>
+</li>
+<li><p>style也需要添加前缀：例如Biz_Show_SplashTheme    </p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/02/26/android-developing-guideline/#more" rel="contents">
@@ -634,7 +674,7 @@ com.zaozuo.[biz/lib].[模块名].[业务名]
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/05/android-activity-lifecycle-launchmode/">
+    <link itemprop="mainEntityOfPage" href="http://gcoder-io.github.io/2016/10/05/android-activity-lifecycle-launchmode/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="gcoder.io">
@@ -651,7 +691,7 @@ com.zaozuo.[biz/lib].[模块名].[业务名]
 
         
         
-          <h1 class="post-title" itemprop="name headline">
+          <h2 class="post-title" itemprop="name headline">
             
             
               
@@ -661,7 +701,7 @@ com.zaozuo.[biz/lib].[模块名].[业务名]
                 </a>
               
             
-          </h1>
+          </h2>
         
 
         <div class="post-meta">
@@ -717,6 +757,24 @@ com.zaozuo.[biz/lib].[模块名].[业务名]
           
 
           
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  2,387
+                </span>
+              
+
+              
+
+              
+            </div>
+          
 
           
 
@@ -732,15 +790,42 @@ com.zaozuo.[biz/lib].[模块名].[业务名]
 
       
         
-          
-          
-此文是根据官方文档、图书资料及demo测试得出的结论，包括Activity多个页面间跳转的生命周期，各个启动模式的不同，flag的常见用法及对activity任务栈的影响。
-
-Activity生命周期需要注意的地方
-当Activity长时间在后台运行时，可能会被杀死，再次启动时Activity会被重建，此情况和横竖屏切换场景类似，开发者应该在开发环境下打开横竖屏切换测试，防止异常发生；
-如果新的Activity是透明主题，则当前Activity不会执行onStop；
-onSaveInstanceState在onStop之前执行，onRestoreInstanceState在onStart之后
-          ...
+          <blockquote>
+<p>此文是根据官方文档、图书资料及demo测试得出的结论，包括Activity多个页面间跳转的生命周期，各个启动模式的不同，flag的常见用法及对activity任务栈的影响。</p>
+</blockquote>
+<h2 id="Activity生命周期需要注意的地方"><a href="#Activity生命周期需要注意的地方" class="headerlink" title="Activity生命周期需要注意的地方"></a>Activity生命周期需要注意的地方</h2><ul>
+<li>当Activity长时间在后台运行时，可能会被杀死，再次启动时Activity会被重建，此情况和横竖屏切换场景类似，开发者应该在开发环境下打开横竖屏切换测试，防止异常发生；</li>
+<li>如果新的Activity是透明主题，则当前Activity不会执行onStop；</li>
+<li>onSaveInstanceState在onStop之前执行，onRestoreInstanceState在onStart之后执行；</li>
+<li>为防止Activity横竖屏切换时Activity重启，可添加           android:configChanges=”orientation|screenSize”</li>
+<li>onStart和onStop，判断Activity是否可见，onResume和onPause，判断Activity是否在前台；</li>
+<li><p>A启动B，A、B生命周期执行顺序：A会先进入后台，B创建进入前台，A不可见；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">A(onPause) --&gt; B(onCreate) --&gt; B(onStart) --&gt; B(onResume) --&gt; A(onSaveInstanceState) -&gt;A(onStop)</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="Activity启动模式"><a href="#Activity启动模式" class="headerlink" title="Activity启动模式"></a>Activity启动模式</h2><h3 id="Standard：标准模式"><a href="#Standard：标准模式" class="headerlink" title="Standard：标准模式"></a>Standard：标准模式</h3><ul>
+<li>每次都会新创建Activity，并添加到对应的任务栈中；</li>
+</ul>
+<h3 id="SingleTop：栈顶复用"><a href="#SingleTop：栈顶复用" class="headerlink" title="SingleTop：栈顶复用"></a>SingleTop：栈顶复用</h3><ul>
+<li><p>如果要启动的Activity已经在栈顶，该Activity不会被创建；</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">* A --&gt; B(SingleTop)</div><div class="line">* 再次启动B后生命周期：</div><div class="line">onPause --&gt; onNewIntent --&gt; onResume</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>如果要启动的Activity不在栈顶，跟标准模式完全一致；</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">* A --&gt; B(SingleTop) --&gt; C</div><div class="line">* 再次启动B后栈：</div><div class="line">A --&gt; B(SingleTop) --&gt; C --&gt; B(SingleTop)</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="SingleTask：栈内复用模式"><a href="#SingleTask：栈内复用模式" class="headerlink" title="SingleTask：栈内复用模式"></a>SingleTask：栈内复用模式</h3><ul>
+<li><p>特别注意，配置此模式的Activity并不会位于一个新的任务栈中，只是如果要启动的Activity已经在栈中，会clearTop，让自己置为栈顶；</p>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">* A --&gt; B(SingleTask) --&gt; C</div><div class="line">TaskRecord&#123;ed93b47 #259 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=4&#125;</div><div class="line">	Run #3: ActivityRecord&#123;c1f4817 u0 test.gcoder.io.testactivity/.CActivity, isShadow:false t259&#125;</div><div class="line">	Run #2: ActivityRecord&#123;59e1a72 u0 test.gcoder.io.testactivity/.BActivity, isShadow:false t259&#125;</div><div class="line">	Run #1: ActivityRecord&#123;d7ae33c u0 test.gcoder.io.testactivity/.AActivity, isShadow:false t259&#125;</div><div class="line"> 	</div><div class="line">* 再次启动B后任务栈：</div><div class="line">A --&gt; B(SingleTask)</div><div class="line">此时C会被销毁</div><div class="line">此时B的生命周期：onPause --&gt; onNewIntent --&gt; onResume</div><div class="line">	</div><div class="line">TaskRecord&#123;ed93b47 #259 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=3&#125;</div><div class="line">	Run #2: ActivityRecord&#123;59e1a72 u0 test.gcoder.io.testactivity/.BActivity, isShadow:false t259&#125;</div><div class="line">	Run #1: ActivityRecord&#123;d7ae33c u0 test.gcoder.io.testactivity/.AActivity, isShadow:false t259&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="SingleInstance：单实例模式"><a href="#SingleInstance：单实例模式" class="headerlink" title="SingleInstance：单实例模式"></a>SingleInstance：单实例模式</h3><ul>
+<li><p>此模式的Activity只能位于一个独立任务栈中；</p>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">* A --&gt; B(SingleInstance) --&gt; C</div><div class="line">此时，A、C位于同一个任务栈，B位于独立的任务栈；</div><div class="line">	</div><div class="line">TaskRecord&#123;c37f244 #253 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=3&#125;</div><div class="line">	Run #3: ActivityRecord&#123;8d06468 u0 test.gcoder.io.testactivity/.CActivity, isShadow:false t253&#125;</div><div class="line">TaskRecord&#123;10b2e56 #257 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=1&#125;</div><div class="line">	Run #2: ActivityRecord&#123;eeb0317 u0 test.gcoder.io.testactivity/.BActivity, isShadow:false t257&#125;</div><div class="line">TaskRecord&#123;c37f244 #253 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=3&#125;</div><div class="line">	Run #1: ActivityRecord&#123;e25c532 u0 test.gcoder.io.testactivity/.AActivity, isShadow:false t253&#125;</div><div class="line">	</div><div class="line">* 再次启动B后栈：</div><div class="line">A --&gt; C --&gt; B(SingleInstance)</div><div class="line">此时，B调整为前台任务栈，A、C的任务栈调整为后台任务栈；</div><div class="line">此时，B的生命周期：onPause --&gt; onNewIntent --&gt; onResume</div><div class="line"></div><div class="line">TaskRecord&#123;10b2e56 #257 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=1&#125;</div><div class="line">	Run #3: ActivityRecord&#123;eeb0317 u0 test.gcoder.io.testactivity/.BActivity, isShadow:false t257&#125;</div><div class="line">TaskRecord&#123;c37f244 #253 A=test.gcoder.io.testactivity, isShadow:false U=0 sz=3&#125;</div><div class="line">	Run #2: ActivityRecord&#123;8d06468 u0 test.gcoder.io.testactivity/.CActivity, isShadow:false t253&#125;</div><div class="line"> 	Run #1: ActivityRecord&#123;e25c532 u0 test.gcoder.io.testactivity/.AActivity, isShadow:false t253&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2016/10/05/android-activity-lifecycle-launchmode/#more" rel="contents">
@@ -789,7 +874,7 @@ onSaveInstanceState在onStop之前执行，onRestoreInstanceState在onStart之�
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/08/12/android-hotpatch-dexposed/">
+    <link itemprop="mainEntityOfPage" href="http://gcoder-io.github.io/2015/08/12/android-hotpatch-dexposed/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="gcoder.io">
@@ -806,7 +891,7 @@ onSaveInstanceState在onStop之前执行，onRestoreInstanceState在onStart之�
 
         
         
-          <h1 class="post-title" itemprop="name headline">
+          <h2 class="post-title" itemprop="name headline">
             
             
               
@@ -816,7 +901,7 @@ onSaveInstanceState在onStop之前执行，onRestoreInstanceState在onStart之�
                 </a>
               
             
-          </h1>
+          </h2>
         
 
         <div class="post-meta">
@@ -872,6 +957,24 @@ onSaveInstanceState在onStop之前执行，onRestoreInstanceState在onStart之�
           
 
           
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  815
+                </span>
+              
+
+              
+
+              
+            </div>
+          
 
           
 
@@ -887,16 +990,15 @@ onSaveInstanceState在onStop之前执行，onRestoreInstanceState在onStart之�
 
       
         
-          
-          
-本教程采用阿里dexposed开源库实现。https://github.com/alibaba/dexposed
-
-主APP实现：主程序Application onCreate方法中初始化dexposedDexposedBridge.canDexposed(context);
-Patch apk下载及修复：
-为保证修复patch的及时性，使用push推送patch，客户端收到消息后立即完成patch的下载及修复；
-客户端版本管理模块在程序入口Activity中检测是否有需要修复的patch；
-下载完patch apk到程序私有目录，即/data/data/packageName/files目
-          ...
+          <blockquote>
+<p>本教程采用阿里dexposed开源库实现。<br><a href="https://github.com/alibaba/dexposed">https://github.com/alibaba/dexposed</a></p>
+</blockquote>
+<h2 id="主APP实现："><a href="#主APP实现：" class="headerlink" title="主APP实现："></a>主APP实现：</h2><h3 id="主程序Application-onCreate方法中初始化dexposed"><a href="#主程序Application-onCreate方法中初始化dexposed" class="headerlink" title="主程序Application onCreate方法中初始化dexposed"></a>主程序Application onCreate方法中初始化dexposed</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">DexposedBridge.canDexposed(context);</div></pre></td></tr></table></figure>
+<h3 id="Patch-apk下载及修复："><a href="#Patch-apk下载及修复：" class="headerlink" title="Patch apk下载及修复："></a>Patch apk下载及修复：</h3><ol>
+<li>为保证修复patch的及时性，使用push推送patch，客户端收到消息后立即完成patch的下载及修复；</li>
+<li>客户端版本管理模块在程序入口Activity中检测是否有需要修复的patch；</li>
+<li>下载完patch apk到程序私有目录，即/data/data/packageName/files目录，同时可在xml中保存patch apk本地存储路径、方便下载启动app时加载补丁patch。</li>
+</ol>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2015/08/12/android-hotpatch-dexposed/#more" rel="contents">
@@ -945,7 +1047,7 @@ Patch apk下载及修复：
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/07/25/ios-swift-dev-remind/">
+    <link itemprop="mainEntityOfPage" href="http://gcoder-io.github.io/2015/07/25/ios-swift-dev-remind/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="gcoder.io">
@@ -962,7 +1064,7 @@ Patch apk下载及修复：
 
         
         
-          <h1 class="post-title" itemprop="name headline">
+          <h2 class="post-title" itemprop="name headline">
             
             
               
@@ -972,7 +1074,7 @@ Patch apk下载及修复：
                 </a>
               
             
-          </h1>
+          </h2>
         
 
         <div class="post-meta">
@@ -1028,6 +1130,24 @@ Patch apk下载及修复：
           
 
           
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  762
+                </span>
+              
+
+              
+
+              
+            </div>
+          
 
           
 
@@ -1043,16 +1163,26 @@ Patch apk下载及修复：
 
       
         
-          
-          
-普通block和lazy底层是闭包，必须注意self指针泄露，解决方案同block：
-  123private lazy var oneButtonView : OneButtonView? = &#123;[weak self] in    return self?.instanceOneButtonView()&#125;()
-
-判断字符串相等时必须先校验是否为nil，否则崩溃
-  12if name != nil &amp;&amp; name == "UserName"&#123;&#125;
-
-超级坑，View的名字不可于VC相似  例如：BuyPresellView BuyPre
-          ...
+          <ul>
+<li><p>普通block和lazy底层是闭包，必须注意self指针泄露，解决方案同block：</p>
+  <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="built_in">lazy</span> <span class="keyword">var</span> oneButtonView : <span class="type">OneButtonView</span>? = &#123;[<span class="keyword">weak</span> <span class="keyword">self</span>] <span class="keyword">in</span></div><div class="line">    <span class="keyword">return</span> <span class="keyword">self</span>?.instanceOneButtonView()</div><div class="line">&#125;()</div></pre></td></tr></table></figure>
+</li>
+<li><p>判断字符串相等时必须先校验是否为nil，否则崩溃</p>
+  <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> name != <span class="literal">nil</span> &amp;&amp; name == <span class="string">"UserName"</span>&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>超级坑，View的名字不可于VC相似<br>  例如：BuyPresellView BuyPresellViewController，会造成BuyPresellViewController自动从BuyPresellView.xib加载；</p>
+</li>
+<li><p>UITextLabel text设置为nil或””时该控件的高度为0，如果想正常显示可设为” “</p>
+</li>
+<li>可选值不可与非可选值进行比较，例如String?和String，必须转换为相同类型才可比较mobile != nil &amp;&amp; mobile! == text，注意判断非空；</li>
+<li>点击事件触发网络操作，需要用到index时，可使用id替换，防止非阻塞对话框导致用户继续操作，造成index改变；</li>
+<li>所有涉及到数组、集合index取值、删除等操作必须校验Index范围保证不会越界；</li>
+<li>switch中case必须加break，避免养成习惯在其它编程语言中造成问题；</li>
+<li>禁止在layoutSubviews编写任何AutoLayout代码，会造成在iOS7.X崩溃；</li>
+<li>字符串拼接的时候，如果是可选型必须强制转换，否则string会带Optional字符串；</li>
+<li>系统api重写时必须调用super；</li>
+<li>添加NSNotification监听的类必须是NSObject的子类，并且响应函数不能使用private修饰，否则崩溃；</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2015/07/25/ios-swift-dev-remind/#more" rel="contents">
@@ -1101,7 +1231,7 @@ Patch apk下载及修复：
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/07/19/ios-db-plan/">
+    <link itemprop="mainEntityOfPage" href="http://gcoder-io.github.io/2015/07/19/ios-db-plan/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="gcoder.io">
@@ -1118,7 +1248,7 @@ Patch apk下载及修复：
 
         
         
-          <h1 class="post-title" itemprop="name headline">
+          <h2 class="post-title" itemprop="name headline">
             
             
               
@@ -1128,7 +1258,7 @@ Patch apk下载及修复：
                 </a>
               
             
-          </h1>
+          </h2>
         
 
         <div class="post-meta">
@@ -1184,6 +1314,24 @@ Patch apk下载及修复：
           
 
           
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,398
+                </span>
+              
+
+              
+
+              
+            </div>
+          
 
           
 
@@ -1199,12 +1347,14 @@ Patch apk下载及修复：
 
       
         
-          
-          
-数据库作为App缓存设计的首选，存在一些开发的陷阱，同时需要考虑性能、开发效率和可维护性，笔者建议自行搭建数据库管理类，同时配合成熟的开源ORM框架快速搭建数据库模块。本示例采用fmdb框架 https://github.com/ccgus/fmdb
-
-SQLite多线程访问问题分析：1234567891011121314151617181920212223242526272829303132333435363738394041424344454647- (void) testfmdb&#123;    // db path    NSString * cachePath = NSSearc
-          ...
+          <blockquote>
+<p>数据库作为App缓存设计的首选，存在一些开发的陷阱，同时需要考虑性能、开发效率和可维护性，笔者建议自行搭建数据库管理类，同时配合成熟的开源ORM框架快速搭建数据库模块。<br>本示例采用fmdb框架 <a href="https://github.com/ccgus/fmdb">https://github.com/ccgus/fmdb</a></p>
+</blockquote>
+<h2 id="SQLite多线程访问问题分析："><a href="#SQLite多线程访问问题分析：" class="headerlink" title="SQLite多线程访问问题分析："></a>SQLite多线程访问问题分析：</h2><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>) testfmdb&#123;</div><div class="line">    <span class="comment">// db path</span></div><div class="line">    <span class="built_in">NSString</span> * cachePath = <span class="built_in">NSSearchPathForDirectoriesInDomains</span>(<span class="built_in">NSCachesDirectory</span>, <span class="built_in">NSUserDomainMask</span>, <span class="literal">YES</span>)[<span class="number">0</span>];</div><div class="line">    <span class="built_in">NSString</span> * dbPath = [cachePath stringByAppendingPathComponent:<span class="string">@"test.sqlite"</span>];</div><div class="line">    </div><div class="line">    <span class="comment">// create db</span></div><div class="line">    _db = [FMDatabase databaseWithPath:dbPath];</div><div class="line">    </div><div class="line">    <span class="comment">// open db</span></div><div class="line">    <span class="built_in">BOOL</span> openDbResult = [_db open];</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"openDbResult===%@"</span>, openDbResult ? <span class="string">@"YES"</span>:<span class="string">@"NO"</span>);</div><div class="line"></div><div class="line">    <span class="comment">// create table</span></div><div class="line">    <span class="built_in">BOOL</span> createTableResult = [_db executeUpdate:<span class="string">@"create table if not exists user(id integer primary key autoincrement, name text, age integer)"</span>];</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"createTableResult===%@"</span>, createTableResult ? <span class="string">@"YES"</span>:<span class="string">@"NO"</span>);</div><div class="line">    </div><div class="line">    <span class="comment">// test multithreading</span></div><div class="line">    <span class="built_in">NSOperationQueue</span> *myQueue = [[<span class="built_in">NSOperationQueue</span> alloc] init];</div><div class="line">    [myQueue setMaxConcurrentOperationCount:<span class="number">10</span>];</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i ++) &#123;</div><div class="line">        <span class="built_in">NSBlockOperation</span> *opBlock = [<span class="built_in">NSBlockOperation</span> blockOperationWithBlock:^&#123;</div><div class="line">            [<span class="keyword">self</span> insert];</div><div class="line">            [<span class="keyword">self</span> query];</div><div class="line">        &#125;];</div><div class="line">        [myQueue addOperation:opBlock];</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">&#125;</div><div class="line"></div><div class="line">-(<span class="keyword">void</span>) insert&#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i ++) &#123;</div><div class="line">        <span class="built_in">NSString</span> *name = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"name_%d"</span>,i];</div><div class="line">        <span class="built_in">NSString</span> *age = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"%d"</span>,i];</div><div class="line">        </div><div class="line">        [_db executeUpdate:<span class="string">@"insert into user(name,age) values (?, ?)"</span>, name,age];</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">-(<span class="keyword">void</span>) query&#123;</div><div class="line">    FMResultSet * set = [_db executeQuery:<span class="string">@"select * from user"</span>];</div><div class="line">    <span class="keyword">while</span> ([set next]) &#123;</div><div class="line">        <span class="keyword">int</span> <span class="keyword">id</span> = [set intForColumn:<span class="string">@"id"</span>];</div><div class="line">        <span class="built_in">NSString</span> *name = [set stringForColumn:<span class="string">@"name"</span>];</div><div class="line">        <span class="keyword">int</span> age = [set intForColumn:<span class="string">@"age"</span>];</div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%d===%@===%d"</span>, <span class="keyword">id</span>, name, age);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>调用testfmdb方法抛出异常：The FMDatabase is currently in use.</li>
+<li>ios中SQLite同Android中SQLite一样，数据库不支持多线程读写并发访问，Android底层对SQLite单个数据库连接读写操作做了同步处理，也仅能支持单数据库连接的并发访问。</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2015/07/19/ios-db-plan/#more" rel="contents">
@@ -1253,7 +1403,7 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/06/12/ios-base-thread/">
+    <link itemprop="mainEntityOfPage" href="http://gcoder-io.github.io/2015/06/12/ios-base-thread/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="gcoder.io">
@@ -1270,7 +1420,7 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
 
         
         
-          <h1 class="post-title" itemprop="name headline">
+          <h2 class="post-title" itemprop="name headline">
             
             
               
@@ -1280,7 +1430,7 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
                 </a>
               
             
-          </h1>
+          </h2>
         
 
         <div class="post-meta">
@@ -1336,6 +1486,24 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
           
 
           
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  498
+                </span>
+              
+
+              
+
+              
+            </div>
+          
 
           
 
@@ -1351,13 +1519,23 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
 
       
         
-          
-          NSThread
-使用NSThread对象建立一个线程非常方便，但要使用NSThread管理多个线程较困难,不推荐使用;
-[NSThread currentThread]跟踪任务所在线程,适用于这三种技术。
-
-1234567891011121314- (void) testNSThread&#123;    // 创建方法1    [NSThread detachNewThreadSelector:@selector(actionForNSThread:) toTarget:self withObject:@"1"];    // 创建方法2    NSThread *thread = [[N
-          ...
+          <h2 id="NSThread"><a href="#NSThread" class="headerlink" title="NSThread"></a>NSThread</h2><ul>
+<li>使用NSThread对象建立一个线程非常方便，但要使用NSThread管理多个线程较困难,不推荐使用;</li>
+<li>[NSThread currentThread]跟踪任务所在线程,适用于这三种技术。</li>
+</ul>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>) testNSThread&#123;</div><div class="line">    <span class="comment">// 创建方法1</span></div><div class="line">    [<span class="built_in">NSThread</span> detachNewThreadSelector:<span class="keyword">@selector</span>(actionForNSThread:) toTarget:<span class="keyword">self</span> withObject:<span class="string">@"1"</span>];</div><div class="line"></div><div class="line">    <span class="comment">// 创建方法2</span></div><div class="line">    <span class="built_in">NSThread</span> *thread = [[<span class="built_in">NSThread</span> alloc]initWithTarget:<span class="keyword">self</span> selector:<span class="keyword">@selector</span>(actionForNSThread:) object:<span class="string">@"1"</span>];</div><div class="line">    [thread start];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>) actionForNSThread:(<span class="built_in">NSString</span> *)extraData&#123;</div><div class="line">    <span class="keyword">@autoreleasepool</span>&#123;</div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"actionForNSThread===%@"</span>, extraData);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="NSObject"><a href="#NSObject" class="headerlink" title="NSObject"></a>NSObject</h2><h5 id="NSObject的多线程方法："><a href="#NSObject的多线程方法：" class="headerlink" title="NSObject的多线程方法："></a>NSObject的多线程方法：</h5><ul>
+<li>开启后台执行任务的方法:</li>
+</ul>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)performSelectorInBackground:(SEL)@Selector withObject:(<span class="keyword">id</span>)arg</div></pre></td></tr></table></figure>
+<ul>
+<li>在后台线程中通知主线程执行任务的方法:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- (void)performSelectorOnMainThread:(SEL)@Selector withObject:(id)arg waitUntilDone:(BOOL)wait</div></pre></td></tr></table></figure>
+<h5 id="NSObject的多线程方法注意事项"><a href="#NSObject的多线程方法注意事项" class="headerlink" title="NSObject的多线程方法注意事项:"></a>NSObject的多线程方法注意事项:</h5><ul>
+<li>NSObject的多线程方法使用的是NSThread的多线程技术.</li>
+<li>NSThread的多线程技术不会自动使用@autoreleasepool.<br> 在使用NSObject或NSThread的多线程技术时,如果涉及到对象分配,需要手动添加@autoreleasepool.</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2015/06/12/ios-base-thread/#more" rel="contents">
@@ -1406,7 +1584,7 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/06/09/ios-base-io/">
+    <link itemprop="mainEntityOfPage" href="http://gcoder-io.github.io/2015/06/09/ios-base-io/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="gcoder.io">
@@ -1423,7 +1601,7 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
 
         
         
-          <h1 class="post-title" itemprop="name headline">
+          <h2 class="post-title" itemprop="name headline">
             
             
               
@@ -1433,7 +1611,7 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
                 </a>
               
             
-          </h1>
+          </h2>
         
 
         <div class="post-meta">
@@ -1489,6 +1667,24 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
           
 
           
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  791
+                </span>
+              
+
+              
+
+              
+            </div>
+          
 
           
 
@@ -1504,16 +1700,17 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
 
       
         
-          
-          Plist(NSArray/NSDictionary)：
-
-支持的数据类型有NSString、 NSNumber、NSDate、 NSArray、NSDictionary、BOOL、NSInteger、NSFloat等系统定义的数据类型，底层是基于key-value的NSDictionary。
-项目中预置的plist文件只能读取不支持修改、删除；
-运行期创建的plist文件支持读取、新写入、修改、删除等操作，写入时必须是完整的dic，不支持增量写入方式。
-
-
-读取项目中预置plist文件：12345- (void) testPlist&#123;    NSString *plistPath 
-          ...
+          <h3 id="Plist-NSArray-NSDictionary-："><a href="#Plist-NSArray-NSDictionary-：" class="headerlink" title="Plist(NSArray/NSDictionary)："></a>Plist(NSArray/NSDictionary)：</h3><blockquote>
+<ul>
+<li>支持的数据类型有NSString、 NSNumber、NSDate、 NSArray、NSDictionary、BOOL、NSInteger、NSFloat等系统定义的数据类型，底层是基于key-value的NSDictionary。</li>
+<li>项目中预置的plist文件只能读取不支持修改、删除；</li>
+<li>运行期创建的plist文件支持读取、新写入、修改、删除等操作，写入时必须是完整的dic，不支持增量写入方式。</li>
+</ul>
+</blockquote>
+<h5 id="读取项目中预置plist文件："><a href="#读取项目中预置plist文件：" class="headerlink" title="读取项目中预置plist文件："></a>读取项目中预置plist文件：</h5><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>) testPlist&#123;</div><div class="line">    <span class="built_in">NSString</span> *plistPath = [[<span class="built_in">NSBundle</span> mainBundle] pathForResource:<span class="string">@"test"</span> ofType:<span class="string">@"plist"</span>];</div><div class="line">    <span class="built_in">NSMutableDictionary</span> *data = [[<span class="built_in">NSMutableDictionary</span> alloc] initWithContentsOfFile:plistPath];</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"data===%@"</span>, data);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="运行期创建的plist文件读取数据："><a href="#运行期创建的plist文件读取数据：" class="headerlink" title="运行期创建的plist文件读取数据："></a>运行期创建的plist文件读取数据：</h5><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>) testReadPlist&#123;</div><div class="line">    <span class="comment">// 存储路径</span></div><div class="line">    <span class="built_in">NSArray</span> *paths=<span class="built_in">NSSearchPathForDirectoriesInDomains</span>(<span class="built_in">NSDocumentDirectory</span>,<span class="built_in">NSUserDomainMask</span>,<span class="literal">YES</span>);</div><div class="line">    <span class="built_in">NSString</span> *plistPath = [paths objectAtIndex:<span class="number">0</span>];</div><div class="line">    <span class="built_in">NSString</span> *filename=[plistPath stringByAppendingPathComponent:<span class="string">@"test_new.plist"</span>];</div><div class="line">    <span class="comment">// 查询</span></div><div class="line">    <span class="built_in">NSMutableDictionary</span> *data = [[<span class="built_in">NSMutableDictionary</span> alloc] initWithContentsOfFile:filename];</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, data);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="运行期创建新plist并写入数据："><a href="#运行期创建新plist并写入数据：" class="headerlink" title="运行期创建新plist并写入数据："></a>运行期创建新plist并写入数据：</h5><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>) testWriteNewPlist&#123;</div><div class="line">    <span class="comment">// 存储路径</span></div><div class="line">    <span class="built_in">NSArray</span> *paths=<span class="built_in">NSSearchPathForDirectoriesInDomains</span>(<span class="built_in">NSDocumentDirectory</span>,<span class="built_in">NSUserDomainMask</span>,<span class="literal">YES</span>);</div><div class="line">    <span class="built_in">NSString</span> *plistPath = [paths objectAtIndex:<span class="number">0</span>];</div><div class="line">    <span class="built_in">NSString</span> *filename=[plistPath stringByAppendingPathComponent:<span class="string">@"test_new.plist"</span>];</div><div class="line">    </div><div class="line">    <span class="comment">// 原始数据</span></div><div class="line">    <span class="built_in">NSMutableDictionary</span> *data = [<span class="built_in">NSMutableDictionary</span> dictionary];</div><div class="line">    <span class="comment">// key存在value被覆盖，key不存在新增</span></div><div class="line">    [data setObject:@(<span class="number">1</span>) forKey:<span class="string">@"age"</span>];</div><div class="line"></div><div class="line">    <span class="comment">// 写入数据</span></div><div class="line">    <span class="built_in">BOOL</span> success = [data writeToFile:filename atomically:<span class="literal">YES</span>];</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"success===%@"</span>, success?<span class="string">@"YES"</span>:<span class="string">@"NO"</span>);</div><div class="line">    </div><div class="line">    <span class="comment">// 查询验证结果</span></div><div class="line">    <span class="built_in">NSMutableDictionary</span> *data1 = [[<span class="built_in">NSMutableDictionary</span> alloc] initWithContentsOfFile:filename];</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, data1);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="运行期创建的plist修改、删除数据："><a href="#运行期创建的plist修改、删除数据：" class="headerlink" title="运行期创建的plist修改、删除数据："></a>运行期创建的plist修改、删除数据：</h5><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>) testModifyAndRemovePlist&#123;</div><div class="line">    <span class="comment">// 存储路径</span></div><div class="line">    <span class="built_in">NSArray</span> *paths=<span class="built_in">NSSearchPathForDirectoriesInDomains</span>(<span class="built_in">NSDocumentDirectory</span>,<span class="built_in">NSUserDomainMask</span>,<span class="literal">YES</span>);</div><div class="line">    <span class="built_in">NSString</span> *plistPath = [paths objectAtIndex:<span class="number">0</span>];</div><div class="line">    <span class="built_in">NSString</span> *filename=[plistPath stringByAppendingPathComponent:<span class="string">@"test_new.plist"</span>];</div><div class="line">    </div><div class="line">    <span class="built_in">NSMutableDictionary</span> *data = [[<span class="built_in">NSMutableDictionary</span> alloc] initWithContentsOfFile:filename];</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, data);</div><div class="line">    </div><div class="line">    <span class="comment">// 修改数据</span></div><div class="line">    [data setObject:@(<span class="number">2</span>) forKey:<span class="string">@"age"</span>];</div><div class="line">    <span class="comment">// 删除数据</span></div><div class="line">    [data removeObjectForKey:<span class="string">@"name"</span>];</div><div class="line">    </div><div class="line">    <span class="comment">// 写入数据</span></div><div class="line">    <span class="built_in">BOOL</span> success = [data writeToFile:filename atomically:<span class="literal">YES</span>];</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"success===%@"</span>, success?<span class="string">@"YES"</span>:<span class="string">@"NO"</span>);</div><div class="line">    </div><div class="line">    <span class="comment">// 查询验证结果</span></div><div class="line">    <span class="built_in">NSMutableDictionary</span> *data1 = [[<span class="built_in">NSMutableDictionary</span> alloc] initWithContentsOfFile:filename];</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, data1);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2015/06/09/ios-base-io/#more" rel="contents">
@@ -1562,7 +1759,7 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/05/02/android-db-plan/">
+    <link itemprop="mainEntityOfPage" href="http://gcoder-io.github.io/2015/05/02/android-db-plan/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="gcoder.io">
@@ -1579,7 +1776,7 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
 
         
         
-          <h1 class="post-title" itemprop="name headline">
+          <h2 class="post-title" itemprop="name headline">
             
             
               
@@ -1589,7 +1786,7 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
                 </a>
               
             
-          </h1>
+          </h2>
         
 
         <div class="post-meta">
@@ -1645,6 +1842,24 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
           
 
           
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  960
+                </span>
+              
+
+              
+
+              
+            </div>
+          
 
           
 
@@ -1660,14 +1875,25 @@ SQLite多线程访问问题分析：12345678910111213141516171819202122232425262
 
       
         
-          
-          
-数据库作为App缓存设计的首选，存在一些开发的陷阱，同时需要考虑性能、开发效率和可维护性，笔者建议自行搭建数据库管理类，同时配合成熟的开源ORM框架快速搭建数据库模块。本方案采用ORM框架greenDAO，greenDAO是成熟的ORM框架，在性能和内存占用上很出色https://github.com/greenrobot/greenDAO
-
-Android数据库存在的问题：
-SQLite是数据库级别锁，同一个数据库连接可以多线程操作，同时读、写、读写操作，SQLite底层做了同步处理；
-多个数据库连接，只可以多线程读操作，不可写或读写操作，否则会抛出锁表异常android.database
-          ...
+          <blockquote>
+<p>数据库作为App缓存设计的首选，存在一些开发的陷阱，同时需要考虑性能、开发效率和可维护性，笔者建议自行搭建数据库管理类，同时配合成熟的开源ORM框架快速搭建数据库模块。<br>本方案采用ORM框架greenDAO，greenDAO是成熟的ORM框架，在性能和内存占用上很出色<br><a href="https://github.com/greenrobot/greenDAO">https://github.com/greenrobot/greenDAO</a></p>
+</blockquote>
+<h2 id="Android数据库存在的问题："><a href="#Android数据库存在的问题：" class="headerlink" title="Android数据库存在的问题："></a>Android数据库存在的问题：</h2><ol>
+<li>SQLite是<strong>数据库级别</strong>锁，同一个数据库连接可以多线程操作，同时读、写、读写操作，SQLite底层做了同步处理；</li>
+<li>多个数据库连接，只可以多线程读操作，不可写或读写操作，否则会抛出锁表异常<br><code>android.database.sqlite.SQLiteDatabaseLockedException: database is locked</code><br>总结：多个数据库连接不能同时操作涉及到写的操作，多线程写操作必须保证一个数据库连接。</li>
+</ol>
+<h2 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h2><h3 id="1-同步锁方案："><a href="#1-同步锁方案：" class="headerlink" title="1. 同步锁方案："></a>1. 同步锁方案：</h3><p>考虑性能，建议使用<strong>ReadWriteLock</strong>，ReadWriteLock可以并发读，可以大幅减少读操作造成的锁开销；</p>
+<ul>
+<li><p>在Application onCreate方法中创建全局唯一的ReadWriteLock；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> ReadWriteLock lock = <span class="keyword">new</span> ReentrantReadWriteLock(<span class="keyword">false</span>);</div></pre></td></tr></table></figure>
+</li>
+<li><p>在DAO中调用Application的ReadWriteLock，</p>
+</li>
+<li>读操作前调用<code>lock.readLock().lock();</code>加锁，执行完毕调后调用<br><code>lock.readLock.unlock();</code>解锁；</li>
+<li>写操作调用<code>lock.writeLock().lock();</code> 加锁，执行完毕后调用<br><code>lock.writeLock().unlock();</code> 解锁；</li>
+<li>在每次读写操作前需要获取数据库连接，用完后关闭释放资源。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserInfoDAO</span> </span>&#123;</div><div class="line">  <span class="keyword">private</span> Context context;</div><div class="line">  <span class="keyword">private</span> ReadWriteLock lock;</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">TestDAO</span><span class="params">(Context context, ReadWriteLock lock)</span></span>&#123;</div><div class="line">    <span class="keyword">this</span>.context = context;</div><div class="line">    <span class="keyword">this</span>.lock = lock;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> SQLiteDatabase <span class="title">getConnection</span><span class="params">()</span> </span>&#123;</div><div class="line">    SQLiteDatabase sqliteDatabase = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      sqliteDatabase = <span class="keyword">new</span> DatabaseHelper(context).getWritableDatabase();</div><div class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> sqliteDatabase;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert</span><span class="params">(UserInfo userInfo)</span></span>&#123;</div><div class="line">    lock.writeLock().lock(); </div><div class="line">    SQLiteDatabase db = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      ContentValues values = <span class="keyword">new</span> ContentValues();</div><div class="line">      values.put(<span class="string">"name"</span>, userInfo.getName());</div><div class="line">      values.put(<span class="string">"age"</span>, userInfo.getAge);</div><div class="line">      db = getConnection();</div><div class="line">      <span class="keyword">if</span>(db != <span class="keyword">null</span> &amp;&amp; db.isOpen())&#123;</div><div class="line">        db.insert(<span class="string">"userInfo"</span>, <span class="keyword">null</span>, values);</div><div class="line">      &#125;</div><div class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">    &#125;<span class="keyword">finally</span>&#123;</div><div class="line">       <span class="keyword">if</span> (db != <span class="keyword">null</span> &amp;&amp; db.isOpen()) &#123;</div><div class="line">         db.close();</div><div class="line">       &#125;</div><div class="line">       myLock.writeLock().unlock();   </div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> List&lt;UserInfo&gt; <span class="title">query</span><span class="params">()</span></span>&#123;</div><div class="line">    List&lt;UserInfo&gt; list = <span class="keyword">new</span> ArrayList&lt;UserInfo&gt;();</div><div class="line">    lock.readLock().lock(); </div><div class="line">    SQLiteDatabase db = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      db = getConnection();</div><div class="line">      <span class="keyword">if</span>(db != <span class="keyword">null</span> &amp;&amp; db.isOpen())&#123;</div><div class="line">        Cursor c = db.rawQuery(<span class="string">"SELECT * FROM userInfo"</span>, <span class="keyword">null</span>);</div><div class="line">        UserInfo info;</div><div class="line">        <span class="keyword">while</span> (c.moveToNext()) &#123;</div><div class="line">          info = <span class="keyword">new</span> UserInfo();</div><div class="line">          info.setName(c.getString(c.getColumnIndex(<span class="string">"name"</span>)));</div><div class="line">          info.setAge(c.getInt(c.getColumnIndex(<span class="string">"age"</span>)));</div><div class="line">          list.add(info);</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">    &#125;<span class="keyword">finally</span>&#123;</div><div class="line">       <span class="keyword">if</span> (db != <span class="keyword">null</span> &amp;&amp; db.isOpen()) &#123;</div><div class="line">         db.close();</div><div class="line">       &#125;</div><div class="line">       lock.readLock().unlock();   </div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> list;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2015/05/02/android-db-plan/#more" rel="contents">
@@ -1744,8 +1970,8 @@ SQLite是数据库级别锁，同一个数据库连接可以多线程操作，�
                alt="gcoder.io" />
           <p class="site-author-name" itemprop="name">gcoder.io</p>
            
-              <p class="site-description motion-element" itemprop="description">记录此时此刻的自己</p>
-          
+              <p class="site-description motion-element" itemprop="description"></p>
+           
         </div>
         <nav class="site-state motion-element">
 
@@ -1773,10 +1999,10 @@ SQLite是数据库级别锁，同一个数据库连接可以多线程操作，�
             
             
             <div class="site-state-item site-state-tags">
-              <a href="/tags/index.html">
+              
                 <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">标签</span>
-              </a>
+              
             </div>
           
 
@@ -1785,6 +2011,26 @@ SQLite是数据库级别锁，同一个数据库连接可以多线程操作，�
         
 
         <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/gcoder-io" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/snowleft" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
           
         </div>
 
@@ -1831,7 +2077,7 @@ SQLite是数据库级别锁，同一个数据库连接可以多线程操作，�
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+    NexT.Pisces
   </a>
 </div>
 
@@ -1845,6 +2091,8 @@ SQLite是数据库级别锁，同一个数据库连接可以多线程操作，�
     
       <div class="back-to-top">
         <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
         
       </div>
     
@@ -1904,6 +2152,13 @@ SQLite是数据库级别锁，同一个数据库连接可以多线程操作，�
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
 
   
 

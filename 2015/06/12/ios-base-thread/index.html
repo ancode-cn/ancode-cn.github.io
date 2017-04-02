@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
+<html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -94,14 +94,14 @@
 1234567891011121314- (void) testNSThread&amp;#123;    // 创建方法1    [NSThread detachNewThreadSelector">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS 多线程">
-<meta property="og:url" content="http://yoursite.com/2015/06/12/ios-base-thread/index.html">
+<meta property="og:url" content="http://gcoder-io.github.io/2015/06/12/ios-base-thread/index.html">
 <meta property="og:site_name" content="gcoder.io">
 <meta property="og:description" content="NSThread
 使用NSThread对象建立一个线程非常方便，但要使用NSThread管理多个线程较困难,不推荐使用;
 [NSThread currentThread]跟踪任务所在线程,适用于这三种技术。
 
 1234567891011121314- (void) testNSThread&amp;#123;    // 创建方法1    [NSThread detachNewThreadSelector">
-<meta property="og:updated_time" content="2017-03-19T16:35:14.000Z">
+<meta property="og:updated_time" content="2017-04-02T17:13:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS 多线程">
 <meta name="twitter:description" content="NSThread
@@ -116,8 +116,8 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":true},
     fancybox: true,
     motion: true,
     duoshuo: {
@@ -136,7 +136,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2015/06/12/ios-base-thread/"/>
+  <link rel="canonical" href="http://gcoder-io.github.io/2015/06/12/ios-base-thread/"/>
 
 
 
@@ -192,7 +192,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">http://www.gcoder.io</p>
+        <h1 class="site-subtitle" itemprop="description">记录此时此刻</h1>
       
   </div>
 
@@ -314,7 +314,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/06/12/ios-base-thread/">
+    <link itemprop="mainEntityOfPage" href="http://gcoder-io.github.io/2015/06/12/ios-base-thread/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="gcoder.io">
@@ -331,14 +331,14 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
+          <h2 class="post-title" itemprop="name headline">
             
             
               
                 iOS 多线程
               
             
-          </h1>
+          </h2>
         
 
         <div class="post-meta">
@@ -394,6 +394,24 @@
           
 
           
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  498
+                </span>
+              
+
+              
+
+              
+            </div>
+          
 
           
 
@@ -425,6 +443,7 @@
 <li>NSObject的多线程方法使用的是NSThread的多线程技术.</li>
 <li>NSThread的多线程技术不会自动使用@autoreleasepool.<br> 在使用NSObject或NSThread的多线程技术时,如果涉及到对象分配,需要手动添加@autoreleasepool.</li>
 </ul>
+<a id="more"></a>
 <h2 id="NSOperationQueue"><a href="#NSOperationQueue" class="headerlink" title="NSOperationQueue"></a>NSOperationQueue</h2><ul>
 <li>支持线程池，可配置并发线程最大数量；</li>
 <li>可设置线程间依赖关系，即在特定线程执行完毕后执行该线程；</li>
@@ -438,9 +457,6 @@
 <h4 id="NSRecursiveLock："><a href="#NSRecursiveLock：" class="headerlink" title="NSRecursiveLock："></a>NSRecursiveLock：</h4><p>递归锁，针对递归</p>
 <h4 id="NSDistributedLock："><a href="#NSDistributedLock：" class="headerlink" title="NSDistributedLock："></a>NSDistributedLock：</h4><p>分布锁，它本身是一个互斥锁，基于文件方式实现锁机制，可以跨进程访问。</p>
 <h4 id="pthread-mutex-t："><a href="#pthread-mutex-t：" class="headerlink" title="pthread_mutex_t："></a>pthread_mutex_t：</h4><p>同步锁，基于C语言的同步锁机制，使用方法与其他同步锁机制类似。</p>
-<blockquote>
-<p>本文作者：gcoder.io<br>本文链接：<a href="http://gcoder-io.github.io/2015/06/12/ios-base-thread/" target="_blank" rel="external">http://gcoder-io.github.io/2015/06/12/ios-base-thread/</a><br>版权声明： 本博客所有文章均为原创，转载请注明作者及出处</p>
-</blockquote>
 
       
     </div>
@@ -462,6 +478,21 @@
     <div>
       
         
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      gcoder.io
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://gcoder-io.github.io/2015/06/12/ios-base-thread/" title="iOS 多线程">http://gcoder-io.github.io/2015/06/12/ios-base-thread/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
 
       
     </div>
@@ -586,8 +617,8 @@
                alt="gcoder.io" />
           <p class="site-author-name" itemprop="name">gcoder.io</p>
            
-              <p class="site-description motion-element" itemprop="description">记录此时此刻的自己</p>
-          
+              <p class="site-description motion-element" itemprop="description"></p>
+           
         </div>
         <nav class="site-state motion-element">
 
@@ -615,10 +646,10 @@
             
             
             <div class="site-state-item site-state-tags">
-              <a href="/tags/index.html">
+              
                 <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">标签</span>
-              </a>
+              
             </div>
           
 
@@ -627,6 +658,26 @@
         
 
         <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/gcoder-io" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/snowleft" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
           
         </div>
 
@@ -689,7 +740,7 @@
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+    NexT.Pisces
   </a>
 </div>
 
@@ -703,6 +754,8 @@
     
       <div class="back-to-top">
         <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
         
       </div>
     
@@ -762,6 +815,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>

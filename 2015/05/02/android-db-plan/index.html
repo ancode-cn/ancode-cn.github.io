@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
+<html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -93,13 +93,13 @@ Android数据库存在的问题：
 SQLite是数据">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android 数据库模块搭建方案">
-<meta property="og:url" content="http://yoursite.com/2015/05/02/android-db-plan/index.html">
+<meta property="og:url" content="http://gcoder-io.github.io/2015/05/02/android-db-plan/index.html">
 <meta property="og:site_name" content="gcoder.io">
 <meta property="og:description" content="数据库作为App缓存设计的首选，存在一些开发的陷阱，同时需要考虑性能、开发效率和可维护性，笔者建议自行搭建数据库管理类，同时配合成熟的开源ORM框架快速搭建数据库模块。本方案采用ORM框架greenDAO，greenDAO是成熟的ORM框架，在性能和内存占用上很出色https://github.com/greenrobot/greenDAO
 
 Android数据库存在的问题：
 SQLite是数据">
-<meta property="og:updated_time" content="2017-03-19T15:52:17.000Z">
+<meta property="og:updated_time" content="2017-04-02T17:14:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android 数据库模块搭建方案">
 <meta name="twitter:description" content="数据库作为App缓存设计的首选，存在一些开发的陷阱，同时需要考虑性能、开发效率和可维护性，笔者建议自行搭建数据库管理类，同时配合成熟的开源ORM框架快速搭建数据库模块。本方案采用ORM框架greenDAO，greenDAO是成熟的ORM框架，在性能和内存占用上很出色https://github.com/greenrobot/greenDAO
@@ -113,8 +113,8 @@ SQLite是数据">
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":true},
     fancybox: true,
     motion: true,
     duoshuo: {
@@ -133,7 +133,7 @@ SQLite是数据">
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2015/05/02/android-db-plan/"/>
+  <link rel="canonical" href="http://gcoder-io.github.io/2015/05/02/android-db-plan/"/>
 
 
 
@@ -189,7 +189,7 @@ SQLite是数据">
       </a>
     </div>
       
-        <p class="site-subtitle">http://www.gcoder.io</p>
+        <h1 class="site-subtitle" itemprop="description">记录此时此刻</h1>
       
   </div>
 
@@ -311,7 +311,7 @@ SQLite是数据">
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/05/02/android-db-plan/">
+    <link itemprop="mainEntityOfPage" href="http://gcoder-io.github.io/2015/05/02/android-db-plan/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="gcoder.io">
@@ -328,14 +328,14 @@ SQLite是数据">
 
         
         
-          <h1 class="post-title" itemprop="name headline">
+          <h2 class="post-title" itemprop="name headline">
             
             
               
                 Android 数据库模块搭建方案
               
             
-          </h1>
+          </h2>
         
 
         <div class="post-meta">
@@ -391,6 +391,24 @@ SQLite是数据">
           
 
           
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  960
+                </span>
+              
+
+              
+
+              
+            </div>
+          
 
           
 
@@ -424,6 +442,7 @@ SQLite是数据">
 <li>在每次读写操作前需要获取数据库连接，用完后关闭释放资源。</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserInfoDAO</span> </span>&#123;</div><div class="line">  <span class="keyword">private</span> Context context;</div><div class="line">  <span class="keyword">private</span> ReadWriteLock lock;</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">TestDAO</span><span class="params">(Context context, ReadWriteLock lock)</span></span>&#123;</div><div class="line">    <span class="keyword">this</span>.context = context;</div><div class="line">    <span class="keyword">this</span>.lock = lock;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> SQLiteDatabase <span class="title">getConnection</span><span class="params">()</span> </span>&#123;</div><div class="line">    SQLiteDatabase sqliteDatabase = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      sqliteDatabase = <span class="keyword">new</span> DatabaseHelper(context).getWritableDatabase();</div><div class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> sqliteDatabase;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert</span><span class="params">(UserInfo userInfo)</span></span>&#123;</div><div class="line">    lock.writeLock().lock(); </div><div class="line">    SQLiteDatabase db = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      ContentValues values = <span class="keyword">new</span> ContentValues();</div><div class="line">      values.put(<span class="string">"name"</span>, userInfo.getName());</div><div class="line">      values.put(<span class="string">"age"</span>, userInfo.getAge);</div><div class="line">      db = getConnection();</div><div class="line">      <span class="keyword">if</span>(db != <span class="keyword">null</span> &amp;&amp; db.isOpen())&#123;</div><div class="line">        db.insert(<span class="string">"userInfo"</span>, <span class="keyword">null</span>, values);</div><div class="line">      &#125;</div><div class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">    &#125;<span class="keyword">finally</span>&#123;</div><div class="line">       <span class="keyword">if</span> (db != <span class="keyword">null</span> &amp;&amp; db.isOpen()) &#123;</div><div class="line">         db.close();</div><div class="line">       &#125;</div><div class="line">       myLock.writeLock().unlock();   </div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> List&lt;UserInfo&gt; <span class="title">query</span><span class="params">()</span></span>&#123;</div><div class="line">    List&lt;UserInfo&gt; list = <span class="keyword">new</span> ArrayList&lt;UserInfo&gt;();</div><div class="line">    lock.readLock().lock(); </div><div class="line">    SQLiteDatabase db = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      db = getConnection();</div><div class="line">      <span class="keyword">if</span>(db != <span class="keyword">null</span> &amp;&amp; db.isOpen())&#123;</div><div class="line">        Cursor c = db.rawQuery(<span class="string">"SELECT * FROM userInfo"</span>, <span class="keyword">null</span>);</div><div class="line">        UserInfo info;</div><div class="line">        <span class="keyword">while</span> (c.moveToNext()) &#123;</div><div class="line">          info = <span class="keyword">new</span> UserInfo();</div><div class="line">          info.setName(c.getString(c.getColumnIndex(<span class="string">"name"</span>)));</div><div class="line">          info.setAge(c.getInt(c.getColumnIndex(<span class="string">"age"</span>)));</div><div class="line">          list.add(info);</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">    &#125;<span class="keyword">finally</span>&#123;</div><div class="line">       <span class="keyword">if</span> (db != <span class="keyword">null</span> &amp;&amp; db.isOpen()) &#123;</div><div class="line">         db.close();</div><div class="line">       &#125;</div><div class="line">       lock.readLock().unlock();   </div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> list;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<a id="more"></a>
 <h3 id="2-多数据库方案："><a href="#2-多数据库方案：" class="headerlink" title="2. 多数据库方案："></a>2. 多数据库方案：</h3><p>每张table对应一个单独的db，由于SQLite在db层做了同步处理，故此方案支持读、写并发操作。</p>
 <h3 id="3-单数据库连接方案："><a href="#3-单数据库连接方案：" class="headerlink" title="3. 单数据库连接方案："></a>3. 单数据库连接方案：</h3><ul>
 <li>此方案采用整个Application保证只有一个数据库连接，利用SQLite单数据库连接支持同时读写的特性；</li>
@@ -438,9 +457,6 @@ SQLite是数据">
 <li>在Application onCreate方法中创建DatabaseManager，并调用初始化方法<br>startup，在此方法中获取数据库连接并保持，不释放，并通过数据库连接创建greenDao中DAO管理类;</li>
 <li>在业务中需要数据库的地方，只需要调用getDaoSession获取DAO管理类调用相应的DAO即可。</li>
 </ul>
-<blockquote>
-<p>本文作者：gcoder.io<br>本文链接：<a href="http://gcoder-io.github.io/2015/05/02/android-db-plan/" target="_blank" rel="external">http://gcoder-io.github.io/2015/05/02/android-db-plan/</a><br>版权声明： 本博客所有文章均为原创，转载请注明作者及出处</p>
-</blockquote>
 
       
     </div>
@@ -462,6 +478,21 @@ SQLite是数据">
     <div>
       
         
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      gcoder.io
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://gcoder-io.github.io/2015/05/02/android-db-plan/" title="Android 数据库模块搭建方案">http://gcoder-io.github.io/2015/05/02/android-db-plan/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
 
       
     </div>
@@ -582,8 +613,8 @@ SQLite是数据">
                alt="gcoder.io" />
           <p class="site-author-name" itemprop="name">gcoder.io</p>
            
-              <p class="site-description motion-element" itemprop="description">记录此时此刻的自己</p>
-          
+              <p class="site-description motion-element" itemprop="description"></p>
+           
         </div>
         <nav class="site-state motion-element">
 
@@ -611,10 +642,10 @@ SQLite是数据">
             
             
             <div class="site-state-item site-state-tags">
-              <a href="/tags/index.html">
+              
                 <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">标签</span>
-              </a>
+              
             </div>
           
 
@@ -623,6 +654,26 @@ SQLite是数据">
         
 
         <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/gcoder-io" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/snowleft" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
           
         </div>
 
@@ -685,7 +736,7 @@ SQLite是数据">
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+    NexT.Pisces
   </a>
 </div>
 
@@ -699,6 +750,8 @@ SQLite是数据">
     
       <div class="back-to-top">
         <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
         
       </div>
     
@@ -758,6 +811,13 @@ SQLite是数据">
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
