@@ -1,0 +1,1219 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,iOS,GoogleAnalytics,电商,实践," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="GA提供了多个维度的数据分析，覆盖了电商场景下所有的统计需求；
+
+行为屏幕一级屏幕
+二级屏幕
+名词解释
+二级屏幕：在一级屏幕基础上细分的二级屏幕；
+屏幕名称：屏幕统计埋点，key的名字；
+屏幕浏览量：屏幕pv，等于当前屏幕所有二级屏幕pv总和；
+唯一屏幕浏览量：屏幕浏览会话数量（默认30分钟），等于当前屏幕所有二级屏幕会话数量的总和；">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GoogleAnalytics在电商系统中的实践">
+<meta property="og:url" content="http://gcoder-io.github.io/2017/04/03/android-ga-guideline/index.html">
+<meta property="og:site_name" content="gcoder.io">
+<meta property="og:description" content="GA提供了多个维度的数据分析，覆盖了电商场景下所有的统计需求；
+
+行为屏幕一级屏幕
+二级屏幕
+名词解释
+二级屏幕：在一级屏幕基础上细分的二级屏幕；
+屏幕名称：屏幕统计埋点，key的名字；
+屏幕浏览量：屏幕pv，等于当前屏幕所有二级屏幕pv总和；
+唯一屏幕浏览量：屏幕浏览会话数量（默认30分钟），等于当前屏幕所有二级屏幕会话数量的总和；">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe9fyv9pk1j20q609rjtv.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe9glnn2imj20q709m76m.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe9h7v3tv4j20qq0dtack.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe9he9kphaj20q805n3zi.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe9iptwp64j20q40d9gpy.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe9klaiaxsj20q30drjsh.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe9klai4z4j20q5049js0.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe9klaipwaj20ve0dhjss.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe9lmld15cj20vg04kgme.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe9klaif03j20q506cabh.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe9klalzt4j20ve081act.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe9klai8k9j20q103zdgf.jpg">
+<meta property="og:updated_time" content="2017-04-03T15:54:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GoogleAnalytics在电商系统中的实践">
+<meta name="twitter:description" content="GA提供了多个维度的数据分析，覆盖了电商场景下所有的统计需求；
+
+行为屏幕一级屏幕
+二级屏幕
+名词解释
+二级屏幕：在一级屏幕基础上细分的二级屏幕；
+屏幕名称：屏幕统计埋点，key的名字；
+屏幕浏览量：屏幕pv，等于当前屏幕所有二级屏幕pv总和；
+唯一屏幕浏览量：屏幕浏览会话数量（默认30分钟），等于当前屏幕所有二级屏幕会话数量的总和；">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe9fyv9pk1j20q609rjtv.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://gcoder-io.github.io/2017/04/03/android-ga-guideline/"/>
+
+
+
+
+
+  <title> GoogleAnalytics在电商系统中的实践 | gcoder.io </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-96629651-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">gcoder.io</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">记录此时此刻</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://gcoder-io.github.io/2017/04/03/android-ga-guideline/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="gcoder.io">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe8hjcvyn4j20hs0hs3zz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="gcoder.io">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                GoogleAnalytics在电商系统中的实践
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-03T00:00:00+08:00">
+                2017-04-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  2,705
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>GA提供了多个维度的数据分析，覆盖了电商场景下所有的统计需求；</p>
+</blockquote>
+<h2 id="行为"><a href="#行为" class="headerlink" title="行为"></a>行为</h2><h3 id="屏幕"><a href="#屏幕" class="headerlink" title="屏幕"></a>屏幕</h3><h4 id="一级屏幕"><a href="#一级屏幕" class="headerlink" title="一级屏幕"></a>一级屏幕</h4><p><img src="http://ww1.sinaimg.cn/large/4fed004bly1fe9fyv9pk1j20q609rjtv.jpg" alt=""></p>
+<h4 id="二级屏幕"><a href="#二级屏幕" class="headerlink" title="二级屏幕"></a>二级屏幕</h4><p><img src="http://ww1.sinaimg.cn/large/4fed004bly1fe9glnn2imj20q709m76m.jpg" alt=""></p>
+<h4 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h4><ul>
+<li>二级屏幕：在一级屏幕基础上细分的二级屏幕；</li>
+<li>屏幕名称：屏幕统计埋点，key的名字；</li>
+<li>屏幕浏览量：屏幕pv，等于当前屏幕所有二级屏幕pv总和；</li>
+<li>唯一屏幕浏览量：屏幕浏览会话数量（默认30分钟），等于当前屏幕所有二级屏幕会话数量的总和；</li>
+</ul>
+<a id="more"></a>
+<h4 id="埋点位置"><a href="#埋点位置" class="headerlink" title="埋点位置"></a>埋点位置</h4><h5 id="Android"><a href="#Android" class="headerlink" title="Android"></a>Android</h5><ul>
+<li>Fragment/Activity onStart ；</li>
+<li>如果是ViewPager+Fragment结构，需要在切换Tab(点击/滑动)时添加统计； </li>
+</ul>
+<h5 id="iOS"><a href="#iOS" class="headerlink" title="iOS"></a>iOS</h5><ul>
+<li>ViewController viewWillAppear；</li>
+<li>如果是UIScrollView+ViewController结构，需要在切换Tab(点击/滑动)时添加统计； </li>
+<li>从后台进入前台，需要添加统计；</li>
+</ul>
+<h4 id="埋点代码"><a href="#埋点代码" class="headerlink" title="埋点代码"></a>埋点代码</h4><h5 id="Android-1"><a href="#Android-1" class="headerlink" title="Android"></a>Android</h5><h5 id="iOS-1"><a href="#iOS-1" class="headerlink" title="iOS"></a>iOS</h5><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">trackCustomDimensionPage</span><span class="params">(screenName: String, dimensionVaue: String)</span></span>&#123;</div><div class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> tracker = getTracker() <span class="keyword">else</span> &#123;<span class="keyword">return</span>&#125;</div><div class="line">        <span class="comment">// 设置一级屏幕</span></div><div class="line">        tracker.<span class="keyword">set</span>(kGAIScreenName, value: screenName)</div><div class="line">        <span class="comment">// 设置二级屏幕</span></div><div class="line">        tracker.<span class="keyword">set</span>(<span class="type">GAIFields</span>.customDimension(<span class="keyword">for</span>: <span class="number">1</span>), value: dimensionVaue)</div><div class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> builder = <span class="type">GAIDictionaryBuilder</span>.createScreenView().<span class="keyword">set</span>(dimensionVaue, forKey: <span class="type">GAIFields</span>.customDimension(<span class="keyword">for</span>: <span class="number">1</span>)) <span class="keyword">else</span> &#123;<span class="keyword">return</span>&#125;</div><div class="line">        tracker.send(builder.build() <span class="keyword">as</span> [<span class="type">NSObject</span> : <span class="type">AnyObject</span>])</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h4 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h4><h5 id="一级屏幕浏览量-二级屏幕浏览量"><a href="#一级屏幕浏览量-二级屏幕浏览量" class="headerlink" title="一级屏幕浏览量 != 二级屏幕浏览量"></a>一级屏幕浏览量 != 二级屏幕浏览量</h5><ul>
+<li><p>埋点代码错误，tracker和builder都必须设置二级屏幕；</p>
+  <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">tracker.<span class="keyword">set</span>(<span class="type">GAIFields</span>.customDimension(<span class="keyword">for</span>: <span class="number">1</span>), value: dimensionVaue)<span class="comment">//必须添加，否则会造成屏幕</span></div><div class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> builder = <span class="type">GAIDictionaryBuilder</span>.createScreenView().<span class="keyword">set</span>(dimensionVaue, forKey: <span class="type">GAIFields</span>.customDimension(<span class="keyword">for</span>: <span class="number">1</span>)) <span class="keyword">else</span> &#123;<span class="keyword">return</span>&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="屏幕浏览量大于实际浏览量"><a href="#屏幕浏览量大于实际浏览量" class="headerlink" title="屏幕浏览量大于实际浏览量"></a>屏幕浏览量大于实际浏览量</h5><ul>
+<li><p>产品列表展示统计造成的影响， 产品列表展示统计，会将当前一级屏幕及二级屏幕数据上传，解决方法是，强制将一级屏幕和二级屏幕参数值设置为空字符串；</p>
+  <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 特别注意：商品列表数据，必须强制设置屏幕及二级屏幕为空字符串，否则造成屏幕统计数量过多</span></div><div class="line">       tracker.<span class="keyword">set</span>(kGAIScreenName, value: <span class="string">""</span>)</div><div class="line">       tracker.<span class="keyword">set</span>(<span class="type">GAIFields</span>.customDimension(<span class="keyword">for</span>: <span class="number">1</span>), value: <span class="string">""</span>)</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="行为流"><a href="#行为流" class="headerlink" title="行为流"></a>行为流</h3><p><img src="http://ww1.sinaimg.cn/large/4fed004bly1fe9h7v3tv4j20qq0dtack.jpg" alt=""></p>
+<ul>
+<li>行为流，是根据屏幕统计数据分析，得出用户在App内所有操作行为的展现，可以查看每个交互行为的转化；</li>
+</ul>
+<h3 id="应用速度"><a href="#应用速度" class="headerlink" title="应用速度"></a>应用速度</h3><p><img src="http://ww1.sinaimg.cn/large/4fed004bly1fe9he9kphaj20q805n3zi.jpg" alt=""></p>
+<h4 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h4><h5 id="App启动时间的统计分析"><a href="#App启动时间的统计分析" class="headerlink" title="App启动时间的统计分析"></a>App启动时间的统计分析</h5><ul>
+<li>App启动时间，特别是冷启动时间对启动率和留存率的影响还是蛮大的；</li>
+<li>可以将App启动时间做二级维度的拆分，冷启动时间、热启动时间、CPU数量、内存大小、系统版本等，为启动时间的优化提供数据支持；</li>
+</ul>
+<h4 id="API执行时间统计分析"><a href="#API执行时间统计分析" class="headerlink" title="API执行时间统计分析"></a>API执行时间统计分析</h4><ul>
+<li>服务端的API执行时间统计，是从接收到请求到处理完响应的过程，无法准确反应实际场景下用户的等待时间；在App端额外添加统计作为辅助；</li>
+<li>可以对整个请求时间做二级维度的拆分，请求时间、响应时间、数据解析时间，做优化时有数据支持更有针对性；</li>
+</ul>
+<h4 id="其它业务场景下的统计分析"><a href="#其它业务场景下的统计分析" class="headerlink" title="其它业务场景下的统计分析"></a>其它业务场景下的统计分析</h4><ul>
+<li>为版本迭代的效果提供数据依据，例如，订单确认页的改版是为了提高用户下单的效率，除了观察下单数量的变化外，在订单确认页到提交订单实际停留时间埋点更直接有效；</li>
+<li>一些实际业务场景统计<ul>
+<li>订单确认页到提交订单实际停留时间；</li>
+<li>购物流程耗时；</li>
+<li>支付流程耗时；</li>
+<li>注册流程耗时</li>
+<li>分享流程耗时；</li>
+</ul>
+</li>
+</ul>
+<h2 id="转化-电子商务"><a href="#转化-电子商务" class="headerlink" title="转化-电子商务"></a>转化-电子商务</h2><h3 id="产品列表业绩"><a href="#产品列表业绩" class="headerlink" title="产品列表业绩"></a>产品列表业绩</h3><p><img src="http://ww1.sinaimg.cn/large/4fed004bly1fe9iptwp64j20q40d9gpy.jpg" alt=""></p>
+<h4 id="名词解释-1"><a href="#名词解释-1" class="headerlink" title="名词解释"></a>名词解释</h4><ul>
+<li>在产品列表中获得的浏览次数：列表请求次数 x 列表中所有商品的总和；</li>
+<li>在产品列表中获得的点击次数：点击进入详情页的次数；</li>
+<li>产品结账次数：进入自定义的checkout流程的次数；目前是进入订单确认页的次数；</li>
+<li>唯一身份购买次数：商品实际支付成功的次数；例如：一个订单包含多件单品，单品也可能来自不同的产品列表，支付成功后该数据会体现在不同的产品列表中；</li>
+<li>产品收入：实际支付成功的金额；</li>
+</ul>
+<h4 id="产品列表展示"><a href="#产品列表展示" class="headerlink" title="产品列表展示"></a>产品列表展示</h4><h5 id="埋点位置-1"><a href="#埋点位置-1" class="headerlink" title="埋点位置"></a>埋点位置</h5><ul>
+<li>所有产品列表获取到网络数据，将新获取到的所有产品添加到统计；<ul>
+<li>首次进入页面获取到网络数据；</li>
+<li>请求数据失败重试；</li>
+<li>下拉刷新；     </li>
+</ul>
+</li>
+</ul>
+<h5 id="埋点代码-1"><a href="#埋点代码-1" class="headerlink" title="埋点代码"></a>埋点代码</h5><ul>
+<li>Android</li>
+<li><p>iOS</p>
+  <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">trackerItemProductList</span><span class="params">(className: String, impressionList: String, itemInfos: [ItemInfo])</span></span> &#123;</div><div class="line">    <span class="keyword">guard</span> <span class="keyword">let</span> builder = <span class="type">GAIDictionaryBuilder</span>.createScreenView() <span class="keyword">else</span> &#123;<span class="keyword">return</span>&#125;</div><div class="line">    <span class="keyword">var</span> productCount = <span class="number">0</span></div><div class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> itemInfos &#123;</div><div class="line">        <span class="keyword">if</span> <span class="keyword">let</span> title = item.title, <span class="keyword">let</span> price = item.price, <span class="keyword">let</span> id = item.itemId &#123;</div><div class="line">            productCount = productCount + <span class="number">1</span></div><div class="line">            addProductImpressionToBuilder(id: <span class="type">String</span>(id), name: title, price: price</div><div class="line">                , impressionList: impressionList, builder: builder)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    sendProductList(className, impressionList: impressionList, builder: builder, productCount: productCount)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">addProductImpressionToBuilder</span><span class="params">(id: String, name: String, price: Double</span></span></div><div class="line">    , impressionList: String, builder: GAIDictionaryBuilder)&#123;</div><div class="line"></div><div class="line">    <span class="keyword">let</span> product = <span class="type">GAIEcommerceProduct</span>()</div><div class="line">    <span class="keyword">let</span> customId = id + <span class="string">"-\(name)"</span></div><div class="line">    product.setId(customId)</div><div class="line">    product.setName(name)</div><div class="line">    product.setBrand(<span class="string">"xxx"</span>)</div><div class="line">    product.setPrice(price <span class="keyword">as</span> <span class="type">NSNumber</span>!)</div><div class="line">    </div><div class="line">    builder.addProductImpression(product, impressionList: impressionList, impressionSource: <span class="literal">nil</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">sendProductList</span><span class="params">(<span class="number">_</span> className: String, impressionList: String, builder: GAIDictionaryBuilder, productCount: Int)</span></span>&#123;</div><div class="line">    <span class="keyword">guard</span> <span class="keyword">let</span> tracker = getTracker() <span class="keyword">else</span> &#123;<span class="keyword">return</span>&#125;</div><div class="line"></div><div class="line">    <span class="comment">// 特别注意：商品列表数据，必须强制设置屏幕及二级屏幕为空字符串，否则造成屏幕统计数量过多</span></div><div class="line">    tracker.<span class="keyword">set</span>(kGAIScreenName, value: <span class="string">""</span>)</div><div class="line">    tracker.<span class="keyword">set</span>(<span class="type">GAIFields</span>.customDimension(<span class="keyword">for</span>: <span class="number">1</span>), value: <span class="string">""</span>)</div><div class="line">    </div><div class="line">    tracker.send(builder.build() <span class="keyword">as</span> [<span class="type">NSObject</span> : <span class="type">AnyObject</span>])</div><div class="line">    zzlog(<span class="string">" Google Analytics className --&gt; \(className) 展示列表 --&gt;|\(impressionList)| --&gt; productCount:\(productCount)"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="产品点击"><a href="#产品点击" class="headerlink" title="产品点击"></a>产品点击</h4><h5 id="埋点位置-2"><a href="#埋点位置-2" class="headerlink" title="埋点位置"></a>埋点位置</h5><ul>
+<li>跳转到商品详情页点击事件；</li>
+</ul>
+<h5 id="埋点代码-2"><a href="#埋点代码-2" class="headerlink" title="埋点代码"></a>埋点代码</h5><ul>
+<li>Android</li>
+<li><p>iOS</p>
+  <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">trackerProductClick</span><span class="params">(className: String, id: String, name: String, price: Double, impressionList: String)</span></span>&#123;</div><div class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> tracker = getTracker() <span class="keyword">else</span> &#123;<span class="keyword">return</span>&#125;</div><div class="line">        <span class="keyword">var</span> product = <span class="type">GAIEcommerceProduct</span>()</div><div class="line">        <span class="keyword">let</span> customId = id + <span class="string">"-\(name)"</span></div><div class="line">        product.setId(customId)</div><div class="line">        product.setName(name)</div><div class="line">        product.setBrand(<span class="string">"xxx"</span>)</div><div class="line">        product.setPrice(price <span class="keyword">as</span> <span class="type">NSNumber</span>!)</div><div class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> builder = <span class="type">GAIDictionaryBuilder</span>.createScreenView() <span class="keyword">else</span> &#123;<span class="keyword">return</span>&#125;</div><div class="line">        builder.addProductImpression(product, impressionList: impressionList, impressionSource: <span class="literal">nil</span>)</div><div class="line">        </div><div class="line">        product = <span class="type">GAIEcommerceProduct</span>()</div><div class="line">        product.setId(customId)</div><div class="line">        product.setName(name)</div><div class="line">        product.setBrand(<span class="string">"xxx"</span>)</div><div class="line">        product.setPrice(price <span class="keyword">as</span> <span class="type">NSNumber</span>!)</div><div class="line">        </div><div class="line">        <span class="keyword">let</span> action = <span class="type">GAIEcommerceProductAction</span>()</div><div class="line">        action.setAction(kGAIPADetail)</div><div class="line">        action.setProductActionList(impressionList)</div><div class="line"></div><div class="line">        builder.setProductAction(action)</div><div class="line">        builder.add(product)</div><div class="line">        <span class="comment">//tracker.set(kGAIScreenName, value: className)</span></div><div class="line">        <span class="keyword">let</span> detailBuilderDict = builder.build() <span class="keyword">as</span> [<span class="type">NSObject</span> : <span class="type">AnyObject</span>]</div><div class="line">        tracker.send(detailBuilderDict)</div><div class="line">        zzlog(<span class="string">"detailBuilderDict:\(detailBuilderDict)"</span>)</div><div class="line">        </div><div class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> clickBuilder = <span class="type">GAIDictionaryBuilder</span>.createEvent(withCategory: <span class="string">"Ecommerce"</span>, action: kGAIPAClick, label: <span class="literal">nil</span>, value: <span class="literal">nil</span>) <span class="keyword">else</span> &#123;<span class="keyword">return</span>&#125;</div><div class="line">        <span class="keyword">let</span> clickAction = <span class="type">GAIEcommerceProductAction</span>()</div><div class="line">        clickAction.setAction(kGAIPAClick)</div><div class="line">        clickBuilder.add(product)</div><div class="line">        clickAction.setProductActionList(impressionList)</div><div class="line">        clickBuilder.setProductAction(clickAction)</div><div class="line">        <span class="keyword">let</span> clickBuilderDict = clickBuilder.build() <span class="keyword">as</span> [<span class="type">NSObject</span> : <span class="type">AnyObject</span>]</div><div class="line">        tracker.send(clickBuilderDict)</div><div class="line">        zzlog(<span class="string">"clickBuilderDict:\(clickBuilderDict)"</span>)</div><div class="line"></div><div class="line">        zzlog(<span class="string">"Google Analytics \(name) 在 |\(impressionList)| 列表中被点击了"</span>)</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="产品添加到购物车"><a href="#产品添加到购物车" class="headerlink" title="产品添加到购物车"></a>产品添加到购物车</h4><h5 id="埋点位置-3"><a href="#埋点位置-3" class="headerlink" title="埋点位置"></a>埋点位置</h5><ul>
+<li>添加商品到购物车成功；</li>
+</ul>
+<h5 id="埋点代码-3"><a href="#埋点代码-3" class="headerlink" title="埋点代码"></a>埋点代码</h5><ul>
+<li>Android</li>
+<li><p>iOS</p>
+  <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">trackerAddItemProductToCartList</span><span class="params">(className: String, quantity: Int, itemInfo: ItemInfo)</span></span> &#123;</div><div class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> tracker = getTracker() <span class="keyword">else</span> &#123;<span class="keyword">return</span>&#125;</div><div class="line">        <span class="keyword">if</span> <span class="keyword">let</span> title = itemInfo.title, <span class="keyword">let</span> price = itemInfo.price, <span class="keyword">let</span> itemId = itemInfo.itemId &#123;</div><div class="line">            <span class="keyword">let</span> product = <span class="type">GAIEcommerceProduct</span>()</div><div class="line">            <span class="keyword">let</span> customId = <span class="type">String</span>(itemId) + <span class="string">"-\(title)"</span></div><div class="line">            product.setId(customId)</div><div class="line">            product.setName(title)</div><div class="line">            product.setBrand(<span class="string">"xxx"</span>)</div><div class="line">            product.setPrice(price <span class="keyword">as</span> <span class="type">NSNumber</span>!)</div><div class="line">            product.setQuantity(quantity <span class="keyword">as</span> <span class="type">NSNumber</span>!)</div><div class="line">            </div><div class="line">            <span class="keyword">let</span> action = <span class="type">GAIEcommerceProductAction</span>()</div><div class="line">            action.setAction(kGAIPAAdd)</div><div class="line">            </div><div class="line">             <span class="keyword">guard</span> <span class="keyword">let</span> builder = <span class="type">GAIDictionaryBuilder</span>.createEvent(withCategory: <span class="string">"Ecommerce"</span>, action: kGAIPAAdd, label: <span class="literal">nil</span>, value: <span class="literal">nil</span>) <span class="keyword">else</span> &#123;<span class="keyword">return</span>&#125;</div><div class="line">            builder.setProductAction(action)</div><div class="line">            builder.add(product)</div><div class="line">            <span class="comment">//tracker.set(kGAIScreenName, value: className)</span></div><div class="line">            tracker.send(builder.build() <span class="keyword">as</span> [<span class="type">NSObject</span> : <span class="type">AnyObject</span>])</div><div class="line">            zzlog(<span class="string">" Google Analytics 添加单品到购物车 --&gt; |\(builder.build() as [NSObject : AnyObject])|"</span>)</div><div class="line">        &#125;</div><div class="line">        <span class="type">GAIHelper</span>.sendHitsNow()</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="结账行为"><a href="#结账行为" class="headerlink" title="结账行为"></a>结账行为</h3><blockquote>
+<p>可以查看结账流程每一步的转化率；</p>
+</blockquote>
+<p><img src="http://ww1.sinaimg.cn/large/4fed004bly1fe9klaiaxsj20q30drjsh.jpg" alt=""><br><img src="http://ww1.sinaimg.cn/large/4fed004bly1fe9klai4z4j20q5049js0.jpg" alt=""></p>
+<h4 id="名词解释-2"><a href="#名词解释-2" class="headerlink" title="名词解释"></a>名词解释</h4><ul>
+<li>带来交易的会话：实际支付成功的会话数（默认30分钟视为一个会话）；</li>
+</ul>
+<h4 id="自定义Checkout流程"><a href="#自定义Checkout流程" class="headerlink" title="自定义Checkout流程"></a>自定义Checkout流程</h4><h5 id="埋点位置-4"><a href="#埋点位置-4" class="headerlink" title="埋点位置"></a>埋点位置</h5><ul>
+<li>订单确认页页面初始化位置；</li>
+<li>点击确认订单按钮后，提交订单成功；</li>
+<li>支付按钮点击事件；</li>
+</ul>
+<h5 id="埋点代码-4"><a href="#埋点代码-4" class="headerlink" title="埋点代码"></a>埋点代码</h5><ul>
+<li>Android</li>
+<li><p>iOS</p>
+  <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">trackCheckoutStep</span><span class="params">(orderSn: String, orderPrice: Double, items: [Item])</span></span>&#123;</div><div class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> tracker = getTracker() <span class="keyword">else</span> &#123;<span class="keyword">return</span>&#125;</div><div class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> builder = <span class="type">GAIDictionaryBuilder</span>.createEvent(withCategory: <span class="string">"Ecommerce"</span>, action: <span class="string">"Checkout"</span>, label: <span class="literal">nil</span>, value: <span class="literal">nil</span>) <span class="keyword">else</span> &#123;<span class="keyword">return</span>&#125;</div><div class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> items&#123;</div><div class="line">            <span class="keyword">if</span> item.isSuite ?? <span class="literal">false</span>&#123;</div><div class="line">                <span class="keyword">if</span> item.children != <span class="literal">nil</span>&#123;</div><div class="line">                    <span class="keyword">for</span> subItem <span class="keyword">in</span> item.children&#123;</div><div class="line">                        builder.add(createProduct(item: subItem))</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;<span class="keyword">else</span>&#123;</div><div class="line">                builder.add(createProduct(item: item))</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// action</span></div><div class="line">        <span class="keyword">let</span> action = <span class="type">GAIEcommerceProductAction</span>()</div><div class="line">        action.setAction(kGAIPACheckout)</div><div class="line">        <span class="comment">// 根据checkout流程设置步骤数，目前为：1、2、3</span></div><div class="line">        action.setCheckoutStep(<span class="number">1</span>)</div><div class="line">        </div><div class="line">        </div><div class="line">        builder.setProductAction(action)</div><div class="line">        tracker.send(builder.build() <span class="keyword">as</span> [<span class="type">NSObject</span> : <span class="type">AnyObject</span>])</div><div class="line">        <span class="type">GAIHelper</span>.sendHitsNow()</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="Purchase"><a href="#Purchase" class="headerlink" title="Purchase"></a>Purchase</h4><h5 id="埋点位置-5"><a href="#埋点位置-5" class="headerlink" title="埋点位置"></a>埋点位置</h5><ul>
+<li>App支付成功页面或服务端支付成功代码处；</li>
+</ul>
+<h5 id="埋点代码-5"><a href="#埋点代码-5" class="headerlink" title="埋点代码"></a>埋点代码</h5><ul>
+<li>Android</li>
+<li><p>iOS</p>
+  <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">onPurchaseCompleted</span><span class="params">(transactionId: String, revenue: Double, items: [Item])</span></span> &#123;</div><div class="line">	    <span class="keyword">guard</span> <span class="keyword">let</span> tracker = getTracker() <span class="keyword">else</span> &#123;<span class="keyword">return</span>&#125;</div><div class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> builder = <span class="type">GAIDictionaryBuilder</span>.createEvent(withCategory: <span class="string">"Ecommerce"</span>, action: kGAIPAPurchase, label: <span class="literal">nil</span>, value: <span class="literal">nil</span>) <span class="keyword">else</span> &#123;<span class="keyword">return</span>&#125;</div><div class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> items&#123;</div><div class="line">            <span class="keyword">if</span> item.isSuite ?? <span class="literal">false</span>&#123;</div><div class="line">                <span class="keyword">if</span> item.children != <span class="literal">nil</span>&#123;</div><div class="line">                    <span class="keyword">for</span> subItem <span class="keyword">in</span> item.children&#123;</div><div class="line">                        builder.add(createProduct(item: subItem))</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;<span class="keyword">else</span>&#123;</div><div class="line">                builder.add(createProduct(item: item))</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="comment">// action</span></div><div class="line">        <span class="keyword">let</span> action = <span class="type">GAIEcommerceProductAction</span>()</div><div class="line">        action.setAction(kGAIPAPurchase)</div><div class="line">        action.setTransactionId(transactionId)</div><div class="line">        action.setRevenue(revenue <span class="keyword">as</span> <span class="type">NSNumber</span>!)</div><div class="line">        builder.setProductAction(action)</div><div class="line">        tracker.send(builder.build() <span class="keyword">as</span> [<span class="type">NSObject</span> : <span class="type">AnyObject</span>])</div><div class="line">        <span class="type">GAIHelper</span>.sendHitsNow()</div><div class="line"></div><div class="line">        zzlog(<span class="string">" Google Analytics 电子商务 支付完成：\(builder.build() as [NSObject : AnyObject])"</span>)</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="购物行为"><a href="#购物行为" class="headerlink" title="购物行为"></a>购物行为</h3><p><img src="http://ww1.sinaimg.cn/large/4fed004bly1fe9klaipwaj20ve0dhjss.jpg" alt=""><br><img src="http://ww1.sinaimg.cn/large/4fed004bly1fe9lmld15cj20vg04kgme.jpg" alt=""></p>
+<h4 id="名词解释-3"><a href="#名词解释-3" class="headerlink" title="名词解释"></a>名词解释</h4><ul>
+<li>已结账的会话：进入自定义checkout流程的会话数；</li>
+<li>带来交易的会话：实际支付成功的会话数；</li>
+</ul>
+<h3 id="销售业绩"><a href="#销售业绩" class="headerlink" title="销售业绩"></a>销售业绩</h3><blockquote>
+<p>销售业绩，显示的是实际支付成功的订单；</p>
+</blockquote>
+<h4 id="订单列表"><a href="#订单列表" class="headerlink" title="订单列表"></a>订单列表</h4><p><img src="http://ww1.sinaimg.cn/large/4fed004bly1fe9klaif03j20q506cabh.jpg" alt=""></p>
+<h4 id="订单详情"><a href="#订单详情" class="headerlink" title="订单详情"></a>订单详情</h4><p><img src="http://ww1.sinaimg.cn/large/4fed004bly1fe9klalzt4j20ve081act.jpg" alt=""></p>
+<h3 id="产品业绩"><a href="#产品业绩" class="headerlink" title="产品业绩"></a>产品业绩</h3><blockquote>
+<p>产品业绩，显示的是实际支付成功的商品；</p>
+</blockquote>
+<p><img src="http://ww1.sinaimg.cn/large/4fed004bly1fe9klai8k9j20q103zdgf.jpg" alt=""></p>
+<h3 id="常见问题-1"><a href="#常见问题-1" class="headerlink" title="常见问题"></a>常见问题</h3><h4 id="产品列表业绩，出现大量noset"><a href="#产品列表业绩，出现大量noset" class="headerlink" title="产品列表业绩，出现大量noset"></a>产品列表业绩，出现大量noset</h4><h5 id="App端统计问题"><a href="#App端统计问题" class="headerlink" title="App端统计问题"></a>App端统计问题</h5><ul>
+<li>添加了购物车列表的统计；</li>
+</ul>
+<h5 id="服务端统计问题"><a href="#服务端统计问题" class="headerlink" title="服务端统计问题"></a>服务端统计问题</h5><ul>
+<li><p>服务端在支付成功的统计中，将”t”对应的值写成了”pageview”，必须为”event”</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">put(<span class="string">"t"</span>, <span class="string">"event"</span>);<span class="comment">//匹配的类型（订单支付成功就填这个） 必填</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="产品列表业绩，产品结账次数错误"><a href="#产品列表业绩，产品结账次数错误" class="headerlink" title="产品列表业绩，产品结账次数错误"></a>产品列表业绩，产品结账次数错误</h4><ul>
+<li>产品结账次数，是进入checkout流程第一步的次数；如果有可能直接进入checkout流程第二步就会造成此数据不显示，应该考虑重构checkout流程；</li>
+</ul>
+<h4 id="结账行为，统计数据与实际数据差距较大"><a href="#结账行为，统计数据与实际数据差距较大" class="headerlink" title="结账行为，统计数据与实际数据差距较大"></a>结账行为，统计数据与实际数据差距较大</h4><ul>
+<li>GA默认120秒定时发送缓存的统计数据，如果用户走完购买流程后直接退出App可能造成数据统计不全；</li>
+<li><p>解决方案</p>
+<ul>
+<li>可将checkout流程、添加到购物车、Purchase放在服务端埋点；</li>
+<li><p>App在checkout流程、添加到购物车、Purchase埋点时，主动调度GA发送数据；</p>
+  <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 主动调度数据匹配</span></div><div class="line"><span class="type">GAI</span>.sharedInstance().dispatch()</div></pre></td></tr></table></figure>
+</li>
+<li><p>App进入后台，主动调度GA发送数据；</p>
+  <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">applicationDidEnterBackground</span><span class="params">(<span class="number">_</span> application: UIApplication)</span></span> &#123;</div><div class="line">       sendHitsInBackground()</div><div class="line">   &#125;</div><div class="line">   </div><div class="line">   <span class="function"><span class="keyword">func</span> <span class="title">applicationWillEnterForeground</span><span class="params">(<span class="number">_</span> application: UIApplication)</span></span> &#123;</div><div class="line">       <span class="type">GAI</span>.sharedInstance().dispatchInterval = <span class="number">120</span></div><div class="line">   &#125;</div><div class="line">   </div><div class="line">   <span class="keyword">private</span> <span class="keyword">var</span> dispatchHandler:((<span class="number">_</span> result: <span class="type">GAIDispatchResult</span> ) -&gt; ())?</div><div class="line">	</div><div class="line">   <span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">sendHitsInBackground</span><span class="params">()</span></span> &#123;</div><div class="line">       <span class="keyword">var</span> taskExpired = <span class="literal">false</span></div><div class="line">       <span class="keyword">let</span> taskId = <span class="type">UIApplication</span>.shared.beginBackgroundTask &#123;</div><div class="line">           taskExpired = <span class="literal">true</span></div><div class="line">       &#125;</div><div class="line">       <span class="keyword">if</span> (taskId == <span class="type">UIBackgroundTaskInvalid</span>) &#123;</div><div class="line">           <span class="keyword">return</span></div><div class="line">       &#125;</div><div class="line">       <span class="keyword">self</span>.dispatchHandler = &#123;[<span class="keyword">weak</span> <span class="keyword">self</span>] (result) <span class="keyword">in</span></div><div class="line">           <span class="keyword">if</span> (result == <span class="type">GAIDispatchResult</span>.good &amp;&amp; !taskExpired) &#123;</div><div class="line">               <span class="type">GAI</span>.sharedInstance().dispatch(completionHandler: <span class="keyword">self</span>?.dispatchHandler)</div><div class="line">           &#125;<span class="keyword">else</span>&#123;</div><div class="line">               <span class="type">UIApplication</span>.shared.endBackgroundTask(taskId)</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">       <span class="type">GAI</span>.sharedInstance().dispatch(completionHandler: <span class="keyword">self</span>.dispatchHandler)</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="接入问题"><a href="#接入问题" class="headerlink" title="接入问题"></a>接入问题</h2><h3 id="怎么区分开发-生产环境"><a href="#怎么区分开发-生产环境" class="headerlink" title="怎么区分开发/生产环境"></a>怎么区分开发/生产环境</h3><h4 id="编译期区分生产-测试环境"><a href="#编译期区分生产-测试环境" class="headerlink" title="编译期区分生产/测试环境"></a>编译期区分生产/测试环境</h4><ul>
+<li>Android可以在BuildConfig中，根据编译环境动态配置GA AppKey；</li>
+<li>iOS可以通过DEBUG宏动态配置GA AppKey；</li>
+</ul>
+<h4 id="运行期区分生产-测试环境"><a href="#运行期区分生产-测试环境" class="headerlink" title="运行期区分生产/测试环境"></a>运行期区分生产/测试环境</h4><ul>
+<li>日常测试，下载生产环境的App，通过更改DNS连接到测试服务器测试，可能会造成统计数据发送到生产环境；</li>
+<li>将GA AppKey在服务端根据环境动态下发到App；</li>
+</ul>
+<h3 id="Android接入后Crash"><a href="#Android接入后Crash" class="headerlink" title="Android接入后Crash"></a>Android接入后Crash</h3><pre><code class="java">java.lang.NoSuchMethodError: <span class="function">No <span class="keyword">static</span> method <span class="title">zzb</span><span class="params">(Ljava/lang/Object;Ljava/lang/Object;)</span>Ljava/lang/Object</span>;
+         in <span class="class"><span class="keyword">class</span> <span class="title">Lcom</span>/<span class="title">google</span>/<span class="title">android</span>/<span class="title">gms</span>/<span class="title">common</span>/<span class="title">internal</span>/<span class="title">zzaa</span></span>;
+         <span class="function">or its <span class="keyword">super</span> <span class="title">classes</span> <span class="params">(declaration of <span class="string">'com.google.android.gms.common.internal.zzaa'</span>
+         appears in /data/data/com.zaozuo.android/files/instant-run/dex/slice-com.google.android.gms-play-services-basement<span class="number">-9.2</span><span class="number">.0</span>_838f224be8ca39a2f48a2f75d5178b0e700ad7c6-classes.dex)</span>
+         at com.google.firebase.provider.FirebaseInitProvider.<span class="title">zza</span><span class="params">(Unknown Source)</span>
+         at com.google.firebase.provider.FirebaseInitProvider.<span class="title">attachInfo</span><span class="params">(Unknown Source)</span>
+         at android.app.ActivityThread.<span class="title">installProvider</span><span class="params">(ActivityThread.java:<span class="number">5595</span>)</span>
+         at android.app.ActivityThread.<span class="title">installContentProviders</span><span class="params">(ActivityThread.java:<span class="number">5168</span>)</span>
+         at android.app.ActivityThread.<span class="title">handleBindApplication</span><span class="params">(ActivityThread.java:<span class="number">5108</span>)</span>
+         at android.app.ActivityThread.-<span class="title">wrap2</span><span class="params">(ActivityThread.java)</span>
+         at android.app.ActivityThread$H.<span class="title">handleMessage</span><span class="params">(ActivityThread.java:<span class="number">1633</span>)</span>
+         at android.os.Handler.<span class="title">dispatchMessage</span><span class="params">(Handler.java:<span class="number">111</span>)</span>
+         at android.os.Looper.<span class="title">loop</span><span class="params">(Looper.java:<span class="number">207</span>)</span>
+         at android.app.ActivityThread.<span class="title">main</span><span class="params">(ActivityThread.java:<span class="number">5896</span>)</span>
+         at java.lang.reflect.Method.<span class="title">invoke</span><span class="params">(Native Method)</span>
+         at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.<span class="title">run</span><span class="params">(ZygoteInit.java:<span class="number">789</span>)</span>
+         at com.android.internal.os.ZygoteInit.<span class="title">main</span><span class="params">(ZygoteInit.java:<span class="number">679</span>)</span></span>
+</code></pre>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      gcoder.io
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://gcoder-io.github.io/2017/04/03/android-ga-guideline/" title="GoogleAnalytics在电商系统中的实践">http://gcoder-io.github.io/2017/04/03/android-ga-guideline/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/GoogleAnalytics/" rel="tag"># GoogleAnalytics</a>
+          
+            <a href="/tags/电商/" rel="tag"># 电商</a>
+          
+            <a href="/tags/实践/" rel="tag"># 实践</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/26/android-network-framework/" rel="next" title="Android 网络层Library设计">
+                <i class="fa fa-chevron-left"></i> Android 网络层Library设计
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODAxMy80NTkw"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://ww1.sinaimg.cn/large/4fed004bly1fe8hjcvyn4j20hs0hs3zz.jpg"
+               alt="gcoder.io" />
+          <p class="site-author-name" itemprop="name">gcoder.io</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/gcoder-io" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/snowleft" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#行为"><span class="nav-number">1.</span> <span class="nav-text">行为</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#屏幕"><span class="nav-number">1.1.</span> <span class="nav-text">屏幕</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一级屏幕"><span class="nav-number">1.1.1.</span> <span class="nav-text">一级屏幕</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二级屏幕"><span class="nav-number">1.1.2.</span> <span class="nav-text">二级屏幕</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#名词解释"><span class="nav-number">1.1.3.</span> <span class="nav-text">名词解释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#埋点位置"><span class="nav-number">1.1.4.</span> <span class="nav-text">埋点位置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Android"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">Android</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#iOS"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">iOS</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#埋点代码"><span class="nav-number">1.1.5.</span> <span class="nav-text">埋点代码</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Android-1"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">Android</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#iOS-1"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">iOS</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常见问题"><span class="nav-number">1.1.6.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#一级屏幕浏览量-二级屏幕浏览量"><span class="nav-number">1.1.6.1.</span> <span class="nav-text">一级屏幕浏览量 != 二级屏幕浏览量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#屏幕浏览量大于实际浏览量"><span class="nav-number">1.1.6.2.</span> <span class="nav-text">屏幕浏览量大于实际浏览量</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#行为流"><span class="nav-number">1.2.</span> <span class="nav-text">行为流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用速度"><span class="nav-number">1.3.</span> <span class="nav-text">应用速度</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用场景"><span class="nav-number">1.3.1.</span> <span class="nav-text">使用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#App启动时间的统计分析"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">App启动时间的统计分析</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#API执行时间统计分析"><span class="nav-number">1.3.2.</span> <span class="nav-text">API执行时间统计分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其它业务场景下的统计分析"><span class="nav-number">1.3.3.</span> <span class="nav-text">其它业务场景下的统计分析</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#转化-电子商务"><span class="nav-number">2.</span> <span class="nav-text">转化-电子商务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#产品列表业绩"><span class="nav-number">2.1.</span> <span class="nav-text">产品列表业绩</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#名词解释-1"><span class="nav-number">2.1.1.</span> <span class="nav-text">名词解释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#产品列表展示"><span class="nav-number">2.1.2.</span> <span class="nav-text">产品列表展示</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#埋点位置-1"><span class="nav-number">2.1.2.1.</span> <span class="nav-text">埋点位置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#埋点代码-1"><span class="nav-number">2.1.2.2.</span> <span class="nav-text">埋点代码</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#产品点击"><span class="nav-number">2.1.3.</span> <span class="nav-text">产品点击</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#埋点位置-2"><span class="nav-number">2.1.3.1.</span> <span class="nav-text">埋点位置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#埋点代码-2"><span class="nav-number">2.1.3.2.</span> <span class="nav-text">埋点代码</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#产品添加到购物车"><span class="nav-number">2.1.4.</span> <span class="nav-text">产品添加到购物车</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#埋点位置-3"><span class="nav-number">2.1.4.1.</span> <span class="nav-text">埋点位置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#埋点代码-3"><span class="nav-number">2.1.4.2.</span> <span class="nav-text">埋点代码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结账行为"><span class="nav-number">2.2.</span> <span class="nav-text">结账行为</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#名词解释-2"><span class="nav-number">2.2.1.</span> <span class="nav-text">名词解释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自定义Checkout流程"><span class="nav-number">2.2.2.</span> <span class="nav-text">自定义Checkout流程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#埋点位置-4"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">埋点位置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#埋点代码-4"><span class="nav-number">2.2.2.2.</span> <span class="nav-text">埋点代码</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Purchase"><span class="nav-number">2.2.3.</span> <span class="nav-text">Purchase</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#埋点位置-5"><span class="nav-number">2.2.3.1.</span> <span class="nav-text">埋点位置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#埋点代码-5"><span class="nav-number">2.2.3.2.</span> <span class="nav-text">埋点代码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#购物行为"><span class="nav-number">2.3.</span> <span class="nav-text">购物行为</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#名词解释-3"><span class="nav-number">2.3.1.</span> <span class="nav-text">名词解释</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#销售业绩"><span class="nav-number">2.4.</span> <span class="nav-text">销售业绩</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#订单列表"><span class="nav-number">2.4.1.</span> <span class="nav-text">订单列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#订单详情"><span class="nav-number">2.4.2.</span> <span class="nav-text">订单详情</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#产品业绩"><span class="nav-number">2.5.</span> <span class="nav-text">产品业绩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见问题-1"><span class="nav-number">2.6.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#产品列表业绩，出现大量noset"><span class="nav-number">2.6.1.</span> <span class="nav-text">产品列表业绩，出现大量noset</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#App端统计问题"><span class="nav-number">2.6.1.1.</span> <span class="nav-text">App端统计问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端统计问题"><span class="nav-number">2.6.1.2.</span> <span class="nav-text">服务端统计问题</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#产品列表业绩，产品结账次数错误"><span class="nav-number">2.6.2.</span> <span class="nav-text">产品列表业绩，产品结账次数错误</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结账行为，统计数据与实际数据差距较大"><span class="nav-number">2.6.3.</span> <span class="nav-text">结账行为，统计数据与实际数据差距较大</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接入问题"><span class="nav-number">3.</span> <span class="nav-text">接入问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#怎么区分开发-生产环境"><span class="nav-number">3.1.</span> <span class="nav-text">怎么区分开发/生产环境</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#编译期区分生产-测试环境"><span class="nav-number">3.1.1.</span> <span class="nav-text">编译期区分生产/测试环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行期区分生产-测试环境"><span class="nav-number">3.1.2.</span> <span class="nav-text">运行期区分生产/测试环境</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android接入后Crash"><span class="nav-number">3.2.</span> <span class="nav-text">Android接入后Crash</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">gcoder.io</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
