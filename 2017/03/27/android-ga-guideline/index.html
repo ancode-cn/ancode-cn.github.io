@@ -1,0 +1,1095 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,iOS,GoogleAnalytics,电商,实践," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="数据统计实现方法
+GA数据统计不同于友盟、TalkingData等统计服务商，提供了多个维度的数据分析，覆盖了电商场景下所有的统计需求；
+
+行为屏幕一级屏幕
+二级屏幕
+名词解释
+二级屏幕：在一级屏幕维度基础上细分；
+屏幕名称：屏幕统计埋点，key的名字；
+屏幕浏览量：屏幕浏览pv次数，等于当前屏幕所有二级屏幕pv次数的总和；
+唯一屏幕浏览量：屏幕浏览会话数量（默认30分钟），等于当前屏幕所有二级屏">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GoogleAnalytics在电商系统中的实践">
+<meta property="og:url" content="http://gcoder-io.github.io/2017/03/27/android-ga-guideline/index.html">
+<meta property="og:site_name" content="gcoder.io">
+<meta property="og:description" content="数据统计实现方法
+GA数据统计不同于友盟、TalkingData等统计服务商，提供了多个维度的数据分析，覆盖了电商场景下所有的统计需求；
+
+行为屏幕一级屏幕
+二级屏幕
+名词解释
+二级屏幕：在一级屏幕维度基础上细分；
+屏幕名称：屏幕统计埋点，key的名字；
+屏幕浏览量：屏幕浏览pv次数，等于当前屏幕所有二级屏幕pv次数的总和；
+唯一屏幕浏览量：屏幕浏览会话数量（默认30分钟），等于当前屏幕所有二级屏">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe9fyv9pk1j20q609rjtv.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe9glnn2imj20q709m76m.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe9h7v3tv4j20qq0dtack.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe9he9kphaj20q805n3zi.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe9iptwp64j20q40d9gpy.jpg">
+<meta property="og:updated_time" content="2017-04-03T07:33:51.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GoogleAnalytics在电商系统中的实践">
+<meta name="twitter:description" content="数据统计实现方法
+GA数据统计不同于友盟、TalkingData等统计服务商，提供了多个维度的数据分析，覆盖了电商场景下所有的统计需求；
+
+行为屏幕一级屏幕
+二级屏幕
+名词解释
+二级屏幕：在一级屏幕维度基础上细分；
+屏幕名称：屏幕统计埋点，key的名字；
+屏幕浏览量：屏幕浏览pv次数，等于当前屏幕所有二级屏幕pv次数的总和；
+唯一屏幕浏览量：屏幕浏览会话数量（默认30分钟），等于当前屏幕所有二级屏">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe9fyv9pk1j20q609rjtv.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://gcoder-io.github.io/2017/03/27/android-ga-guideline/"/>
+
+
+
+
+
+  <title> GoogleAnalytics在电商系统中的实践 | gcoder.io </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-96629651-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">gcoder.io</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">记录此时此刻</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://gcoder-io.github.io/2017/03/27/android-ga-guideline/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="gcoder.io">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe8hjcvyn4j20hs0hs3zz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="gcoder.io">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                GoogleAnalytics在电商系统中的实践
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-27T00:00:00+08:00">
+                2017-03-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,335
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="数据统计实现方法"><a href="#数据统计实现方法" class="headerlink" title="数据统计实现方法"></a>数据统计实现方法</h2><blockquote>
+<p>GA数据统计不同于友盟、TalkingData等统计服务商，提供了多个维度的数据分析，覆盖了电商场景下所有的统计需求；</p>
+</blockquote>
+<h2 id="行为"><a href="#行为" class="headerlink" title="行为"></a>行为</h2><h3 id="屏幕"><a href="#屏幕" class="headerlink" title="屏幕"></a>屏幕</h3><h4 id="一级屏幕"><a href="#一级屏幕" class="headerlink" title="一级屏幕"></a>一级屏幕</h4><p><img src="http://ww1.sinaimg.cn/large/4fed004bly1fe9fyv9pk1j20q609rjtv.jpg" alt=""></p>
+<h4 id="二级屏幕"><a href="#二级屏幕" class="headerlink" title="二级屏幕"></a>二级屏幕</h4><p><img src="http://ww1.sinaimg.cn/large/4fed004bly1fe9glnn2imj20q709m76m.jpg" alt=""></p>
+<h4 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h4><ul>
+<li>二级屏幕：在一级屏幕维度基础上细分；</li>
+<li>屏幕名称：屏幕统计埋点，key的名字；</li>
+<li>屏幕浏览量：屏幕浏览pv次数，等于当前屏幕所有二级屏幕pv次数的总和；</li>
+<li>唯一屏幕浏览量：屏幕浏览会话数量（默认30分钟），等于当前屏幕所有二级屏幕会话数量的总和；</li>
+</ul>
+<h4 id="埋点位置"><a href="#埋点位置" class="headerlink" title="埋点位置"></a>埋点位置</h4><h5 id="Android"><a href="#Android" class="headerlink" title="Android"></a>Android</h5><ul>
+<li>Fragment/Activity onStart ；</li>
+<li>如果是ViewPager+Fragment结构，需要在切换Tab(点击/滑动)时添加统计； </li>
+</ul>
+<h5 id="iOS"><a href="#iOS" class="headerlink" title="iOS"></a>iOS</h5><ul>
+<li>ViewController viewWillAppear；</li>
+<li>如果是UIScrollView+ViewController结构，需要在切换Tab(点击/滑动)时添加统计； </li>
+<li>从后台进入前台，需要添加统计；</li>
+</ul>
+<h4 id="埋点代码"><a href="#埋点代码" class="headerlink" title="埋点代码"></a>埋点代码</h4><h5 id="Android-1"><a href="#Android-1" class="headerlink" title="Android"></a>Android</h5><h5 id="iOS-1"><a href="#iOS-1" class="headerlink" title="iOS"></a>iOS</h5><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">trackCustomDimensionPage</span><span class="params">(screenName: String, dimensionVaue: String)</span></span>&#123;</div><div class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> tracker = getTracker() <span class="keyword">else</span> &#123;<span class="keyword">return</span>&#125;</div><div class="line">        <span class="comment">// 设置一级屏幕</span></div><div class="line">        tracker.<span class="keyword">set</span>(kGAIScreenName, value: screenName)</div><div class="line">        <span class="comment">// 设置二级屏幕</span></div><div class="line">        tracker.<span class="keyword">set</span>(<span class="type">GAIFields</span>.customDimension(<span class="keyword">for</span>: <span class="number">1</span>), value: dimensionVaue)</div><div class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> builder = <span class="type">GAIDictionaryBuilder</span>.createScreenView().<span class="keyword">set</span>(dimensionVaue, forKey: <span class="type">GAIFields</span>.customDimension(<span class="keyword">for</span>: <span class="number">1</span>)) <span class="keyword">else</span> &#123;<span class="keyword">return</span>&#125;</div><div class="line">        tracker.send(builder.build() <span class="keyword">as</span> [<span class="type">NSObject</span> : <span class="type">AnyObject</span>])</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h4 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h4><h5 id="一级屏幕浏览量-二级屏幕浏览量"><a href="#一级屏幕浏览量-二级屏幕浏览量" class="headerlink" title="一级屏幕浏览量 != 二级屏幕浏览量"></a>一级屏幕浏览量 != 二级屏幕浏览量</h5><ul>
+<li><p>埋点代码错误，tracker和builder都必须设置二级屏幕；</p>
+  <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">tracker.<span class="keyword">set</span>(<span class="type">GAIFields</span>.customDimension(<span class="keyword">for</span>: <span class="number">1</span>), value: dimensionVaue)<span class="comment">//必须添加，否则会造成屏幕</span></div><div class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> builder = <span class="type">GAIDictionaryBuilder</span>.createScreenView().<span class="keyword">set</span>(dimensionVaue, forKey: <span class="type">GAIFields</span>.customDimension(<span class="keyword">for</span>: <span class="number">1</span>)) <span class="keyword">else</span> &#123;<span class="keyword">return</span>&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="屏幕浏览量大于实际浏览量"><a href="#屏幕浏览量大于实际浏览量" class="headerlink" title="屏幕浏览量大于实际浏览量"></a>屏幕浏览量大于实际浏览量</h5><ul>
+<li><p>产品列表展示统计造成的影响， 产品列表展示统计，会将当前一级屏幕及二级屏幕数据上传，解决方法是，强制将一级屏幕和二级屏幕参数值设置为空字符串；</p>
+  <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 特别注意：商品列表数据，必须强制设置屏幕及二级屏幕为空字符串，否则造成屏幕统计数量过多</span></div><div class="line">       tracker.<span class="keyword">set</span>(kGAIScreenName, value: <span class="string">""</span>)</div><div class="line">       tracker.<span class="keyword">set</span>(<span class="type">GAIFields</span>.customDimension(<span class="keyword">for</span>: <span class="number">1</span>), value: <span class="string">""</span>)</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="行为流"><a href="#行为流" class="headerlink" title="行为流"></a>行为流</h3><p><img src="http://ww1.sinaimg.cn/large/4fed004bly1fe9h7v3tv4j20qq0dtack.jpg" alt=""></p>
+<ul>
+<li>行为流，是根据屏幕统计数据分析，得出用户在App内所有操作行为的展现，可以查看每个交互行为的转化；</li>
+</ul>
+<h3 id="应用速度"><a href="#应用速度" class="headerlink" title="应用速度"></a>应用速度</h3><p><img src="http://ww1.sinaimg.cn/large/4fed004bly1fe9he9kphaj20q805n3zi.jpg" alt=""></p>
+<h4 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h4><h5 id="App启动时间的统计分析"><a href="#App启动时间的统计分析" class="headerlink" title="App启动时间的统计分析"></a>App启动时间的统计分析</h5><ul>
+<li>App启动时间，特别是冷启动时间对启动率和留存率的影响还是蛮大的；</li>
+<li>可以将App启动时间做二级维度的拆分，冷启动时间、热启动时间、CPU数量、内存大小、系统版本等，为启动时间的优化提供数据支持；</li>
+</ul>
+<h4 id="API执行时间统计分析"><a href="#API执行时间统计分析" class="headerlink" title="API执行时间统计分析"></a>API执行时间统计分析</h4><ul>
+<li>服务端的API执行时间统计，是从接收到请求到处理完响应的过程，无法准确反应实际场景下用户的等待时间；在App端额外添加统计作为辅助；</li>
+<li>可以对整个请求时间做二级维度的拆分，请求时间、响应时间、数据解析时间，做优化时有数据支持更有针对性；</li>
+</ul>
+<h4 id="其它业务场景下的统计分析"><a href="#其它业务场景下的统计分析" class="headerlink" title="其它业务场景下的统计分析"></a>其它业务场景下的统计分析</h4><ul>
+<li>为版本迭代的效果提供数据依据，例如，订单确认页的改版是为了提高用户下单的效率，除了观察下单数量的变化外，在订单确认页到提交订单实际停留时间埋点更直接有效；</li>
+<li>一些实际业务场景统计<ul>
+<li>订单确认页到提交订单实际停留时间；</li>
+<li>购物流程耗时；</li>
+<li>支付流程耗时；</li>
+<li>注册流程耗时</li>
+<li>分享流程耗时；</li>
+</ul>
+</li>
+</ul>
+<h1 id="转化-电子商务"><a href="#转化-电子商务" class="headerlink" title="转化-电子商务"></a>转化-电子商务</h1><h3 id="产品列表业绩"><a href="#产品列表业绩" class="headerlink" title="产品列表业绩"></a>产品列表业绩</h3><p><img src="http://ww1.sinaimg.cn/large/4fed004bly1fe9iptwp64j20q40d9gpy.jpg" alt=""></p>
+<h4 id="名词解释-1"><a href="#名词解释-1" class="headerlink" title="名词解释"></a>名词解释</h4><ul>
+<li>在产品列表中获得的浏览次数：</li>
+<li>在产品列表中获得的点击次数：点击进入详情页的次数；</li>
+<li>产品结账次数：进入自定义的checkout流程的次数；目前是进入订单确认页的次数；</li>
+<li>唯一身份购买次数：商品实际支付成功的次数；例如：一个订单包含多件单品，单品也可能来自不同的产品列表，支付成功后该数据会体现在不同的产品列表中；</li>
+<li>产品收入：实际支付成功的金额；</li>
+</ul>
+<h2 id="区分开发-生产环境"><a href="#区分开发-生产环境" class="headerlink" title="区分开发/生产环境"></a>区分开发/生产环境</h2><h4 id="编译期区分生产-测试环境"><a href="#编译期区分生产-测试环境" class="headerlink" title="编译期区分生产/测试环境"></a>编译期区分生产/测试环境</h4><h4 id="运行期区分生产-测试环境"><a href="#运行期区分生产-测试环境" class="headerlink" title="运行期区分生产/测试环境"></a>运行期区分生产/测试环境</h4><h2 id="iOS接入流程"><a href="#iOS接入流程" class="headerlink" title="iOS接入流程"></a>iOS接入流程</h2><h2 id="Android接入流程"><a href="#Android接入流程" class="headerlink" title="Android接入流程"></a>Android接入流程</h2><p>### </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="number">03</span>-<span class="number">27</span> <span class="number">15</span>:<span class="number">08</span>:<span class="number">27.217</span> <span class="number">25743</span>-<span class="number">25743</span>/? E/AndroidRuntime: FATAL EXCEPTION: main</div><div class="line">                                                   Process: com.zaozuo.android, PID: <span class="number">25743</span></div><div class="line">                                                   java.lang.NoSuchMethodError: <span class="function">No <span class="keyword">static</span> method <span class="title">zzb</span><span class="params">(Ljava/lang/Object;Ljava/lang/Object;)</span>Ljava/lang/Object</span>; in <span class="class"><span class="keyword">class</span> <span class="title">Lcom</span>/<span class="title">google</span>/<span class="title">android</span>/<span class="title">gms</span>/<span class="title">common</span>/<span class="title">internal</span>/<span class="title">zzaa</span></span>; <span class="function">or its <span class="keyword">super</span> <span class="title">classes</span> <span class="params">(declaration of <span class="string">'com.google.android.gms.common.internal.zzaa'</span> appears in /data/data/com.zaozuo.android/files/instant-run/dex/slice-com.google.android.gms-play-services-basement<span class="number">-9.2</span><span class="number">.0</span>_838f224be8ca39a2f48a2f75d5178b0e700ad7c6-classes.dex)</span></span></div><div class="line">                                                       at com.google.firebase.provider.FirebaseInitProvider.<span class="title">zza</span><span class="params">(Unknown Source)</span></div><div class="line">                                                       at com.google.firebase.provider.FirebaseInitProvider.<span class="title">attachInfo</span><span class="params">(Unknown Source)</span></div><div class="line">                                                       at android.app.ActivityThread.<span class="title">installProvider</span><span class="params">(ActivityThread.java:<span class="number">5595</span>)</span></div><div class="line">                                                       at android.app.ActivityThread.<span class="title">installContentProviders</span><span class="params">(ActivityThread.java:<span class="number">5168</span>)</span></div><div class="line">                                                       at android.app.ActivityThread.<span class="title">handleBindApplication</span><span class="params">(ActivityThread.java:<span class="number">5108</span>)</span></div><div class="line">                                                       at android.app.ActivityThread.-<span class="title">wrap2</span><span class="params">(ActivityThread.java)</span></div><div class="line">                                                       at android.app.ActivityThread$H.<span class="title">handleMessage</span><span class="params">(ActivityThread.java:<span class="number">1633</span>)</span></div><div class="line">                                                       at android.os.Handler.<span class="title">dispatchMessage</span><span class="params">(Handler.java:<span class="number">111</span>)</span></div><div class="line">                                                       at android.os.Looper.<span class="title">loop</span><span class="params">(Looper.java:<span class="number">207</span>)</span></div><div class="line">                                                       at android.app.ActivityThread.<span class="title">main</span><span class="params">(ActivityThread.java:<span class="number">5896</span>)</span></div><div class="line">                                                       at java.lang.reflect.Method.<span class="title">invoke</span><span class="params">(Native Method)</span></div><div class="line">                                                       at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.<span class="title">run</span><span class="params">(ZygoteInit.java:<span class="number">789</span>)</span></div><div class="line">                                                       at com.android.internal.os.ZygoteInit.<span class="title">main</span><span class="params">(ZygoteInit.java:<span class="number">679</span>)</span></div></pre></td></tr></table></figure>
+<h2 id="常见问题-1"><a href="#常见问题-1" class="headerlink" title="常见问题"></a>常见问题</h2><blockquote>
+<p>本文作者：gcoder.io<br>本文链接：<a href="http://gcoder-io.github.io/2017/03/27/android-ga-guideline/">http://gcoder-io.github.io/2017/03/27/android-ga-guideline/</a><br>版权声明： 本博客所有文章均为原创，转载请注明作者及出处</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      gcoder.io
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://gcoder-io.github.io/2017/03/27/android-ga-guideline/" title="GoogleAnalytics在电商系统中的实践">http://gcoder-io.github.io/2017/03/27/android-ga-guideline/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/GoogleAnalytics/" rel="tag"># GoogleAnalytics</a>
+          
+            <a href="/tags/电商/" rel="tag"># 电商</a>
+          
+            <a href="/tags/实践/" rel="tag"># 实践</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/26/android-network-framework/" rel="next" title="Android 网络层Library设计">
+                <i class="fa fa-chevron-left"></i> Android 网络层Library设计
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODAxMy80NTkw"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://ww1.sinaimg.cn/large/4fed004bly1fe8hjcvyn4j20hs0hs3zz.jpg"
+               alt="gcoder.io" />
+          <p class="site-author-name" itemprop="name">gcoder.io</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/gcoder-io" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/snowleft" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据统计实现方法"><span class="nav-number">1.</span> <span class="nav-text">数据统计实现方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#行为"><span class="nav-number">2.</span> <span class="nav-text">行为</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#屏幕"><span class="nav-number">2.1.</span> <span class="nav-text">屏幕</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一级屏幕"><span class="nav-number">2.1.1.</span> <span class="nav-text">一级屏幕</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二级屏幕"><span class="nav-number">2.1.2.</span> <span class="nav-text">二级屏幕</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#名词解释"><span class="nav-number">2.1.3.</span> <span class="nav-text">名词解释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#埋点位置"><span class="nav-number">2.1.4.</span> <span class="nav-text">埋点位置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Android"><span class="nav-number">2.1.4.1.</span> <span class="nav-text">Android</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#iOS"><span class="nav-number">2.1.4.2.</span> <span class="nav-text">iOS</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#埋点代码"><span class="nav-number">2.1.5.</span> <span class="nav-text">埋点代码</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Android-1"><span class="nav-number">2.1.5.1.</span> <span class="nav-text">Android</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#iOS-1"><span class="nav-number">2.1.5.2.</span> <span class="nav-text">iOS</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常见问题"><span class="nav-number">2.1.6.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#一级屏幕浏览量-二级屏幕浏览量"><span class="nav-number">2.1.6.1.</span> <span class="nav-text">一级屏幕浏览量 != 二级屏幕浏览量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#屏幕浏览量大于实际浏览量"><span class="nav-number">2.1.6.2.</span> <span class="nav-text">屏幕浏览量大于实际浏览量</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#行为流"><span class="nav-number">2.2.</span> <span class="nav-text">行为流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用速度"><span class="nav-number">2.3.</span> <span class="nav-text">应用速度</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用场景"><span class="nav-number">2.3.1.</span> <span class="nav-text">使用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#App启动时间的统计分析"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">App启动时间的统计分析</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#API执行时间统计分析"><span class="nav-number">2.3.2.</span> <span class="nav-text">API执行时间统计分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其它业务场景下的统计分析"><span class="nav-number">2.3.3.</span> <span class="nav-text">其它业务场景下的统计分析</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#转化-电子商务"><span class="nav-number"></span> <span class="nav-text">转化-电子商务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#产品列表业绩"><span class="nav-number">0.1.</span> <span class="nav-text">产品列表业绩</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#名词解释-1"><span class="nav-number">0.1.1.</span> <span class="nav-text">名词解释</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#区分开发-生产环境"><span class="nav-number">1.</span> <span class="nav-text">区分开发/生产环境</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#编译期区分生产-测试环境"><span class="nav-number">1.0.1.</span> <span class="nav-text">编译期区分生产/测试环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行期区分生产-测试环境"><span class="nav-number">1.0.2.</span> <span class="nav-text">运行期区分生产/测试环境</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS接入流程"><span class="nav-number">2.</span> <span class="nav-text">iOS接入流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android接入流程"><span class="nav-number">3.</span> <span class="nav-text">Android接入流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见问题-1"><span class="nav-number">4.</span> <span class="nav-text">常见问题</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">gcoder.io</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
