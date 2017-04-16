@@ -1,3 +1,4 @@
+http://gcoder-io.github.io/2017/04/15/android-ci-assemble-optimize/
 http://gcoder-io.github.io/2017/04/03/android-ga-guideline/
 http://gcoder-io.github.io/2017/03/26/android-network-framework/
 http://gcoder-io.github.io/2017/02/26/android-developing-guideline/
@@ -7,4 +8,3 @@ http://gcoder-io.github.io/2015/07/25/ios-swift-dev-remind/
 http://gcoder-io.github.io/2015/07/19/ios-db-plan/
 http://gcoder-io.github.io/2015/06/12/ios-base-thread/
 http://gcoder-io.github.io/2015/06/09/ios-base-io/
-http://gcoder-io.github.io/2015/05/02/android-db-plan/

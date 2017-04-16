@@ -303,6 +303,184 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://gcoder-io.github.io/2017/04/15/android-ci-assemble-optimize/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="gcoder.io">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe8hjcvyn4j20hs0hs3zz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="gcoder.io">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/04/15/android-ci-assemble-optimize/" itemprop="url">
+                  Android 持续集成实践（一）：打包流程优化
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-15T00:00:00+08:00">
+                2017-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,955
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="打包流程"><a href="#打包流程" class="headerlink" title="打包流程"></a>打包流程</h2><p> <img src="http://ww1.sinaimg.cn/large/4fed004bly1feng7zg6skj20gf07zjrv.jpg" alt=""></p>
+<h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><h3 id="Gradle配置文件归类"><a href="#Gradle配置文件归类" class="headerlink" title="Gradle配置文件归类"></a>Gradle配置文件归类</h3><blockquote>
+<p>分类需要同步和不需要同步的配置文件，解决多分支模型下切换分支更改版本号等不需要同步的操作，gralde仍提示同步的问题，让真正需要同步的变更才提示。</p>
+</blockquote>
+<ul>
+<li><p>新建version.gradle文件，添加变更时不需要同步的参数；</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">ext &#123;</div><div class="line">    <span class="comment">// 打生产包命令：./gradlew assembleReleaseChannels</span></div><div class="line">    <span class="comment">// 打patch包命令：./gradlew buildTinkerPatchRelease</span></div><div class="line"></div><div class="line">    <span class="comment">// 当前编译状态，生产环境必须配置为false</span></div><div class="line">    isDebug=<span class="keyword">true</span></div><div class="line"></div><div class="line">    <span class="comment">// 标识是否为补丁模式</span></div><div class="line">    isPatchModel=<span class="keyword">false</span></div><div class="line"></div><div class="line">    <span class="comment">// 是否上传符号表</span></div><div class="line">    uploadMappingEnable=<span class="keyword">false</span></div><div class="line"></div><div class="line">    <span class="comment">// 补丁模式，补丁文件对应的基准apk文件夹</span></div><div class="line">    patchBaseApkDir=<span class="string">""</span></div><div class="line"></div><div class="line">    version_name=<span class="string">"1.1.0.100"</span></div><div class="line"></div><div class="line">    <span class="comment">// 规则，年+月+日+当日发版次数</span></div><div class="line">    version_code=<span class="number">17041501</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>将version.gradle添加到项目根目录build.gradle顶部；</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apply from: <span class="string">'version.gradle'</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/04/15/android-ci-assemble-optimize/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://gcoder-io.github.io/2017/04/03/android-ga-guideline/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -395,7 +573,7 @@
                   <span class="post-meta-item-text">字数统计</span>
                 
                 <span title="字数统计">
-                  2,906
+                  3,416
                 </span>
               
 
@@ -1925,192 +2103,13 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://gcoder-io.github.io/2015/05/02/android-db-plan/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="gcoder.io">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe8hjcvyn4j20hs0hs3zz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="gcoder.io">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/05/02/android-db-plan/" itemprop="url">
-                  Android 数据库模块搭建方案
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-05-02T00:00:00+08:00">
-                2015-05-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  960
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <blockquote>
-<p>数据库作为App缓存设计的首选，存在一些开发的陷阱，同时需要考虑性能、开发效率和可维护性，笔者建议自行搭建数据库管理类，同时配合成熟的开源ORM框架快速搭建数据库模块。<br>本方案采用ORM框架greenDAO，greenDAO是成熟的ORM框架，在性能和内存占用上很出色<br><a href="https://github.com/greenrobot/greenDAO">https://github.com/greenrobot/greenDAO</a></p>
-</blockquote>
-<h2 id="Android数据库存在的问题："><a href="#Android数据库存在的问题：" class="headerlink" title="Android数据库存在的问题："></a>Android数据库存在的问题：</h2><ol>
-<li>SQLite是<strong>数据库级别</strong>锁，同一个数据库连接可以多线程操作，同时读、写、读写操作，SQLite底层做了同步处理；</li>
-<li>多个数据库连接，只可以多线程读操作，不可写或读写操作，否则会抛出锁表异常<br><code>android.database.sqlite.SQLiteDatabaseLockedException: database is locked</code><br>总结：多个数据库连接不能同时操作涉及到写的操作，多线程写操作必须保证一个数据库连接。</li>
-</ol>
-<h2 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h2><h3 id="1-同步锁方案："><a href="#1-同步锁方案：" class="headerlink" title="1. 同步锁方案："></a>1. 同步锁方案：</h3><p>考虑性能，建议使用<strong>ReadWriteLock</strong>，ReadWriteLock可以并发读，可以大幅减少读操作造成的锁开销；</p>
-<ul>
-<li><p>在Application onCreate方法中创建全局唯一的ReadWriteLock；</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> ReadWriteLock lock = <span class="keyword">new</span> ReentrantReadWriteLock(<span class="keyword">false</span>);</div></pre></td></tr></table></figure>
-</li>
-<li><p>在DAO中调用Application的ReadWriteLock，</p>
-</li>
-<li>读操作前调用<code>lock.readLock().lock();</code>加锁，执行完毕调后调用<br><code>lock.readLock.unlock();</code>解锁；</li>
-<li>写操作调用<code>lock.writeLock().lock();</code> 加锁，执行完毕后调用<br><code>lock.writeLock().unlock();</code> 解锁；</li>
-<li>在每次读写操作前需要获取数据库连接，用完后关闭释放资源。</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserInfoDAO</span> </span>&#123;</div><div class="line">  <span class="keyword">private</span> Context context;</div><div class="line">  <span class="keyword">private</span> ReadWriteLock lock;</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">TestDAO</span><span class="params">(Context context, ReadWriteLock lock)</span></span>&#123;</div><div class="line">    <span class="keyword">this</span>.context = context;</div><div class="line">    <span class="keyword">this</span>.lock = lock;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> SQLiteDatabase <span class="title">getConnection</span><span class="params">()</span> </span>&#123;</div><div class="line">    SQLiteDatabase sqliteDatabase = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      sqliteDatabase = <span class="keyword">new</span> DatabaseHelper(context).getWritableDatabase();</div><div class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> sqliteDatabase;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert</span><span class="params">(UserInfo userInfo)</span></span>&#123;</div><div class="line">    lock.writeLock().lock(); </div><div class="line">    SQLiteDatabase db = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      ContentValues values = <span class="keyword">new</span> ContentValues();</div><div class="line">      values.put(<span class="string">"name"</span>, userInfo.getName());</div><div class="line">      values.put(<span class="string">"age"</span>, userInfo.getAge);</div><div class="line">      db = getConnection();</div><div class="line">      <span class="keyword">if</span>(db != <span class="keyword">null</span> &amp;&amp; db.isOpen())&#123;</div><div class="line">        db.insert(<span class="string">"userInfo"</span>, <span class="keyword">null</span>, values);</div><div class="line">      &#125;</div><div class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">    &#125;<span class="keyword">finally</span>&#123;</div><div class="line">       <span class="keyword">if</span> (db != <span class="keyword">null</span> &amp;&amp; db.isOpen()) &#123;</div><div class="line">         db.close();</div><div class="line">       &#125;</div><div class="line">       myLock.writeLock().unlock();   </div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> List&lt;UserInfo&gt; <span class="title">query</span><span class="params">()</span></span>&#123;</div><div class="line">    List&lt;UserInfo&gt; list = <span class="keyword">new</span> ArrayList&lt;UserInfo&gt;();</div><div class="line">    lock.readLock().lock(); </div><div class="line">    SQLiteDatabase db = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      db = getConnection();</div><div class="line">      <span class="keyword">if</span>(db != <span class="keyword">null</span> &amp;&amp; db.isOpen())&#123;</div><div class="line">        Cursor c = db.rawQuery(<span class="string">"SELECT * FROM userInfo"</span>, <span class="keyword">null</span>);</div><div class="line">        UserInfo info;</div><div class="line">        <span class="keyword">while</span> (c.moveToNext()) &#123;</div><div class="line">          info = <span class="keyword">new</span> UserInfo();</div><div class="line">          info.setName(c.getString(c.getColumnIndex(<span class="string">"name"</span>)));</div><div class="line">          info.setAge(c.getInt(c.getColumnIndex(<span class="string">"age"</span>)));</div><div class="line">          list.add(info);</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">    &#125;<span class="keyword">finally</span>&#123;</div><div class="line">       <span class="keyword">if</span> (db != <span class="keyword">null</span> &amp;&amp; db.isOpen()) &#123;</div><div class="line">         db.close();</div><div class="line">       &#125;</div><div class="line">       lock.readLock().unlock();   </div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> list;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2015/05/02/android-db-plan/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -2153,7 +2152,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2175,7 +2174,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -1,0 +1,1051 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,打包流程,Gradle,持续集成," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="打包流程 
+具体实现Gradle配置文件归类
+分类需要同步和不需要同步的配置文件，解决多分支模型下切换分支更改版本号等不需要同步的操作，gralde仍提示同步的问题，让真正需要同步的变更才提示。
+
+
+新建version.gradle文件，添加变更时不需要同步的参数；
+  123456789101112131415161718192021ext &amp;#123;    // 打生产包命令：./gradl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 持续集成实践（一）：打包流程优化">
+<meta property="og:url" content="http://gcoder-io.github.io/2017/04/15/android-ci-assemble-optimize/index.html">
+<meta property="og:site_name" content="gcoder.io">
+<meta property="og:description" content="打包流程 
+具体实现Gradle配置文件归类
+分类需要同步和不需要同步的配置文件，解决多分支模型下切换分支更改版本号等不需要同步的操作，gralde仍提示同步的问题，让真正需要同步的变更才提示。
+
+
+新建version.gradle文件，添加变更时不需要同步的参数；
+  123456789101112131415161718192021ext &amp;#123;    // 打生产包命令：./gradl">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/4fed004bly1feng7zg6skj20gf07zjrv.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/4fed004bly1feonmx7m69j20nh09lwks.jpg">
+<meta property="og:updated_time" content="2017-04-16T09:57:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 持续集成实践（一）：打包流程优化">
+<meta name="twitter:description" content="打包流程 
+具体实现Gradle配置文件归类
+分类需要同步和不需要同步的配置文件，解决多分支模型下切换分支更改版本号等不需要同步的操作，gralde仍提示同步的问题，让真正需要同步的变更才提示。
+
+
+新建version.gradle文件，添加变更时不需要同步的参数；
+  123456789101112131415161718192021ext &amp;#123;    // 打生产包命令：./gradl">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/4fed004bly1feng7zg6skj20gf07zjrv.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://gcoder-io.github.io/2017/04/15/android-ci-assemble-optimize/"/>
+
+
+
+
+
+  <title> Android 持续集成实践（一）：打包流程优化 | gcoder.io </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-96629651-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">gcoder.io</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">记录此时此刻</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://gcoder-io.github.io/2017/04/15/android-ci-assemble-optimize/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="gcoder.io">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe8hjcvyn4j20hs0hs3zz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="gcoder.io">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android 持续集成实践（一）：打包流程优化
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-15T00:00:00+08:00">
+                2017-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,955
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="打包流程"><a href="#打包流程" class="headerlink" title="打包流程"></a>打包流程</h2><p> <img src="http://ww1.sinaimg.cn/large/4fed004bly1feng7zg6skj20gf07zjrv.jpg" alt=""></p>
+<h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><h3 id="Gradle配置文件归类"><a href="#Gradle配置文件归类" class="headerlink" title="Gradle配置文件归类"></a>Gradle配置文件归类</h3><blockquote>
+<p>分类需要同步和不需要同步的配置文件，解决多分支模型下切换分支更改版本号等不需要同步的操作，gralde仍提示同步的问题，让真正需要同步的变更才提示。</p>
+</blockquote>
+<ul>
+<li><p>新建version.gradle文件，添加变更时不需要同步的参数；</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">ext &#123;</div><div class="line">    <span class="comment">// 打生产包命令：./gradlew assembleReleaseChannels</span></div><div class="line">    <span class="comment">// 打patch包命令：./gradlew buildTinkerPatchRelease</span></div><div class="line"></div><div class="line">    <span class="comment">// 当前编译状态，生产环境必须配置为false</span></div><div class="line">    isDebug=<span class="keyword">true</span></div><div class="line"></div><div class="line">    <span class="comment">// 标识是否为补丁模式</span></div><div class="line">    isPatchModel=<span class="keyword">false</span></div><div class="line"></div><div class="line">    <span class="comment">// 是否上传符号表</span></div><div class="line">    uploadMappingEnable=<span class="keyword">false</span></div><div class="line"></div><div class="line">    <span class="comment">// 补丁模式，补丁文件对应的基准apk文件夹</span></div><div class="line">    patchBaseApkDir=<span class="string">""</span></div><div class="line"></div><div class="line">    version_name=<span class="string">"1.1.0.100"</span></div><div class="line"></div><div class="line">    <span class="comment">// 规则，年+月+日+当日发版次数</span></div><div class="line">    version_code=<span class="number">17041501</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>将version.gradle添加到项目根目录build.gradle顶部；</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apply from: <span class="string">'version.gradle'</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<a id="more"></a>
+<ul>
+<li><p>将变更时必须同步的参数统一添加到gradle.properties； </p>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"># =====================================以下为第三方账号配置=====================================</div><div class="line">// debug</div><div class="line">DEBUG_BUGLY_APPID="xxx"</div><div class="line">DEBUG_TALKINGDATA_APPID="xxx"</div><div class="line">DEBUG_MEIQIA_APPID="xxx"</div><div class="line"></div><div class="line">// release</div><div class="line">RELEASE_BUGLY_APPID="xxx"</div><div class="line">RELEASE_TALKINGDATA_APPID="xxx"</div><div class="line">RELEASE_MEIQIA_APPID="xxx"</div><div class="line"></div><div class="line"># =====================================以下为多dex配置=====================================</div><div class="line"></div><div class="line">MULTIDEX_KEEP_PROGUARD_FILE=multiDexKeep.pro</div><div class="line">MULTIDEX_ENABLED=true</div><div class="line"></div><div class="line"># =====================================以下为签名配置=====================================</div><div class="line"></div><div class="line">SIGNING_STORE_FILE=xxx.keystore.jks</div><div class="line">SIGNING_STORE_PASSWORD=xxx</div><div class="line">SIGNING_KEY_ALIAS=xxx</div><div class="line">SIGNING_KEY_PASSWORD=xxx</div><div class="line"></div><div class="line"># =====================================以下为应用配置=====================================</div><div class="line"></div><div class="line">APPLICATION_ID=xxx</div><div class="line"></div><div class="line"># Sdk and tools</div><div class="line">MIN_SDK_VERSION=16</div><div class="line">TARGET_SDK_VERSION=22</div><div class="line">COMPILE_SDK_VERSION=23</div><div class="line">BUILD_TOOLS_VERSION=25.0.0</div><div class="line">MULTIDEX_VERSION=1.0.0</div><div class="line"></div><div class="line"># =====================================以下为依赖配置=====================================</div><div class="line"></div><div class="line"># App dependencies</div><div class="line"># https://developer.android.com/topic/libraries/support-library/features.html</div><div class="line">supportLibraryVersion=25.0.1</div><div class="line">guavaVersion=18.0</div><div class="line">junitVersion=4.12</div><div class="line">mockitoVersion=1.10.19</div><div class="line">powerMockito=1.6.2</div><div class="line">hamcrestVersion=1.3</div><div class="line">runnerVersion=0.4.1</div><div class="line">rulesVersion=0.4.1</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="检查multidex配置"><a href="#检查multidex配置" class="headerlink" title="检查multidex配置"></a>检查multidex配置</h3><blockquote>
+<p>Application启动时调用的类必须包含在主dex中，为此我们需要配置哪些类在主dex中。随着版本迭代或代码重构，可能导致配置的类包名发生改变或有新的类在Application中调用，为防止错误或遗漏，可在编译期引入自动检查机制，避免出错。</p>
+</blockquote>
+<h4 id="插件实现"><a href="#插件实现" class="headerlink" title="插件实现"></a>插件实现</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CheckMultiDexKeepPlugin</span> <span class="keyword">implements</span> <span class="title">Plugin</span>&lt;<span class="title">Project</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">apply</span><span class="params">(Project project)</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"==================================================================="</span>);</div><div class="line">        System.out.println(<span class="string">"开始执行检查multiDexKeep.pro合法性插件，project.name："</span> + project.name);</div><div class="line">        System.out.println(<span class="string">"==================================================================="</span>);</div><div class="line"></div><div class="line">        <span class="keyword">final</span> File multiDexKeepFile = <span class="keyword">new</span> File(project.name, <span class="string">"multiDexKeep.pro"</span>);</div><div class="line">        <span class="keyword">if</span> (!multiDexKeepFile.exists())&#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"请正确配置主dex keep文件"</span>);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 生成appContext源文件路径</span></div><div class="line">        <span class="keyword">final</span> String appContextClassPath = <span class="string">"com.zaozuo.android.app.AppContext.java"</span>;</div><div class="line">        <span class="keyword">final</span> File appContextFile = javaClassPath2FilePath(project, appContextClassPath);</div><div class="line">        System.out.println(<span class="string">"AppContext File Path====================&gt;"</span> + appContextFile.getAbsolutePath());</div><div class="line">        <span class="keyword">if</span> (!appContextFile.exists())&#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"请正确配置AppContext Class路径"</span>);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 读取appContext源文件中所有import非系统的行</span></div><div class="line">        System.out.println(<span class="string">"read appContextLineList start====================&gt;"</span>);</div><div class="line">        <span class="keyword">final</span> String firstLine = <span class="string">"-keep class "</span> + appContextClassPath.replace(<span class="string">".java"</span>, <span class="string">""</span>);</div><div class="line">        System.out.println(firstLine);</div><div class="line">        List&lt;String&gt; appContextLineList = readImportNoSysLines(appContextFile);</div><div class="line">        appContextLineList.add(firstLine);</div><div class="line">        System.out.println(<span class="string">"read appContextLineList end====================&gt;"</span>);</div><div class="line"></div><div class="line">        <span class="comment">// 读取multiDexKeep文件中所有的行</span></div><div class="line">        System.out.println(<span class="string">"read multiDexKeepLineList start====================&gt;"</span>);</div><div class="line">        List&lt;String&gt; multiDexKeepLineList = readLines(multiDexKeepFile);</div><div class="line">        System.out.println(<span class="string">"read multiDexKeepLineList end====================&gt;"</span>)</div><div class="line"></div><div class="line">        <span class="keyword">final</span> <span class="keyword">boolean</span> multiDexKeepConfigSuccess = multiDexKeepLineList.containsAll(appContextLineList);</div><div class="line">        <span class="keyword">if</span> (multiDexKeepConfigSuccess)&#123;</div><div class="line">            System.out.println(<span class="string">"multiDexKeep配置正确，Good Lock!====================&gt;"</span>)</div><div class="line">        &#125;<span class="keyword">else</span>&#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"multiDexKeep配置不正确，请仔细检查后重试"</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 生成java源文件对应的文件路径</div><div class="line">     * <span class="doctag">@param</span> project</div><div class="line">     * <span class="doctag">@param</span> javaClassPath</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">private</span> File <span class="title">javaClassPath2FilePath</span><span class="params">(Project project, String javaClassPath)</span></span>&#123;</div><div class="line">        javaClassPath = javaClassPath.replace(<span class="string">".java"</span>, <span class="string">""</span>);</div><div class="line">        <span class="keyword">final</span> String[] tempArr = javaClassPath.split(<span class="string">"\\."</span>);</div><div class="line"></div><div class="line">        <span class="keyword">final</span> StringBuilder builder = <span class="keyword">new</span> StringBuilder();</div><div class="line">        <span class="keyword">for</span> (String temp : tempArr)&#123;</div><div class="line">            builder.append(<span class="string">"/"</span>).append(temp);</div><div class="line">        &#125;</div><div class="line">        builder.append(<span class="string">".java"</span>)</div><div class="line"></div><div class="line">        <span class="keyword">final</span> String appContextPath = builder.toString();</div><div class="line">        builder.setLength(<span class="number">0</span>);</div><div class="line"></div><div class="line">        <span class="keyword">final</span> File file = <span class="keyword">new</span> File(project.name + <span class="string">"/src/main/java/"</span>, appContextPath);</div><div class="line">        <span class="keyword">return</span> file;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> List&lt;String&gt; sysClassNameList = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">    <span class="keyword">static</span> &#123;</div><div class="line">        sysClassNameList.add(<span class="string">"import android."</span>);</div><div class="line">        sysClassNameList.add(<span class="string">"import com.android."</span>);</div><div class="line">        sysClassNameList.add(<span class="string">"import java."</span>);</div><div class="line">        sysClassNameList.add(<span class="string">"import dalvik."</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 读取appContext源文件中所有import非系统的行</div><div class="line">     * <span class="doctag">@param</span> file</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">private</span> List&lt;String&gt; <span class="title">readImportNoSysLines</span><span class="params">(File file)</span></span>&#123;</div><div class="line">        List&lt;String&gt; lineList = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line"></div><div class="line">        FileReader reader = <span class="keyword">new</span> FileReader(file);</div><div class="line">        BufferedReader br = <span class="keyword">new</span> BufferedReader(reader);</div><div class="line"></div><div class="line">        String str = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">        <span class="keyword">while</span>((str = br.readLine()) != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">if</span> (str != <span class="keyword">null</span>)&#123;</div><div class="line">                <span class="keyword">if</span> (str.startsWith(<span class="string">" "</span>))&#123;</div><div class="line">                    str = str.trim();</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">if</span> (str.startsWith(<span class="string">"import"</span>))&#123;</div><div class="line">                    <span class="keyword">boolean</span> isSysClass = <span class="keyword">false</span>;</div><div class="line">                    <span class="keyword">for</span> (String sysClassName : sysClassNameList)&#123;</div><div class="line">                        <span class="keyword">if</span> (str.startsWith(sysClassName))&#123;</div><div class="line">                            isSysClass = <span class="keyword">true</span>;</div><div class="line">                            <span class="keyword">break</span>;</div><div class="line">                        &#125;</div><div class="line">                    &#125;</div><div class="line"></div><div class="line">                    <span class="keyword">if</span> (!isSysClass)&#123;</div><div class="line">                        str = str.replace(<span class="string">"import "</span>, <span class="string">"-keep class "</span>);</div><div class="line">                        str = str.replace(<span class="string">";"</span>, <span class="string">""</span>);</div><div class="line">                        lineList.add(str);</div><div class="line">                        System.out.println(str);</div><div class="line">                    &#125;</div><div class="line">                &#125;<span class="keyword">else</span> <span class="keyword">if</span> (str.startsWith(<span class="string">"public class"</span>))&#123;</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        br.close();</div><div class="line">        reader.close();</div><div class="line"></div><div class="line">        <span class="keyword">return</span> lineList;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> List&lt;String&gt; <span class="title">readLines</span><span class="params">(File file)</span></span>&#123;</div><div class="line">        List&lt;String&gt; lineList = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line"></div><div class="line">        FileReader reader = <span class="keyword">new</span> FileReader(file);</div><div class="line">        BufferedReader br = <span class="keyword">new</span> BufferedReader(reader);</div><div class="line"></div><div class="line">        String str = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">        <span class="keyword">while</span>((str = br.readLine()) != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">if</span> (str != <span class="keyword">null</span>)&#123;</div><div class="line">                lineList.add(str);</div><div class="line">            &#125;</div><div class="line">            System.out.println(str);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        br.close();</div><div class="line">        reader.close();</div><div class="line"></div><div class="line">        <span class="keyword">return</span> lineList;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="插件使用"><a href="#插件使用" class="headerlink" title="插件使用"></a>插件使用</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 在application类型模块下build.gradle中添加以下配置;</span></div><div class="line">apply plugin: com.zaozuo.plugins.CheckMultiDexKeepPlugin</div></pre></td></tr></table></figure>
+<h3 id="多渠道打包"><a href="#多渠道打包" class="headerlink" title="多渠道打包"></a>多渠道打包</h3><blockquote>
+<p>使用walle作为多渠道打包方案，比AndroidStudio提供的productFlavors方案性能更高，使用更方便，同时提供命令行工具方便临时增加渠道包。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">this</span>.printlnLog(<span class="string">"walle多渠道打包插件"</span>)</div><div class="line">apply plugin: <span class="string">'walle'</span></div><div class="line">walle &#123;</div><div class="line">    <span class="comment">// 指定渠道包的输出路径</span></div><div class="line">    apkOutputFolder = <span class="keyword">new</span> File(<span class="string">"$&#123;project.bakPath&#125;"</span>, <span class="string">"$&#123;project.tinkerIdValue&#125;"</span>);</div><div class="line">    <span class="keyword">if</span> (!apkOutputFolder.exists())&#123;</div><div class="line">        apkOutputFolder.mkdirs()</div><div class="line">    &#125;</div><div class="line">    println(<span class="string">"channeApkOutputFolder==========&gt;"</span> + apkOutputFolder.getAbsolutePath())</div><div class="line"></div><div class="line">    <span class="comment">// 定制渠道包的APK的文件名称</span></div><div class="line">    apkFileNameFormat = <span class="string">'$&#123;appName&#125;-$&#123;channel&#125;-$&#123;buildType&#125;-v$&#123;versionName&#125;-$&#123;versionCode&#125;.apk'</span>;</div><div class="line"></div><div class="line">    <span class="comment">// 渠道配置文件</span></div><div class="line">    channelFile = <span class="keyword">new</span> File(<span class="string">"$&#123;project.getProjectDir()&#125;/channel"</span>)</div><div class="line">    println(<span class="string">"channelFile==========&gt;"</span> + channelFile.getAbsolutePath())</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="调整打包输出目录"><a href="#调整打包输出目录" class="headerlink" title="调整打包输出目录"></a>调整打包输出目录</h3><blockquote>
+<p>项目中使用了bugly热修复和walle多渠道打包，打包输出的文件散落在各处，每次都需要手动归类备份；同时打正式包和Patch包需要备份的文件也不一样，比较繁琐容易出错。</p>
+</blockquote>
+<h4 id="插件实现-1"><a href="#插件实现-1" class="headerlink" title="插件实现"></a>插件实现</h4><ul>
+<li><p>对外提供的配置类AdjustAssembleOutputConfig</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AdjustAssembleOutputConfig</span> </span>&#123;</div><div class="line">    String outputBakPath = <span class="keyword">null</span></div><div class="line">    String outputBakDirName = <span class="keyword">null</span></div><div class="line">    <span class="keyword">boolean</span> isPatchModelValue</div><div class="line">	</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">"AdjustAssembleOutputConfig&#123;"</span> +</div><div class="line">                <span class="string">"outputBakPath='"</span> + outputBakPath + <span class="string">'\''</span> +</div><div class="line">                <span class="string">", outputBakDirName='"</span> + outputBakDirName + <span class="string">'\''</span> +</div><div class="line">                <span class="string">", isPatchModelValue="</span> + isPatchModelValue +</div><div class="line">                <span class="string">'&#125;'</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>插件实现类AdjustAssembleOutputPlugin，分别针对打正式包和Patch包不同备份需求单独处理；</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span>  <span class="title">AdjustAssembleOutputPlugin</span> <span class="keyword">implements</span> <span class="title">Plugin</span>&lt;<span class="title">Project</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">apply</span><span class="params">(Project project)</span> </span>&#123;</div><div class="line">        println(<span class="string">"==================================================================="</span>);</div><div class="line">        println(<span class="string">"开始执行AdjustAssembleOutputPlugin，project.name："</span> + project.name);</div><div class="line">        println(<span class="string">"==================================================================="</span>);</div><div class="line"></div><div class="line">        <span class="comment">// 创建需要外部传入的配置文件</span></div><div class="line">        project.extensions.create(<span class="string">"adjustAssembleOutputConfig"</span>, AdjustAssembleOutputConfig)</div><div class="line"></div><div class="line">        <span class="comment">// 获取最后编译完成的variant</span></div><div class="line">        def targetVariant = <span class="keyword">null</span></div><div class="line"></div><div class="line">        project.android.applicationVariants.all &#123; variant -&gt;</div><div class="line">            def taskName = variant.name</div><div class="line">            project.tasks.all &#123;</div><div class="line">                <span class="keyword">if</span> (<span class="string">"assemble$&#123;taskName.capitalize()&#125;"</span>.equalsIgnoreCase(it.name)) &#123;</div><div class="line">                    it.doLast &#123;</div><div class="line">                        targetVariant = <span class="function">variant</span></div><div class="line">                        <span class="title">println</span><span class="params">(<span class="string">"$&#123;it.name&#125; doLast=========================&gt;"</span>)</span></div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// build完成监听</span></div><div class="line">        project.gradle.<span class="title">addListener</span><span class="params">(new BuildListener()</span>&#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">void</span> <span class="title">buildStarted</span><span class="params">(Gradle gradle)</span> </span>&#123;</div><div class="line">            &#125;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">void</span> <span class="title">settingsEvaluated</span><span class="params">(Settings settings)</span> </span>&#123;</div><div class="line">            &#125;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">void</span> <span class="title">projectsLoaded</span><span class="params">(Gradle gradle)</span> </span>&#123;</div><div class="line">            &#125;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">void</span> <span class="title">projectsEvaluated</span><span class="params">(Gradle gradle)</span> </span>&#123;</div><div class="line">                println(<span class="string">"projectsEvaluated==========&gt;"</span>)</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">void</span> <span class="title">buildFinished</span><span class="params">(BuildResult result)</span> </span>&#123;</div><div class="line">                def buildSuccess = result.getFailure() == <span class="function"><span class="keyword">null</span></span></div><div class="line">                <span class="title">println</span><span class="params">(<span class="string">"buildFinished==========&gt;"</span> + buildSuccess)</span></div><div class="line">                <span class="title">if</span> <span class="params">(!buildSuccess.toBoolean()</span>)&#123;</div><div class="line">                    <span class="keyword">return</span></div><div class="line">                &#125;</div><div class="line"></div><div class="line">                AdjustAssembleOutputConfig config = project[<span class="string">'adjustAssembleOutputConfig'</span>]</div><div class="line">                def outputBakPath = config.outputBakPath</div><div class="line">                def outputBakDirName = config.outputBakDirName</div><div class="line">                def isPatchModelValue = config.<span class="function">isPatchModelValue</span></div><div class="line">                <span class="title">println</span><span class="params">(<span class="string">"isPatchModelValue======================="</span>+isPatchModelValue)</span></div><div class="line">                <span class="title">println</span><span class="params">(<span class="string">"outputBakPath======================="</span>+outputBakPath)</span></div><div class="line">                <span class="title">println</span><span class="params">(<span class="string">"outputBakDirName======================="</span>+outputBakDirName)</span></div><div class="line"></div><div class="line">                <span class="title">if</span> <span class="params">(isPatchModelValue)</span>&#123;</div><div class="line">                    <span class="comment">// 打补丁包模式</span></div><div class="line">                    adjustOutputForPatch(project, outputBakDirName, outputBakPath)</div><div class="line">                    deletePatchNewOfficialFile(project, outputBakDirName, outputBakPath)</div><div class="line">                &#125;<span class="keyword">else</span>&#123;</div><div class="line">                    adjustOutputForOfficial(project, outputBakDirName, outputBakPath, targetVariant.baseName)</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 删除打patch包时，生成的新的正式包文件</div><div class="line">     * <span class="doctag">@param</span> project</div><div class="line">     * <span class="doctag">@param</span> outputBakDirName</div><div class="line">     * <span class="doctag">@param</span> outputBakPath</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="function">def <span class="title">deletePatchNewOfficialFile</span><span class="params">(Project project, outputBakDirName, outputBakPath)</span></span>&#123;</div><div class="line">        def newOfficialDir = findBuglyOutputFile(project, outputBakDirName, outputBakPath)</div><div class="line">        <span class="keyword">if</span> (newOfficialDir.exists())&#123;</div><div class="line">            println(<span class="string">"delete newOfficialDir==========&gt;"</span> + newOfficialDir)</div><div class="line">            newOfficialDir.deleteDir()</div><div class="line">        &#125;<span class="keyword">else</span>&#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"打patch包时，生成的新的正式包文件夹不存在："</span> + newOfficialDir)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 为patch包整理文件输出目录</div><div class="line">     * <span class="doctag">@param</span> project</div><div class="line">     * <span class="doctag">@param</span> outputBakDirName</div><div class="line">     * <span class="doctag">@param</span> outputBakPath</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="function">def <span class="title">adjustOutputForPatch</span><span class="params">(Project project, outputBakDirName, outputBakPath)</span></span>&#123;</div><div class="line">        def patchFile = project.file(<span class="string">"$&#123;project.rootDir&#125;/$&#123;project.name&#125;/build/outputs/patch/release/patch_signed_7zip.apk"</span>)</div><div class="line">        <span class="keyword">if</span> (patchFile.exists())&#123;</div><div class="line">            <span class="comment">// 目标文件目录</span></div><div class="line">            def toFileDir = <span class="keyword">new</span> File(<span class="string">"$&#123;outputBakPath&#125;"</span>, outputBakDirName)</div><div class="line">            println(<span class="string">"toFileDir==========&gt;"</span> + toFileDir)</div><div class="line"></div><div class="line">            <span class="comment">// 拷贝补丁文件到备份目录</span></div><div class="line">            project.copy &#123;</div><div class="line">                from patchFile</div><div class="line">                into toFileDir</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="comment">// 压缩outputs文件夹并备份</span></div><div class="line">            def patchOutputFile = project.file(<span class="string">"$&#123;project.rootDir&#125;/$&#123;project.name&#125;/build/outputs"</span>)</div><div class="line">            println(<span class="string">"patchOutputFile==========&gt;"</span> + patchOutputFile)</div><div class="line"></div><div class="line">            <span class="keyword">if</span> (patchOutputFile.exists())&#123;</div><div class="line">                FileUtils.compressedFile(patchOutputFile.getAbsolutePath(), toFileDir.getAbsolutePath())</div><div class="line">            &#125;<span class="keyword">else</span>&#123;</div><div class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"补丁outputs文件夹不存在："</span> + patchOutputFile)</div><div class="line">            &#125;</div><div class="line">        &#125;<span class="keyword">else</span>&#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"补丁文件不存在："</span> + bakPath)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 为正式包整理文件输出目录</div><div class="line">     * <span class="doctag">@param</span> outputBakDirName 备份文件夹名</div><div class="line">     * <span class="doctag">@param</span> outputBakPath 备份目录</div><div class="line">     * <span class="doctag">@param</span> buildType 当前编译模式类型 release/debug</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="function">def <span class="title">adjustOutputForOfficial</span><span class="params">(Project project, outputBakDirName, outputBakPath, buildType)</span></span>&#123;</div><div class="line">        <span class="comment">// 定义输入文件名</span></div><div class="line">        def fromApkName = outputBakDirName + <span class="string">".apk"</span></div><div class="line">        def fromRName = outputBakDirName + <span class="string">"-R.txt"</span></div><div class="line">        def fromMappingName = outputBakDirName + <span class="string">"-mapping.txt"</span></div><div class="line"></div><div class="line">        def fromFileDir = findBuglyOutputFile(project, outputBakDirName, outputBakPath)</div><div class="line">        println(<span class="string">"fromFileDir==========&gt;"</span> + fromFileDir)</div><div class="line"></div><div class="line">        <span class="comment">// 目标文件目录</span></div><div class="line">        def toFileDir = <span class="keyword">new</span> File(<span class="string">"$&#123;outputBakPath&#125;"</span>, outputBakDirName)</div><div class="line">        println(<span class="string">"toFileDir==========&gt;"</span> + toFileDir)</div><div class="line"></div><div class="line">        <span class="comment">// 定义输出文件名</span></div><div class="line">        def toFileNamePrefix = <span class="string">"$&#123;project.name&#125;-$&#123;buildType&#125;"</span></div><div class="line"></div><div class="line">        def toApkName = toFileNamePrefix + <span class="string">".apk"</span></div><div class="line">        def toApkFile = <span class="keyword">new</span> File(toFileDir, toApkName)</div><div class="line"></div><div class="line">        def toRName = toFileNamePrefix + <span class="string">"-R.txt"</span></div><div class="line">        def toMappingName = toFileNamePrefix + <span class="string">"-mapping.txt"</span></div><div class="line"></div><div class="line">        <span class="comment">// 拷贝源文件目录下所有资源到目标文件目录，并重命名</span></div><div class="line">        project.copy &#123;</div><div class="line">            <span class="comment">// 拷贝目录下所有文件</span></div><div class="line">            from fromFileDir</div><div class="line">            into toFileDir</div><div class="line">            rename &#123; String fileName -&gt;</div><div class="line">                fileName.replace(fromApkName, toApkName)</div><div class="line">            &#125;</div><div class="line">            rename &#123; String fileName -&gt;</div><div class="line">                fileName.replace(fromRName, toRName)</div><div class="line">            &#125;</div><div class="line">            rename &#123; String fileName -&gt;</div><div class="line">                fileName.replace(fromMappingName, toMappingName)</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 删除源文件目录</span></div><div class="line">        <span class="keyword">if</span> (toApkFile.exists())&#123;</div><div class="line">            def deleteSuccess = project.file(<span class="string">"$&#123;fromFileDir&#125;"</span>).deleteDir()</div><div class="line">            println(<span class="string">"delete fromFileDir==========&gt;"</span> + deleteSuccess)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 查找bugly tinker打包输出的文件夹</div><div class="line">     * <span class="doctag">@param</span> project</div><div class="line">     * <span class="doctag">@param</span> outputBakDirName</div><div class="line">     * <span class="doctag">@param</span> outputBakPath</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="function">def <span class="title">findBuglyOutputFile</span><span class="params">(Project project, outputBakDirName, outputBakPath)</span></span>&#123;</div><div class="line">        def fromApkName = outputBakDirName + <span class="string">".apk"</span></div><div class="line"></div><div class="line">        <span class="comment">// 查找目标apk文件夹</span></div><div class="line">        def tree = project.fileTree(outputBakPath) &#123;</div><div class="line">            include <span class="string">"**/$&#123;fromApkName&#125;"</span></div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 校验查找到的文件夹合法性</span></div><div class="line">        <span class="keyword">if</span> (tree.size() == <span class="number">0</span>)&#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"没有找到APK文件:"</span> + fromApkName)</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (tree.size() &gt; <span class="number">1</span>)&#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"存在多个APK文件:"</span> + tree.toString())</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 源文件目录</span></div><div class="line">        def fromFileDir = tree[<span class="number">0</span>].getParentFile()</div><div class="line">        <span class="keyword">return</span> fromFileDir</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="插件使用-1"><a href="#插件使用-1" class="headerlink" title="插件使用"></a>插件使用</h4><ul>
+<li><p>在application类型模块下build.gradle中添加以下配置;</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">this</span>.printlnLog(<span class="string">"调整打包输出目录插件"</span>)</div><div class="line">apply plugin: com.zaozuo.plugins.adjustoutput.AdjustAssembleOutputPlugin</div><div class="line">adjustAssembleOutputConfig&#123;</div><div class="line">    outputBakPath <span class="string">"$&#123;project.bakPath&#125;"</span></div><div class="line">    outputBakDirName <span class="string">"$&#123;project.tinkerIdValue&#125;"</span></div><div class="line">    isPatchModelValue <span class="string">"$&#123;project.isPatchModel&#125;"</span>.toBoolean()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用插件后，每次打包后输出的目录及文件;<br><img src="http://ww1.sinaimg.cn/large/4fed004bly1feonmx7m69j20nh09lwks.jpg" alt=""></p>
+</li>
+</ul>
+<h3 id="检查生成的APK"><a href="#检查生成的APK" class="headerlink" title="检查生成的APK"></a>检查生成的APK</h3><h4 id="检查渠道配置"><a href="#检查渠道配置" class="headerlink" title="检查渠道配置"></a>检查渠道配置</h4><p>come soon!</p>
+<h4 id="检查tinker配置"><a href="#检查tinker配置" class="headerlink" title="检查tinker配置"></a>检查tinker配置</h4><p>come soon!</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      gcoder.io
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://gcoder-io.github.io/2017/04/15/android-ci-assemble-optimize/" title="Android 持续集成实践（一）：打包流程优化">http://gcoder-io.github.io/2017/04/15/android-ci-assemble-optimize/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/打包流程/" rel="tag"># 打包流程</a>
+          
+            <a href="/tags/Gradle/" rel="tag"># Gradle</a>
+          
+            <a href="/tags/持续集成/" rel="tag"># 持续集成</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/03/android-ga-guideline/" rel="next" title="GoogleAnalytics在电商场景下的实践">
+                <i class="fa fa-chevron-left"></i> GoogleAnalytics在电商场景下的实践
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODAxMy80NTkw"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://ww1.sinaimg.cn/large/4fed004bly1fe8hjcvyn4j20hs0hs3zz.jpg"
+               alt="gcoder.io" />
+          <p class="site-author-name" itemprop="name">gcoder.io</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/gcoder-io" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/snowleft" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#打包流程"><span class="nav-number">1.</span> <span class="nav-text">打包流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#具体实现"><span class="nav-number">2.</span> <span class="nav-text">具体实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradle配置文件归类"><span class="nav-number">2.1.</span> <span class="nav-text">Gradle配置文件归类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检查multidex配置"><span class="nav-number">2.2.</span> <span class="nav-text">检查multidex配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#插件实现"><span class="nav-number">2.2.1.</span> <span class="nav-text">插件实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#插件使用"><span class="nav-number">2.2.2.</span> <span class="nav-text">插件使用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多渠道打包"><span class="nav-number">2.3.</span> <span class="nav-text">多渠道打包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调整打包输出目录"><span class="nav-number">2.4.</span> <span class="nav-text">调整打包输出目录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#插件实现-1"><span class="nav-number">2.4.1.</span> <span class="nav-text">插件实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#插件使用-1"><span class="nav-number">2.4.2.</span> <span class="nav-text">插件使用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检查生成的APK"><span class="nav-number">2.5.</span> <span class="nav-text">检查生成的APK</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#检查渠道配置"><span class="nav-number">2.5.1.</span> <span class="nav-text">检查渠道配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#检查tinker配置"><span class="nav-number">2.5.2.</span> <span class="nav-text">检查tinker配置</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">gcoder.io</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
