@@ -2,16 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://gcoder-io.github.io/2017/04/15/android-ci-assemble-optimize/</loc>
+    <loc>http://gcoder-io.github.io/2017/04/23/android-dev-tips/</loc>
     
-    <lastmod>2017-04-16T10:09:19.000Z</lastmod>
+    <lastmod>2017-06-10T06:58:56.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://gcoder-io.github.io/2017/05/06/android-mvp/</loc>
+    
+    <lastmod>2017-06-10T06:56:33.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://gcoder-io.github.io/2017/06/04/think-grow-up/</loc>
+    
+    <lastmod>2017-06-04T07:42:14.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://gcoder-io.github.io/2017/04/03/android-ga-guideline/</loc>
     
-    <lastmod>2017-04-14T09:34:11.000Z</lastmod>
+    <lastmod>2017-05-20T08:42:45.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://gcoder-io.github.io/2017/04/15/android-ci-assemble-optimize/</loc>
+    
+    <lastmod>2017-04-16T10:09:19.000Z</lastmod>
     
   </url>
   

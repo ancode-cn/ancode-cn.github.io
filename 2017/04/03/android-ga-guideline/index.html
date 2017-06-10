@@ -121,7 +121,7 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe9klaif03j20q506cabh.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe9klalzt4j20ve081act.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/4fed004bly1fe9klai8k9j20q103zdgf.jpg">
-<meta property="og:updated_time" content="2017-04-14T09:34:11.000Z">
+<meta property="og:updated_time" content="2017-05-20T08:42:45.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GoogleAnalytics在电商场景下的实践">
 <meta name="twitter:description" content="GA提供了多个维度的数据分析，覆盖了电商场景下所有的统计需求；
@@ -439,7 +439,7 @@
                   <span class="post-meta-item-text">字数统计</span>
                 
                 <span title="字数统计">
-                  3,416
+                  3,434
                 </span>
               
 
@@ -612,7 +612,7 @@
 <h3 id="常见问题-1"><a href="#常见问题-1" class="headerlink" title="常见问题"></a>常见问题</h3><h4 id="产品列表业绩，无产品列表数据（Android）"><a href="#产品列表业绩，无产品列表数据（Android）" class="headerlink" title="产品列表业绩，无产品列表数据（Android）"></a>产品列表业绩，无产品列表数据（Android）</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 必须添加以下参数，否则产品列表不显示</span></div><div class="line">builder.set(<span class="string">"&amp;t"</span>, <span class="string">"screenview"</span>);</div><div class="line">builder.set(<span class="string">"&amp;cd"</span>, <span class="string">""</span>);</div><div class="line">builder.set(<span class="string">"&amp;cd1"</span>, <span class="string">""</span>);</div></pre></td></tr></table></figure>
 <h4 id="产品列表业绩，无产品点击数据（Android）"><a href="#产品列表业绩，无产品点击数据（Android）" class="headerlink" title="产品列表业绩，无产品点击数据（Android）"></a>产品列表业绩，无产品点击数据（Android）</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 必须添加以下参数，否则产品列表不显示点击</span></div><div class="line">clickBuilder.set(<span class="string">"&amp;t"</span>, <span class="string">"screenview"</span>);</div><div class="line">clickBuilder.set(<span class="string">"&amp;cd"</span>, <span class="string">""</span>);</div><div class="line">clickBuilder.set(<span class="string">"&amp;cd1"</span>, <span class="string">""</span>);</div><div class="line">t.send(clickBuilder.build());</div></pre></td></tr></table></figure>
 <h4 id="产品列表业绩，出现大量noset"><a href="#产品列表业绩，出现大量noset" class="headerlink" title="产品列表业绩，出现大量noset"></a>产品列表业绩，出现大量noset</h4><h5 id="App端统计问题"><a href="#App端统计问题" class="headerlink" title="App端统计问题"></a>App端统计问题</h5><ul>
-<li>添加了购物车列表的统计；</li>
+<li>根本原因是产品被添加到购物车或产品结账前必须执行了点击统计；</li>
 </ul>
 <h5 id="服务端统计问题"><a href="#服务端统计问题" class="headerlink" title="服务端统计问题"></a>服务端统计问题</h5><ul>
 <li><p>服务端在支付成功的统计中，将”t”对应的值写成了”pageview”，必须为”event”</p>
@@ -843,7 +843,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -854,7 +854,7 @@
             
             <div class="site-state-item site-state-categories">
               
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">分类</span>
               
             </div>
@@ -865,7 +865,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-count">26</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
